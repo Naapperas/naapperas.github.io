@@ -3,8 +3,10 @@ import { getCollection } from "astro:content";
 import type { Project as ProjectType } from "../../content/config";
 
 import Project from "../../components/Project.astro";
+import Layout from "../../layouts/Layout.astro";
 
 const projects = await getCollection("project");
 ---
-
-{projects.map((entry) => <Project project={entry.data as ProjectType} />)}
+<Layout title="Projects">
+    {projects.map((entry) => <Project project={entry.data as ProjectType} />)}
+</Layout>

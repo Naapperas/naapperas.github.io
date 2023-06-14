@@ -10,16 +10,19 @@ academicData:
         fullName: "Web Applications and Databases Laboratory"
         year: "2021/2022"
         semester: 2
-    marks: 19.15
+    marks: 17.2
 techStack:
-    - "HTML"
-    - "CSS"
-    - "JavaScript"
+    - "Laravel"
+    - "Vite"
+    - "TypeScript"
+    - "Blade"
+    - "PostgreSQL"
     - "PHP"
-    - "sqlite3"
 otherMembers:
     - name: "João Pereira"
       githubUrl: "https://github.com/ttoino"
-    - name: "Jorge Sousa"
-      githubUrl: "https://github.com/jsousa02"
+    - name: "Pedro Nunes"
+      githubUrl: "https://github.com/pedronunes19"
+    - name: "Beatriz Cruz"
+      githubUrl: "https://github.com/beatriz001"
 ---
