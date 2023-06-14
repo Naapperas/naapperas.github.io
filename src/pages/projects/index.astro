@@ -1,0 +1,10 @@
+---
+import { getCollection } from "astro:content";
+import type { Project as ProjectType } from "../../content/config";
+
+import Project from "../../components/Project.astro";
+
+const projects = await getCollection("project");
+---
+
+{projects.map((entry) => <Project project={entry.data as ProjectType} />)}
