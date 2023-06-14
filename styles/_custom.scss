@@ -1,7 +1,0 @@
-@mixin verticalLine($side, $color) {
-    @if $side == left {
-        border-left: 1px solid $color;
-    } @else if $side == right {
-        border-right: 1px solid $color;
-    }
-}
