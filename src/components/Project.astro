@@ -10,6 +10,7 @@ const { project } = Astro.props;
 
 <article class="project-card">
     <a href={project.upstreamLink}></a>
+    <img class="preview-image" src={project.previewImage} alt=`Preview image for ${project.name}`>
     <header>
         <h2>{project.name}</h2>
         <p>{project.description}</p>
