@@ -9,24 +9,30 @@ interface Props {
 const { labels, caption } = Astro.props;
 ---
 
-{caption ? <h3>{caption}</h3> : null}
-<ul class="chip-list">
-    {
-        labels.map((label) => (
-            <li>
-                <Chip label={label} />
-            </li>
-        ))
-    }
-</ul>
+<div>
+    {caption ? <h3>{caption}</h3> : null}
+    <ul class="chip-list">
+        {
+            labels.map((label) => (
+                <li>
+                    <Chip label={label} />
+                </li>
+            ))
+        }
+    </ul>
+</div>
 
 <style>
     .chip-list {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        list-style: none;
         padding: 0;
+        list-style: none;
         margin: 0;
+    }
+
+    .chip-list > li:not(:last-child) {
+        margin-right: 0.5rem;
     }
 </style>

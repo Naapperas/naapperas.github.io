@@ -7,6 +7,7 @@ import Layout from "../../layouts/Layout.astro";
 
 const projects = await getCollection("project");
 ---
+
 <Layout title="Projects">
     {projects.map((entry) => <Project project={entry.data as ProjectType} />)}
 </Layout>

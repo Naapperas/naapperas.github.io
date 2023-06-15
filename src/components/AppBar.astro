@@ -28,7 +28,13 @@ const pages = [
     <nav class="links">
         {
             pages.map((page) => (
-                <a class:list={["nav-link", {selected: Astro.url.pathname == page.url}]} href={page.url}>
+                <a
+                    class:list={[
+                        "nav-link",
+                        { selected: Astro.url.pathname == page.url },
+                    ]}
+                    href={page.url}
+                >
                     {page.name}
                 </a>
             ))

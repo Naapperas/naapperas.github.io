@@ -8,7 +8,7 @@ const projectSchema = z.object({
     deployment: z.object({
         url: z.string().url("Project deployment URL must be a valid URL"),
     }),
-    academicData: z.object({
+    academicData: z.optional(z.object({
         course: z.object({
             code: z.string(),
             fullName: z.string(),
@@ -16,7 +16,7 @@ const projectSchema = z.object({
             semester: z.literal(1).or(z.literal(2)),
         }),
         marks: z.optional(z.number().gte(0).lte(20)),
-    }),
+    })),
     techStack: z.optional(z.union([
         z.object({
             frontend: z.array(z.string()),
