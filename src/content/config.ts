@@ -4,6 +4,7 @@ const projectSchema = z.object({
     name: z.string(),
     description: z.string().nonempty("Cannot have an empty project description"),
     upstreamLink: z.string().url("Project upstream link must be a valid URL"),
+    previewImage: z.optional(z.string().url("Project preview image must be a valid URL")),
     deployment: z.object({
         url: z.string().url("Project deployment URL must be a valid URL"),
     }),

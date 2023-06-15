@@ -18,9 +18,9 @@ const pages = [
     },
     {
         name: "Resume",
-        url: "/resume",
+        url: "/cv.pdf",
     },
-];
+] as const;
 ---
 
 <header class="top-bar">
@@ -28,7 +28,7 @@ const pages = [
     <nav class="links">
         {
             pages.map((page) => (
-                <a class="nav-link" href={page.url}>
+                <a class:list={["nav-link", {selected: Astro.url.pathname == page.url}]} href={page.url}>
                     {page.name}
                 </a>
             ))
@@ -42,6 +42,7 @@ const pages = [
         justify-content: space-between;
         align-items: center;
         padding: 1rem;
+        margin: 0 1rem;
         font-size: 1.5rem;
         border-bottom: 1px solid #e5e5e5;
     }
@@ -53,5 +54,12 @@ const pages = [
 
     .nav-link {
         margin-left: 1rem;
+        padding: 0.2em;
+    }
+
+    .nav-link.selected {
+        background-color: var(--color-4);
+        color: var(--color-1);
+        border-radius: 5%;
     }
 </style>

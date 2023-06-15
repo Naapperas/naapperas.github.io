@@ -2,7 +2,7 @@
 ---
 
 <footer>
-    <p>Built with <a href="https://astro.build">{Astro.generator}</a></p>
+    <p class="tool">Built with <a href="https://astro.build">{Astro.generator}</a></p>
 </footer>
 <style>
 	footer {
@@ -11,4 +11,8 @@
         padding: 1rem;
         justify-content: center;
 	}
+
+    .tool :hover {
+        text-decoration: underline;
+    }
 </style>

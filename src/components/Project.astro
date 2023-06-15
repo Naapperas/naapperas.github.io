@@ -7,12 +7,27 @@ interface Props {
 
 const { project } = Astro.props;
 ---
+
 <article class="project-card">
     <a href={project.upstreamLink}>Temporary link: remove me</a>
     <header>
         <h2>{project.name}</h2>
         <p>{project.description}</p>
     </header>
+    {
+        project.otherMembers ? (
+            <section class="other-members">
+                <h3>Other members:</h3>
+                <ul>
+                    {project.otherMembers.map((member) => (
+                        <li>
+                            <a href={member.githubUrl}>{member.name}</a>
+                        </li>
+                    ))}
+                </ul>
+            </section>
+        ) : null
+    }
 </article>
 <style>
     .project-card {
@@ -26,5 +41,9 @@ const { project } = Astro.props;
         background-color: var(--color-bg);
         box-shadow: 0 0 0.5rem var(--color-shadow);
         transition: box-shadow 0.2s ease-in-out;
+    }
+
+    .other-members {
+        
     }
 </style>
