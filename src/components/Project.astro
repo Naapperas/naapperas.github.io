@@ -1,6 +1,8 @@
 ---
 import type { CollectionEntry } from "astro:content";
 
+import ChipList from "./ChipList.astro";
+
 interface Props {
     project: CollectionEntry<"project">["data"];
 }
@@ -10,7 +12,11 @@ const { project } = Astro.props;
 
 <article class="project-card">
     <a href={project.upstreamLink}></a>
-    <img class="preview-image" src={project.previewImage} alt=`Preview image for ${project.name}`>
+    <img
+        class="preview-image"
+        src={project.previewImage}
+        alt=`Preview image for ${project.name}`
+    />
     <header>
         <h2>{project.name}</h2>
         <p>{project.description}</p>
@@ -29,6 +35,28 @@ const { project } = Astro.props;
             </section>
         ) : null
     }
+    {
+        project.techStack ? (
+            Array.isArray(project.techStack) ? (
+                <ChipList
+                    labels={project.techStack}
+                    caption="Technologies used:"
+                />
+            ) : (
+                <>
+                    <p>Technologies used:</p>
+                    <ChipList
+                        labels={project.techStack.backend}
+                        caption="BackEnd:"
+                    />
+                    <ChipList
+                        labels={project.techStack.frontend}
+                        caption="FrontEnd:"
+                    />
+                </>
+            )
+        ) : null
+    }
 </article>
 <style>
     :root {
@@ -38,16 +66,32 @@ const { project } = Astro.props;
 
     .project-card {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         position: relative;
+
         justify-content: space-between;
+
         padding: 1rem;
-        max-width: 75%;
+        max-width: 70%;
+        min-height: 300px;
+
         margin: 1rem auto;
         border-radius: 0.5rem;
+
         background-color: var(--color-bg);
         box-shadow: 0 0 0.5rem var(--color-shadow);
+
         transition: box-shadow 0.2s ease-in-out;
+    }
+
+    .project-card img {
+        max-width: 20rem;
+        max-height: 30rem;
+        border-radius: 0.5rem;
+
+        object-fit: cover;
+        object-position: center;
+        margin-right: 1rem;
     }
 
     .project-card > a {

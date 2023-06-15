@@ -1,0 +1,17 @@
+---
+interface Props {
+    label: string;
+    color?: string;
+}
+
+const { label, color } = Astro.props;
+---
+
+<span style=`background-color: ${color ?? "gray"}`>{label}</span>
+<style>
+    span {
+        font-weight: 500;
+        padding: 5px 7.5px;
+        border-radius: 15px;
+    }
+</style>
