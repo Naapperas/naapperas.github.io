@@ -1,6 +1,7 @@
 ---
 name: "Personal Website"
 description: "Personal branding website."
+shortDescription: "Personal branding website."
 upstreamLink: "https://github.com/Naapperas/naapperas.github.io"
 # previewImage: "/projects/atrellado.png"
 deployment:

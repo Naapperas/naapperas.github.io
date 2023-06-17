@@ -1,6 +1,7 @@
 ---
 name: "XauFome"
 description: "XauFome is a food delivery app that aims to simplify the food ordering and delivery process. Its design was much inspired by UberEats."
+shortDescription: "XauFome is a food delivery app that aims to simplify the food ordering and delivery process."
 upstreamLink: "https://github.com/Naapperas/feup-ltw-proj"
 previewImage: "/projects/xaufome.png"
 deployment:

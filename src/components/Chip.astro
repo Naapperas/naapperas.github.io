@@ -4,14 +4,28 @@ interface Props {
     color?: string;
 }
 
-const { label, color } = Astro.props;
+const { label, color = "gray" } = Astro.props;
 ---
 
-<span style=`background-color: ${color ?? "gray"}`>{label}</span>
-<style>
+<span>{label}</span>
+<style define:vars={{ backgroundColor: color }}>
     span {
-        font-weight: 500;
-        padding: 5px 7.5px;
-        border-radius: 15px;
+        display: flex;
+        align-items: center;
+
+        height: 32px;
+        border-radius: 16px;
+        padding-inline: 12px;
+
+        background-color: var(--backgroundColor);
+
+        white-space: nowrap;
+        font-size: 0.875rem;
+        line-height: 0.875rem;
+        font-weight: 400;
+        letter-spacing: 0.01785714285em;
+
+        position: relative;
+        z-index: 1;
     }
 </style>

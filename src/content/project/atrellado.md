@@ -1,6 +1,7 @@
 ---
 name: "Atrellado"
 description: "Atrellado is a product targeted at teams that want to manage collaborative projects effectively."
+shortDescription: "Atrellado is a product targeted at teams that want to manage collaborative projects effectively."
 upstreamLink: "https://github.com/Naapperas/feup-lbaw"
 previewImage: "/projects/atrellado.png"
 deployment:

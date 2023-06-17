@@ -3,6 +3,7 @@ import { defineCollection, z } from 'astro:content';
 const projectSchema = z.object({
     name: z.string(),
     description: z.string().nonempty("Cannot have an empty project description"),
+    shortDescription: z.optional(z.string().nonempty("Cannot have an empty project short description")),
     upstreamLink: z.string().url("Project upstream link must be a valid URL"),
     previewImage: z.optional(z.string()),
     deployment: z.object({

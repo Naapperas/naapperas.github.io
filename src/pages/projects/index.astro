@@ -1,9 +1,8 @@
 ---
 import { getCollection } from "astro:content";
-import type { Project as ProjectType } from "../../content/config";
 
-import Project from "../../components/Project.astro";
-import Layout from "../../layouts/Layout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import Layout from "../../layouts/Content.astro";
 
 const projects = await getCollection("project");
 ---
@@ -13,14 +12,13 @@ const projects = await getCollection("project");
         <h2>Projects</h2>
         <p>These are some of the projects I have developed so far:</p>
     </header>
-    {
-        projects.map((entry, i) => (
-            <Project
-                project={entry.data as ProjectType}
-                inverted={i % 2 === 1}
-            />
-        ))
-    }
+    <section class="project-list">
+        {projects.map((entry) => <ProjectCard project={entry} />)}
+    </section>
 </Layout>
 
-<style></style>
+<style>
+    .project-list {
+        display: grid;
+    }
+</style>
