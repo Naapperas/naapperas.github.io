@@ -5,12 +5,13 @@ import ChipList from "./ChipList.astro";
 
 interface Props {
     project: CollectionEntry<"project">["data"];
+    inverted?: boolean;
 }
 
-const { project } = Astro.props;
+const { project, inverted = false } = Astro.props;
 ---
 
-<article class="project-card">
+<article class:list={["project-card", { inverted }]}>
     <a href={project.upstreamLink}></a>
     <img
         class="preview-image"
@@ -84,6 +85,11 @@ const { project } = Astro.props;
         box-shadow: 0 0 0.5rem var(--color-shadow);
 
         transition: box-shadow 0.2s ease-in-out;
+    }
+
+    .project-card.inverted {
+        /* utility class for displaying the card in the opposite direction */
+        flex-direction: row-reverse;
     }
 
     .project-card .preview-image {

@@ -31,7 +31,7 @@ const pages = [
                 <a
                     class:list={[
                         "nav-link",
-                        { selected: Astro.url.pathname == page.url },
+                        { selected: Astro.url.pathname === page.url },
                     ]}
                     href={page.url}
                 >

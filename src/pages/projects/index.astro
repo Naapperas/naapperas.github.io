@@ -9,5 +9,18 @@ const projects = await getCollection("project");
 ---
 
 <Layout title="Projects">
-    {projects.map((entry) => <Project project={entry.data as ProjectType} />)}
+    <header>
+        <h2>Projects</h2>
+        <p>These are some of the projects I have developed so far:</p>
+    </header>
+    {
+        projects.map((entry, i) => (
+            <Project
+                project={entry.data as ProjectType}
+                inverted={i % 2 === 1}
+            />
+        ))
+    }
 </Layout>
+
+<style></style>
