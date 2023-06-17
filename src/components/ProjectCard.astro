@@ -41,6 +41,7 @@ const project = projectMetadata.data;
     <a href={project.upstreamLink}>
         <img
             class="preview-image"
+            height="204.1px"
             src={project.previewImage}
             alt=`Preview image for ${project.name}`
         />
@@ -67,7 +68,6 @@ const project = projectMetadata.data;
     }
 
     .project-card {
-        max-width: 70%;
         min-height: 400px;
 
         border-radius: var(--card-border-radius);
@@ -99,7 +99,9 @@ const project = projectMetadata.data;
         object-fit: cover;
 
         /* to handle the case where the images could not be loaded and the alt text appears */
-        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .project-card .project-data {
