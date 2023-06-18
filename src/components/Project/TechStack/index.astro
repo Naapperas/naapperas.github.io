@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import Simple from "./Simple.astro";
+import Detailed from "./Detailed.astro";
+
+export interface Props {
+    techStack: Required<CollectionEntry<"project">["data"]>["techStack"];
+}
+
+const { techStack } = Astro.props;
+---
+<section class="project-technologies">
+    {
+        Array.isArray(techStack) ? (
+            <Simple techStack={techStack} />
+        ) : (
+            <Detailed techStack={techStack} />
+        )
+    }
+</section>
+
+<style is:global>
+    .technology-list {
+        /* tech styles */
+    }
+</style>

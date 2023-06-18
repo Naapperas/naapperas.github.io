@@ -1,0 +1,19 @@
+---
+export interface Props {
+    techStack: {
+        backend: string[];
+        frontend: string[];
+    };
+}
+
+const { techStack } = Astro.props;
+---
+
+<section class="technology-list">
+    <h2>Frontend technologies used:</h2>
+    <ul>{techStack.frontend.map((label) => <li>{label}</li>)}</ul>
+</section>
+<section class="technology-list">
+    <h2>Backend technologies used:</h2>
+    <ul>{techStack.backend.map((label) => <li>{label}</li>)}</ul>
+</section>
