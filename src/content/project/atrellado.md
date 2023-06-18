@@ -10,7 +10,7 @@ academicData:
     course: 
         code: LBAW
         fullName: "Web Applications and Databases Laboratory"
-        year: "2021/2022"
+        year: "2022/2023"
         semester: 2
     marks: 17.2
 techStack:

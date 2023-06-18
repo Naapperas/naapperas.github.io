@@ -6,9 +6,9 @@ const projectSchema = z.object({
     shortDescription: z.optional(z.string().nonempty("Cannot have an empty project short description")),
     upstreamLink: z.string().url("Project upstream link must be a valid URL"),
     previewImage: z.optional(z.string()),
-    deployment: z.object({
+    deployment: z.optional(z.object({
         url: z.string().url("Project deployment URL must be a valid URL"),
-    }),
+    })),
     academicData: z.optional(z.object({
         course: z.object({
             code: z.string(),

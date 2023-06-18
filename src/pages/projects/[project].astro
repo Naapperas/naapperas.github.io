@@ -1,0 +1,84 @@
+---
+import { CollectionEntry, getCollection } from "astro:content";
+import Layout from "../../layouts/Content.astro";
+import type { InferGetStaticPropsType, GetStaticPaths } from "astro";
+
+export const getStaticPaths = (async () => {
+    const projects = await getCollection("project");
+
+    return projects.map((entry) => ({
+        params: { project: entry.slug },
+        props: { entry },
+    }));
+}) satisfies GetStaticPaths;
+
+export type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry: projectMetada } = Astro.props;
+
+const mapSemesterOrdinal = (
+    semester: Required<
+        CollectionEntry<"project">["data"]
+    >["academicData"]["course"]["semester"]
+): string => {
+    switch (semester) {
+        case 1:
+            return "1st";
+        case 2:
+            return "2nd";
+    }
+};
+
+const project = projectMetada.data;
+---
+
+<Layout title={`Project - ${project.name}`}>
+    <header class="project-info">
+        <h1>{project.name}</h1>
+        <p>{project.description}</p>
+    </header>
+    {
+        project.academicData ? (
+            <section class="academic-data">
+                <h2>Academic info</h2>
+                <div>
+                    <p class="course-designation">
+                        Course: {project.academicData.course.fullName}{" "}
+                        <span class="course-code">
+                            ({project.academicData.course.code})
+                        </span>
+                    </p>
+                    <p class="course-semester">
+                        {project.academicData.course.year} -{" "}
+                        {`${mapSemesterOrdinal(
+                            project.academicData.course.semester
+                        )} semester`}
+                    </p>
+                    {project.academicData.marks ? (
+                        <p class="project-grade">
+                            Grade: {project.academicData.marks}/20
+                        </p>
+                    ) : null}
+                </div>
+            </section>
+        ) : null
+    }
+    {
+        project.otherMembers ? (
+            <section class="other-members">
+                <h2>Other people that developed this project:</h2>
+                <ul>
+                    {project.otherMembers.map(({ githubUrl, name }) => (
+                        <li>
+                            <a href={githubUrl}>{name}</a>
+                        </li>
+                    ))}
+                </ul>
+            </section>
+        ) : null
+    }
+    {project.techStack ? null : null}
+    <section>
+        <h2></h2>
+    </section>
+</Layout>

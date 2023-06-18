@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 
-import ChipList from "./ChipList.astro";
+import ChipList from "../Chip/List.astro";
 
 interface Props {
     project: CollectionEntry<"project">;
@@ -38,7 +38,7 @@ const project = projectMetadata.data;
 ---
 
 <article id=`project-card-${projectMetadata.slug}` class="project-card">
-    <a href={project.upstreamLink}>
+    <a href=`/projects/${projectMetadata.slug}`>
         <img
             class="preview-image"
             height="204.1px"
