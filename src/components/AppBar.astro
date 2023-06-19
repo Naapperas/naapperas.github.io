@@ -25,7 +25,7 @@ const pages = [
 
 <header class="top-bar">
     <a href="/"><span class="material-symbols-outlined">home</span></a>
-    <nav class="links">
+    <nav class="links pc-links">
         {
             pages.map((page) => (
                 <a
@@ -39,6 +39,25 @@ const pages = [
                 </a>
             ))
         }
+    </nav>
+    <nav class="links mobile-links">
+        <input type="checkbox" id="nav-toggle" />
+        <label for="nav-toggle" class="material-symbols-outlined">menu</label>
+        <div class="mobile-links-container">
+            {
+                pages.map((page) => (
+                    <a
+                        class:list={[
+                            "nav-link",
+                            { selected: Astro.url.pathname.includes(page.url) },
+                        ]}
+                        href={page.url}
+                    >
+                        {page.name}
+                    </a>
+                ))
+            }
+        </div>
     </nav>
 </header>
 <style>
@@ -63,9 +82,35 @@ const pages = [
         padding: 0.2em;
     }
 
+    .mobile-links {
+        display: none;
+    }
+
     .nav-link.selected {
         background-color: var(--color-4);
         color: var(--color-1);
         border-radius: 5%;
+    }
+
+    @media screen and (max-width: 768px) {
+        .pc-links {
+            display: none;
+        }
+
+        .mobile-links {
+            display: initial;
+        }
+
+        .mobile-links input {
+            display: none;
+        }
+
+        .mobile-links-container {
+            display: none;
+        }
+
+        .mobile-links input:checked ~ .mobile-links-container {
+            display: block;
+        }
     }
 </style>
