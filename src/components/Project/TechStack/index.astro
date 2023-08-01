@@ -20,18 +20,3 @@ const { techStack } = Astro.props;
         )
     }
 </section>
-
-<!-- FIXME: This is not ideal, but it works for now for passing styles down to the child components. -->
-<style is:global>
-    .technology-list {
-        /* tech styles */
-        display: flex;
-        flex-wrap: wrap;
-
-        justify-content: center;
-
-        gap: 1rem;
-
-        list-style: none;
-    }
-</style>

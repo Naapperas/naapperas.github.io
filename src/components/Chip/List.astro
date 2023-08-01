@@ -2,37 +2,22 @@
 import Chip from "./index.astro";
 
 interface Props {
-    labels: string[];
-    caption?: string;
+  labels: string[];
+  caption?: string;
 }
 
 const { labels, caption } = Astro.props;
 ---
 
 <div>
-    {caption ? <h3>{caption}</h3> : null}
-    <ul class="chip-list">
-        {
-            labels.map((label) => (
-                <li>
-                    <Chip label={label} />
-                </li>
-            ))
-        }
-    </ul>
+  {caption ? <h3>{caption}</h3> : null}
+  <ul class="chip-list">
+    {
+      labels.map((label) => (
+        <li>
+          <Chip label={label} />
+        </li>
+      ))
+    }
+  </ul>
 </div>
-
-<style>
-    .chip-list {
-        display: flex;
-        flex-direction: row;
-        overflow-x: auto;
-        flex-wrap: wrap;
-        list-style: none;
-        gap: 5px;
-    }
-
-    .chip-list > li:not(:last-child) {
-        margin-right: 0.5rem;
-    }
-</style>

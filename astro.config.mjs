@@ -1,6 +1,9 @@
 import { defineConfig } from 'astro/config';
 
+import tailwind from "@astrojs/tailwind";
+
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://naapperas.github.io',
+  site: 'https://naapperas.github.io',
+  integrations: [tailwind()]
 });

@@ -1,31 +1,9 @@
 ---
 interface Props {
     label: string;
-    color?: string;
 }
 
-const { label, color = "gray" } = Astro.props;
+const { label } = Astro.props;
 ---
 
 <span>{label}</span>
-<style define:vars={{ backgroundColor: color }}>
-    span {
-        display: flex;
-        align-items: center;
-
-        height: 32px;
-        border-radius: 16px;
-        padding-inline: 12px;
-
-        background-color: var(--backgroundColor);
-
-        white-space: nowrap;
-        font-size: 0.875rem;
-        line-height: 0.875rem;
-        font-weight: 400;
-        letter-spacing: 0.01785714285em;
-
-        position: relative;
-        z-index: 1;
-    }
-</style>

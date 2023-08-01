@@ -1,137 +1,43 @@
 ---
 const pages = [
-    {
-        name: "About",
-        url: "/about",
-    },
-    {
-        name: "Contact",
-        url: "/contact",
-    },
-    {
-        name: "Blog",
-        url: "/blog",
-    },
-    {
-        name: "Projects",
-        url: "/projects",
-    },
-    {
-        name: "Resume",
-        url: "/cv.pdf",
-    },
+  {
+    name: "About",
+    url: "/about",
+  },
+  {
+    name: "Contact",
+    url: "/contact",
+  },
+  {
+    name: "Blog",
+    url: "/blog",
+  },
+  {
+    name: "Projects",
+    url: "/projects",
+  },
+  {
+    name: "Resume",
+    url: "/cv.pdf",
+  },
 ] as const;
 ---
 
-<header class="top-bar">
-    <a href="/"><span class="material-symbols-outlined">home</span></a>
-    <nav class="links pc-links">
-        {
-            pages.map((page) => (
-                <a
-                    class:list={[
-                        "nav-link",
-                        { selected: Astro.url.pathname.includes(page.url) },
-                    ]}
-                    href={page.url}
-                >
-                    {page.name}
-                </a>
-            ))
-        }
-    </nav>
-    <nav class="links mobile-links">
-        <input type="checkbox" id="nav-toggle" />
-        <label for="nav-toggle" class="material-symbols-outlined">menu</label>
-        <div class="mobile-links-container">
-            {
-                pages.map((page) => (
-                    <a
-                        class:list={[
-                            "nav-link",
-                            { selected: Astro.url.pathname.includes(page.url) },
-                        ]}
-                        href={page.url}
-                    >
-                        {page.name}
-                    </a>
-                ))
-            }
-        </div>
-    </nav>
+<header class="">
+  <a href="/"><span class="">home</span></a>
+  <nav class="">
+    {
+      pages.map((page) => (
+        <a
+          class:list={[
+            "nav-link",
+            { selected: Astro.url.pathname.includes(page.url) },
+          ]}
+          href={page.url}
+        >
+          {page.name}
+        </a>
+      ))
+    }
+  </nav>
 </header>
-<style>
-    .top-bar {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem;
-        margin: 0 1rem;
-        font-size: 1.5rem;
-        border-bottom: 1px solid #e5e5e5;
-    }
-
-    .links {
-        display: flex;
-        flex-direction: row;
-    }
-
-    .nav-link {
-        margin-left: 1rem;
-        padding: 0.2em;
-    }
-
-    .mobile-links {
-        display: none;
-    }
-
-    .nav-link.selected {
-        background-color: var(--color-4);
-        color: var(--color-1);
-        border-radius: 5%;
-    }
-
-    .mobile-links-container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-
-        z-index: 99;
-
-        transition: .25s ease-in-out;
-
-        position: fixed;
-        right: -300px;
-        
-        height: 100%;
-        width: 250px;
-        
-        background: var(--color-1);
-        
-        overflow-x: hidden;
-        overflow-y: scroll;
-        
-        padding: 20px;
-        
-        -webkit-overflow-scrolling: touch;
-    }
-
-    @media screen and (max-width: 768px) {
-        .pc-links {
-            display: none;
-        }
-
-        .mobile-links {
-            display: initial;
-        }
-
-        .mobile-links input {
-            display: none;
-        }
-
-        .mobile-links input:checked ~ .mobile-links-container {
-            right: 0;
-        }
-    }
-</style>
