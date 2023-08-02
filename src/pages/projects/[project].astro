@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 import { CollectionEntry, getCollection } from "astro:content";
-import Layout from "../../layouts/Base.astro";
+import Layout from "../../layouts/Content.astro";
 
 import TechStack from "../../components/Project/TechStack/index.astro";
 
@@ -53,9 +53,7 @@ const project = projectMetada.data;
             <div>
               <p class="">
                 Course: {project.academicData.course.fullName}{" "}
-                <span class="">
-                  ({project.academicData.course.code})
-                </span>
+                <span class="">({project.academicData.course.code})</span>
               </p>
               <p class="">
                 {project.academicData.course.year} -{" "}
@@ -63,10 +61,8 @@ const project = projectMetada.data;
                   project.academicData.course.semester
                 )} semester`}
               </p>
-              {project.academicData.marks ? (
-                <p class="">
-                  Grade: {project.academicData.marks}/20
-                </p>
+              {project.academicData.marks !== undefined ? (
+                <p class="">Grade: {project.academicData.marks}/20</p>
               ) : null}
             </div>
           </section>

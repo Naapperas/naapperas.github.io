@@ -1,0 +1,16 @@
+---
+import BaseLayout, { type Props as BaseProps } from "./Content.astro";
+import Header from "../components/Page/Header.astro";
+
+export interface Props extends BaseProps {
+  contentTitle: string;
+  description: string;
+}
+
+const { title: pageTitle, contentTitle, description } = Astro.props;
+---
+
+<BaseLayout title={pageTitle}>
+  <Header title={contentTitle} description={description} />
+  <slot />
+</BaseLayout>
