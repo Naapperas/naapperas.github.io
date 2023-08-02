@@ -29,7 +29,7 @@ const pages: Page[] = [
       pack: "mdi",
       name: "blog-outline",
       enabled: false,
-    }
+    },
   },
   {
     name: "Projects",
@@ -111,7 +111,7 @@ const hasIcon = (
     <a href="https://github.com/Naapperas">
       <Icon iconClasses={["ml-5"]} pack="mdi" name="github" />
     </a>
-    <div id="mobile" class="hidden w-screen peer-checked/mobile_hamburger:flex">
+    <div id="mobile" class="hidden peer-checked/mobile_hamburger:hidden">
       <!-- TODO: change this last one to flex once we found a way -->
       <ul class="flex flex-col md:hidden md:gap-4">
         {

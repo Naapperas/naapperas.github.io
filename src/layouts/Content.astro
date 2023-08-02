@@ -1,15 +1,13 @@
 ---
-import Base from "./Base.astro";
+import Base, { type Props as BaseProps } from "./Base.astro";
 
-export interface Props {
-    title: string;
-}
+export interface Props extends BaseProps {}
 
 const { title } = Astro.props;
 ---
 
 <Base title={title}>
-    <main class="w-screen content-center">
-        <slot />
-    </main>
+  <main class="w-screen content-center">
+    <slot />
+  </main>
 </Base>
