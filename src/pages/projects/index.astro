@@ -3,17 +3,17 @@ import { getCollection } from "astro:content";
 
 import ProjectCard from "../../components/Project/Card.astro";
 import Layout from "../../layouts/Content.astro";
+import Header from "../../components/Page/Header.astro";
 
 const projects = await getCollection("project");
 ---
 
 <Layout title="Projects">
-    <header>
-        <h2>Projects</h2>
-        <p>These are some of the projects I have developed so far:</p>
-    </header>
-    <section class="">
-        {projects.map((entry) => <ProjectCard project={entry} />)}
-    </section>
+  <Header
+    title="Projects"
+    description="These are some of the projects I have developed so far:"
+  />
+  <section class="">
+    {projects.map((entry) => <ProjectCard project={entry} />)}
+  </section>
 </Layout>
-
