@@ -13,7 +13,7 @@ type Page = {
   icon?: Icon;
 };
 
-const pages = [
+const pages: Page[] = [
   {
     name: "About",
     url: "/about",
@@ -25,6 +25,11 @@ const pages = [
   {
     name: "Blog",
     url: "/blog",
+    icon: {
+      pack: "mdi",
+      name: "blog-outline",
+      enabled: false,
+    }
   },
   {
     name: "Projects",
@@ -32,7 +37,7 @@ const pages = [
     icon: {
       pack: "ant-design",
       name: "project-outlined",
-      enabled: true,
+      enabled: false,
     },
   },
   {
@@ -44,7 +49,7 @@ const pages = [
       enabled: false,
     },
   },
-] as Page[];
+];
 
 const backgroundColorForPageLink = (page: Page): Record<string, boolean> => ({
   "bg-color-4": Astro.url.pathname.includes(page.url),
@@ -64,11 +69,12 @@ const hasIcon = (
   </a>
   <nav class="w-max flex flex-row">
     <div id="pc" class="hidden md:block">
-      <ul class="hidden md:flex md:gap-4">
+      <ul class="flex md:gap-4 h-full">
         {
           pages.map((page) => (
             <li
               class:list={[
+                "h-full flex flex-col justify-center",
                 {
                   ...(hasIcon(page)
                     ? {
@@ -97,13 +103,16 @@ const hasIcon = (
       type="checkbox"
       name="mobile_hamburger"
       id="mobile_hamburger"
-      class="peer/mobile_hamburger md:hidden"
+      class="peer/mobile_hamburger hidden"
     />
-    <label for="mobile_hamburger" class="md:hidden">Boas</label>
+    <label for="mobile_hamburger" class="md:hidden">
+      <Icon pack="mdi" name="hamburger-menu" />
+    </label>
     <a href="https://github.com/Naapperas">
       <Icon iconClasses={["ml-5"]} pack="mdi" name="github" />
     </a>
-    <div id="mobile" class="hidden peer-checked/mobile_hamburger:flex">
+    <div id="mobile" class="hidden w-screen peer-checked/mobile_hamburger:flex">
+      <!-- TODO: change this last one to flex once we found a way -->
       <ul class="flex flex-col md:hidden md:gap-4">
         {
           pages.map((page) => (
