@@ -1,0 +1,137 @@
+---
+import Icon from "../Icons/index.astro";
+
+type Icon = {
+  pack: string;
+  name: string;
+  enabled: boolean;
+};
+
+type Page = {
+  name: string;
+  url: string;
+  icon?: Icon;
+};
+
+const pages = [
+  {
+    name: "About",
+    url: "/about",
+  },
+  {
+    name: "Contact",
+    url: "/contact",
+  },
+  {
+    name: "Blog",
+    url: "/blog",
+  },
+  {
+    name: "Projects",
+    url: "/projects",
+    icon: {
+      pack: "ant-design",
+      name: "project-outlined",
+      enabled: true,
+    },
+  },
+  {
+    name: "Resume",
+    url: "/cv",
+    icon: {
+      pack: "pepicons-pop",
+      name: "cv",
+      enabled: false,
+    },
+  },
+] as Page[];
+
+const backgroundColorForPageLink = (page: Page): Record<string, boolean> => ({
+  "bg-color-4": Astro.url.pathname.includes(page.url),
+  "text-color-1": Astro.url.pathname.includes(page.url),
+});
+
+const hasIcon = (
+  page: Page
+): page is Omit<Page, "icon"> & { icon: NonNullable<Page["icon"]> } => {
+  return page.icon !== undefined && page.icon.enabled;
+};
+---
+
+<header class="flex flex-row p-5 justify-between text-2xl">
+  <a href="/">
+    <Icon pack="ic" name="round-home" />
+  </a>
+  <nav class="w-max flex flex-row">
+    <div id="pc" class="hidden md:block">
+      <ul class="hidden md:flex md:gap-4">
+        {
+          pages.map((page) => (
+            <li
+              class:list={[
+                {
+                  ...(hasIcon(page)
+                    ? {
+                        /* no custom styles */
+                      }
+                    : {
+                        /* add custom styles here */
+                        ...backgroundColorForPageLink(page),
+                      }),
+                },
+              ]}
+            >
+              <a title={page.name} href={page.url}>
+                {hasIcon(page) ? (
+                  <Icon pack={page.icon.pack} name={page.icon.name} />
+                ) : (
+                  page.name
+                )}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <input
+      type="checkbox"
+      name="mobile_hamburger"
+      id="mobile_hamburger"
+      class="peer/mobile_hamburger md:hidden"
+    />
+    <label for="mobile_hamburger" class="md:hidden">Boas</label>
+    <a href="https://github.com/Naapperas">
+      <Icon iconClasses={["ml-5"]} pack="mdi" name="github" />
+    </a>
+    <div id="mobile" class="hidden peer-checked/mobile_hamburger:flex">
+      <ul class="flex flex-col md:hidden md:gap-4">
+        {
+          pages.map((page) => (
+            <li
+              class:list={[
+                "txt-center",
+                {
+                  ...(hasIcon(page)
+                    ? {
+                        /* no custom styles */
+                      }
+                    : {
+                        /* add custom styles here */
+                        ...backgroundColorForPageLink(page),
+                      }),
+                },
+              ]}
+            >
+              <a title={page.name} href={page.url}>
+                {hasIcon(page) ? (
+                  <Icon pack={page.icon.pack} name={page.icon.name} />
+                ) : null}
+                {page.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </nav>
+</header>

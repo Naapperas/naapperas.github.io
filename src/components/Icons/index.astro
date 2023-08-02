@@ -1,0 +1,19 @@
+---
+import { Icon as AstroIcon } from "astro-icon";
+
+export type Props = {
+  pack: string;
+  name: string;
+  iconClasses?: string[];
+};
+
+const { pack, name, iconClasses } = Astro.props;
+
+const classes = ["w-10"]
+
+if (iconClasses !== undefined)
+  classes.push(...iconClasses)
+
+---
+
+<AstroIcon class={classes.join(" ")} pack={pack} name={name} />
