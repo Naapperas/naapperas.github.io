@@ -11,7 +11,7 @@ const { labels, caption } = Astro.props;
 
 <div>
   {caption ? <h3>{caption}</h3> : null}
-  <ul class="chip-list">
+  <ul class="flex gap-2">
     {
       labels.map((label) => (
         <li>

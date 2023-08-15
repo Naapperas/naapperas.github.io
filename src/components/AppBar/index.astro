@@ -1,5 +1,6 @@
 ---
-import Icon from "../Icons/index.astro";
+import Icon from "../Icons/Icon.astro";
+import Github from "../Icons/Github.astro";
 
 type Icon = {
   pack: string;
@@ -100,8 +101,8 @@ const hasIcon = (
     <label for="mobile_hamburger" class="md:hidden">
       <Icon pack="mdi" name="hamburger-menu" />
     </label>
-    <a href="https://github.com/Naapperas">
-      <Icon iconClasses={["ml-5"]} pack="mdi" name="github" />
+    <a href="https://github.com/Naapperas" class="pl-5">
+      <Github />
     </a>
     <div id="mobile" class="hidden peer-checked/mobile_hamburger:hidden">
       <!-- TODO: change this last one to flex once we found a way -->

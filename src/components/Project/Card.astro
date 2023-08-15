@@ -37,15 +37,14 @@ const { project: projectMetadata } = Astro.props;
 const project = projectMetadata.data;
 ---
 
-<article id=`project-card-${projectMetadata.slug}` class="project-card">
+<article id=`project-card-${projectMetadata.slug}` class="rounded bg-white">
   <a href=`/projects/${projectMetadata.slug}`>
     <img
-      class="preview-image"
       height="204.1px"
       src={project.previewImage}
       alt=`Preview image for ${project.name}`
     />
-    <section class="project-data">
+    <section class="">
       <header>
         <h2>{project.name}</h2>
         {project.shortDescription ? <p>{project.shortDescription}</p> : null}

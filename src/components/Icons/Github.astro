@@ -1,0 +1,9 @@
+---
+import Icon, {type Props as IconProps} from "./Icon.astro";
+
+type Props = Pick<IconProps, "iconClasses" >;
+
+const {iconClasses} = Astro.props;
+---
+
+<Icon pack="mdi" name="github" iconClasses={iconClasses}/>

@@ -1,19 +1,21 @@
 ---
-import { Icon as AstroIcon } from "astro-icon";
+import Github from "./Github.astro";
+import Laravel from "./Laravel.astro";
+import type { Props as IconProps } from "./Icon.astro";
 
-export type Props = {
-  pack: string;
-  name: string;
-  iconClasses?: string[];
+const icons = {
+  github: Github,
+  laravel: Laravel,
 };
 
-const { pack, name, iconClasses } = Astro.props;
+type Props = {
+  name: keyof typeof icons;
+  iconClasses: IconProps["iconClasses"];
+};
 
-const classes = ["w-10"]
+const { name, iconClasses } = Astro.props;
 
-if (iconClasses !== undefined)
-  classes.push(...iconClasses)
-
+const Tag = icons[name];
 ---
 
-<AstroIcon class={classes.join(" ")} pack={pack} name={name} />
+<Tag iconClasses={iconClasses} />
