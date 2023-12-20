@@ -10,4 +10,5 @@ techStack:
     - "AstroJS"
     - "TypeScript"
     - "CSS"
+    - "TawilwindCSS"
 ---

@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
-import { CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry, getCollection } from "astro:content";
 import Layout from "../../layouts/Content.astro";
 
 import TechStack from "../../components/Project/TechStack/index.astro";
@@ -21,7 +21,7 @@ const { entry: projectMetada } = Astro.props;
 const mapSemesterOrdinal = (
   semester: Required<
     CollectionEntry<"project">["data"]
-  >["academicData"]["course"]["semester"]
+  >["academicData"]["course"]["semester"],
 ): string => {
   switch (semester) {
     case 1:
@@ -36,11 +36,7 @@ const project = projectMetada.data;
 
 <Layout title={`Project - ${project.name}`}>
   <main class="">
-    <img
-      class=""
-      src={project.previewImage}
-      alt=`Preview image for ${project.name}`
-    />
+    <img class="" src={project.previewImage} alt={project.name} />
     <section class="">
       <header class="">
         <h1>{project.name}</h1>
@@ -58,7 +54,7 @@ const project = projectMetada.data;
               <p class="">
                 {project.academicData.course.year} -{" "}
                 {`${mapSemesterOrdinal(
-                  project.academicData.course.semester
+                  project.academicData.course.semester,
                 )} semester`}
               </p>
               {project.academicData.marks !== undefined ? (

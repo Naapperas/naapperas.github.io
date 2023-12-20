@@ -50,7 +50,7 @@ const backgroundColorForPageLink = (page: Page): Record<string, boolean> => ({
 });
 
 const hasIcon = (
-  page: Page
+  page: Page,
 ): page is Omit<Page, "icon"> & { icon: NonNullable<Page["icon"]> } => {
   return page.icon !== undefined && page.icon.enabled;
 };

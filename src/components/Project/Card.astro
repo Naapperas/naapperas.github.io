@@ -14,7 +14,7 @@ interface Props {
  * @returns a list of techs to be displayed in the preview card
  */
 const parsePreviewTechs = (
-  techs: CollectionEntry<"project">["data"]["techStack"]
+  techs: CollectionEntry<"project">["data"]["techStack"],
 ): string[] => {
   if (!techs) {
     return [];
@@ -39,11 +39,7 @@ const project = projectMetadata.data;
 
 <article id=`project-card-${projectMetadata.slug}` class="rounded bg-white">
   <a href=`/projects/${projectMetadata.slug}`>
-    <img
-      height="204.1px"
-      src={project.previewImage}
-      alt=`Preview image for ${project.name}`
-    />
+    <img height="204.1px" src={project.previewImage} alt={project.name} />
     <section class="">
       <header>
         <h2>{project.name}</h2>
