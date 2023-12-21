@@ -1,0 +1,48 @@
+---
+import Close from "../Icons/Close.astro";
+import Github from "../Icons/Github.astro";
+import Hamburger from "../Icons/Hamburger.astro";
+import Home from "../Icons/Home.astro";
+
+import NavLink from "./Nav/Link.astro";
+
+import { type Page } from "./Nav/Link.astro";
+
+interface Props {
+    pages: Page[];
+    customClasses?: string;
+}
+
+const { pages, customClasses } = Astro.props;
+---
+
+<header
+    class="flex flex-row p-5 justify-between text-2xl"
+    class:list={customClasses}
+>
+    <a href="/">
+        <Home />
+    </a>
+    <nav class="flex gap-3">
+        <label id="nav-menu-mobile" class="block md:hidden relative">
+            <input
+                type="checkbox"
+                name="hamburger-input"
+                id="hamburger-input"
+                class="peer hidden"
+            />
+
+            <!-- Do this thios way so that we can correctly use the sibling selector -->
+            <div class="items-center hidden peer-checked:inline-flex">
+                <Close />
+            </div>
+            <div class="inline-flex items-center peer-checked:hidden">
+                <Hamburger />
+            </div>
+        </label>
+
+        <a href="https://github.com/Naapperas">
+            <Github />
+        </a>
+    </nav>
+</header>

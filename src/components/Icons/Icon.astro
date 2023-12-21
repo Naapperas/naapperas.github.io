@@ -4,16 +4,15 @@ import { Icon as AstroIcon } from "astro-icon";
 export type Props = {
   pack: string;
   name: string;
+  title?: string;
   iconClasses?: string[];
 };
 
-const { pack, name, iconClasses } = Astro.props;
+const { pack, name, iconClasses, title } = Astro.props;
 
-const classes = ["w-10"]
+const classes = ["w-10"];
 
-if (iconClasses !== undefined)
-  classes.push(...iconClasses)
-
+if (iconClasses !== undefined) classes.push(...iconClasses);
 ---
 
-<AstroIcon class={classes.join(" ")} pack={pack} name={name} />
+<AstroIcon title={title} class={classes.join(" ")} pack={pack} name={name} />
