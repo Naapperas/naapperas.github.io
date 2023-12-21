@@ -1,6 +1,8 @@
 ---
 import Icon from "../Icons/Icon.astro";
 import Github from "../Icons/Github.astro";
+import Hamburger from "../Icons/Hamburger.astro";
+import Close from "../Icons/Close.astro";
 
 type Icon = {
   pack: string;
@@ -56,84 +58,70 @@ const hasIcon = (
 };
 ---
 
+<script lang="ts">
+  const hamburgerToggle = document.querySelector("[hamburger-toggle]");
+
+  console.log(hamburgerToggle);
+
+  hamburgerToggle?.addEventListener("click", () => {
+    toggleHamburger();
+  });
+
+  const toggleHamburger = () => {
+    console.log("toggle");
+    hamburgerToggle.classList.toggle("hidden");
+    hamburgerToggle.classList.toggle("inline-flex");
+  };
+</script>
+
 <header class="flex flex-row p-5 justify-between text-2xl">
   <a href="/">
     <Icon pack="ic" name="round-home" />
   </a>
-  <nav class="w-max flex flex-row">
-    <div id="pc" class="hidden md:block">
-      <ul class="flex md:gap-4 h-full">
-        {
-          pages.map((page) => (
-            <li
-              class:list={[
-                "h-full flex flex-col justify-center",
-                {
-                  ...(hasIcon(page)
-                    ? {
-                        /* no custom styles */
-                      }
-                    : {
-                        /* add custom styles here */
-                        ...backgroundColorForPageLink(page),
-                      }),
-                },
-              ]}
-            >
-              <a title={page.name} href={page.url}>
-                {hasIcon(page) ? (
-                  <Icon pack={page.icon.pack} name={page.icon.name} />
-                ) : (
-                  page.name
-                )}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-    <input
-      type="checkbox"
-      name="mobile_hamburger"
-      id="mobile_hamburger"
-      class="peer/mobile_hamburger hidden"
-    />
-    <label for="mobile_hamburger" class="md:hidden">
-      <Icon pack="mdi" name="hamburger-menu" />
+  <nav class="w-max flex-row hidden md:flex">
+    <ul class="flex gap-4 h-full">
+      {
+        pages.map((page) => (
+          <li
+            class:list={[
+              "h-full flex flex-col justify-center p-1",
+              { ...backgroundColorForPageLink(page) },
+            ]}
+          >
+            <a title={page.name} href={page.url}>
+              {hasIcon(page) ? (
+                <Icon pack={page.icon.pack} name={page.icon.name} />
+              ) : (
+                page.name
+              )}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+  <nav class="flex gap-3">
+    <label class="block md:hidden" hamburger-toggle>
+      <input
+        type="checkbox"
+        name="hamburger-input"
+        id="hamburger-input"
+        class="peer hidden"
+      />
+
+      <!-- Do this thios way so that we can correctlyu use the sibling selector -->
+      <div class="items-center hidden peer-checked:inline-flex">
+        <Close />
+      </div>
+      <div class="inline-flex items-center peer-checked:hidden">
+        <Hamburger />
+      </div>
     </label>
-    <a href="https://github.com/Naapperas" class="pl-5">
+
+    <div class="hidden">Boas</div>
+
+    <a href="https://github.com/Naapperas">
       <Github />
     </a>
-    <div id="mobile" class="hidden peer-checked/mobile_hamburger:hidden">
-      <!-- TODO: change this last one to flex once we found a way -->
-      <ul class="flex flex-col md:hidden md:gap-4">
-        {
-          pages.map((page) => (
-            <li
-              class:list={[
-                "txt-center",
-                {
-                  ...(hasIcon(page)
-                    ? {
-                        /* no custom styles */
-                      }
-                    : {
-                        /* add custom styles here */
-                        ...backgroundColorForPageLink(page),
-                      }),
-                },
-              ]}
-            >
-              <a title={page.name} href={page.url}>
-                {hasIcon(page) ? (
-                  <Icon pack={page.icon.pack} name={page.icon.name} />
-                ) : null}
-                {page.name}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
   </nav>
 </header>
