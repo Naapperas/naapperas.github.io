@@ -1,22 +1,43 @@
 ---
 import Github from "./Github.astro";
 import Laravel from "./Laravel.astro";
-import type { Props as IconProps } from "./Icon.astro";
 import Close from "./Close.astro";
 import Hamburger from "./Hamburger.astro";
+import Vite from "./Vite.astro";
+import Typescript from "./Typescript.astro";
+import PostgreSQL from "./PostgreSQL.astro";
+import PHP from "./PHP.astro";
+import AstroIcon from "./AstroIcon.astro";
+import Tailwind from "./Tailwind.astro";
+import CSS from "./CSS.astro";
+import HTML from "./HTML.astro";
+import Javascript from "./Javascript.astro";
+import SQLite from "./SQLite.astro";
 
-const icons = {
+import type { Props as IconProps } from "./Icon.astro";
+
+export const icons = {
   github: Github,
   laravel: Laravel,
   close: Close,
   menu: Hamburger,
+  vite: Vite,
+  typescript: Typescript,
+  postgresql: PostgreSQL,
+  php: PHP,
+  astro: AstroIcon,
+  tailwind: Tailwind,
+  css: CSS,
+  html: HTML,
+  javascript: Javascript,
+  sqlite: SQLite,
 };
 
 export type IconTags = keyof typeof icons;
 
 type Props = {
   name: IconTags;
-  iconClasses: IconProps["iconClasses"];
+  iconClasses?: IconProps["iconClasses"];
 };
 
 const { name, iconClasses } = Astro.props;

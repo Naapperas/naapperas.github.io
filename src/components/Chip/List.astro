@@ -1,6 +1,8 @@
 ---
 import Chip from "./index.astro";
 
+import Icon, { type IconTags, icons } from "../Icons/index.astro";
+
 interface Props {
   labels: string[];
   caption?: string;
@@ -9,13 +11,17 @@ interface Props {
 const { labels, caption } = Astro.props;
 ---
 
-<div>
+<div class="w-full">
   {caption ? <h3>{caption}</h3> : null}
-  <ul class="flex gap-2">
+  <ul class="flex gap-2 flex-wrap justify-around">
     {
       labels.map((label) => (
-        <li>
-          <Chip label={label} />
+        <li class="p-1 inline-flex items-center">
+          {label in icons ? (
+            <Icon name={label as IconTags} />
+          ) : (
+            <Chip label={label} />
+          )}
         </li>
       ))
     }

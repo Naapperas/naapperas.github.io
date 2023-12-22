@@ -7,8 +7,8 @@ previewImage: "./images/website.png"
 deployment:
     url: "https://naapperas.github.io"
 techStack:
-    - "AstroJS"
-    - "TypeScript"
-    - "CSS"
-    - "TawilwindCSS"
+    - "astro"
+    - "typescript"
+    - "css"
+    - "tailwind"
 ---

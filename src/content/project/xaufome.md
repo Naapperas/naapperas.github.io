@@ -14,11 +14,11 @@ academicData:
         semester: 2
     marks: 19.15
 techStack:
-    - "HTML"
-    - "CSS"
-    - "JavaScript"
-    - "PHP"
-    - "sqlite3"
+    - "html"
+    - "css"
+    - "javascript"
+    - "php"
+    - "sqlite"
 otherMembers:
     - name: "João Pereira"
       githubUrl: "https://github.com/ttoino"

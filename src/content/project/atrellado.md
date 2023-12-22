@@ -14,12 +14,12 @@ academicData:
     semester: 2
   marks: 17.2
 techStack:
-  - "Laravel"
-  - "Vite"
-  - "TypeScript"
+  - "laravel"
+  - "vite"
+  - "typescript"
   - "Blade"
-  - "PostgreSQL"
-  - "PHP"
+  - "postgresql"
+  - "php"
 otherMembers:
   - name: "João Pereira"
     githubUrl: "https://github.com/ttoino"

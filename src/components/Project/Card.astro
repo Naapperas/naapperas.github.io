@@ -38,10 +38,7 @@ const { project: projectMetadata } = Astro.props;
 const project = projectMetadata.data;
 ---
 
-<article
-  id=`project-card-${projectMetadata.slug}`
-  class="rounded bg-white md:max-w-96"
->
+<article class="rounded bg-white md:max-w-96">
   <a href=`/projects/${projectMetadata.slug}`>
     {
       project.previewImage === undefined ? (
