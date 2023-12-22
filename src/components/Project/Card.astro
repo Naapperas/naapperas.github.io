@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
 
 import ChipList from "../Chip/List.astro";
 
@@ -42,7 +43,13 @@ const project = projectMetadata.data;
   class="rounded bg-white md:max-w-96"
 >
   <a href=`/projects/${projectMetadata.slug}`>
-    <img height="204.1px" src={project.previewImage} alt={project.name} />
+    {
+      project.previewImage === undefined ? (
+        <p>There is no image to show for this project</p>
+      ) : (
+        <Image src={project.previewImage} alt={project.name} />
+      )
+    }
     <section class="">
       <header>
         <h2>{project.name}</h2>

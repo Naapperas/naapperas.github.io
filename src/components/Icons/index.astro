@@ -12,8 +12,10 @@ const icons = {
   menu: Hamburger,
 };
 
+export type IconTags = keyof typeof icons;
+
 type Props = {
-  name: keyof typeof icons;
+  name: IconTags;
   iconClasses: IconProps["iconClasses"];
 };
 

@@ -3,7 +3,7 @@ name: "Atrellado"
 description: "Atrellado is a product targeted at teams that want to manage collaborative projects effectively. Its goal is to provide a platform that allows users to create and manage projects, tasks, teams, and more. Third party authentication is available, as well as a REST API for external applications. The project was developed as part of the Web Applications and Databases Laboratory course at FEUP."
 shortDescription: "Atrellado is a product targeted at teams that want to manage collaborative projects effectively."
 upstreamLink: "https://github.com/Naapperas/feup-lbaw"
-previewImage: "/projects/atrellado.png"
+previewImage: "./images/atrellado.png"
 deployment:
   url: "https://atrellado.toino.pt"
 academicData:

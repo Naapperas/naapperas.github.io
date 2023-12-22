@@ -1,6 +1,8 @@
 ---
 import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 import { type CollectionEntry, getCollection } from "astro:content";
+import { Image } from "astro:assets";
+
 import Layout from "../../layouts/Content.astro";
 
 import TechStack from "../../components/Project/TechStack/index.astro";
@@ -36,7 +38,13 @@ const project = projectMetada.data;
 
 <Layout title={`Project - ${project.name}`}>
   <main class="">
-    <img class="" src={project.previewImage} alt={project.name} />
+    {
+      project.previewImage ? (
+        <Image class="" src={project.previewImage} alt={project.name} />
+      ) : (
+        <p>Boas</p>
+      )
+    }
     <section class="">
       <header class="">
         <h1>{project.name}</h1>
