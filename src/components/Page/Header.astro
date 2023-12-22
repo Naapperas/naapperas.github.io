@@ -1,13 +1,13 @@
 ---
 interface Props {
-    title: string;
-    description: string;
+  title: string;
+  description: string;
 }
 
-const {title, description} = Astro.props
+const { title, description } = Astro.props;
 ---
 
-<header class="text-xl">
-  <h2>{title}</h2>
-  <p>{description}</p>
+<header class="text-xl self-start ml-10">
+  <h2 class="font-bold text-2xl">{title}</h2>
+  <p class="">{description}</p>
 </header>

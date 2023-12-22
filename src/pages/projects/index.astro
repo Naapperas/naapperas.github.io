@@ -12,7 +12,9 @@ const projects = await getCollection("project");
   contentTitle="Projects"
   description="These are some of the projects I have developed so far:"
 >
-  <section class="grid grid-flow-dense grid-cols-3 gap-3 pt-5">
+  <section
+    class="relative grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(auto-fit,minmax(300px,1fr))]"
+  >
     {projects.map((entry) => <ProjectCard project={entry} />)}
   </section>
 </PageLayout>
