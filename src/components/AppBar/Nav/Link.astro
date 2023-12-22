@@ -21,20 +21,22 @@ export const backgroundColorForPageLink = (
 
 export const hasIcon = (
     page: Page,
-): page is Omit<Page, "icon"> & { icon: NonNullable<Page["icon"]> } => {
+): page is Page & { icon: NonNullable<Page["icon"]> } => {
     return page.icon !== undefined && page.icon.enabled;
 };
 
 interface Props {
     page: Page;
+    linkClasses?: string;
 }
 
-const { page } = Astro.props;
+const { page, linkClasses } = Astro.props;
 ---
 
 <li
     class:list={[
         "h-full flex flex-col justify-center p-1",
+        linkClasses,
         { ...backgroundColorForPageLink(Astro.url, page) },
     ]}
 >
