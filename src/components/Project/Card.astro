@@ -38,7 +38,7 @@ const { project: projectMetadata } = Astro.props;
 const project = projectMetadata.data;
 ---
 
-<article class="rounded bg-white md:max-w-96">
+<article class="rounded bg-color-background md:max-w-96">
   <a
     href=`/projects/${projectMetadata.slug}`
     class="h-full inline-flex flex-col"
@@ -50,10 +50,14 @@ const project = projectMetadata.data;
         <Image src={project.previewImage} alt={project.name} />
       )
     }
-    <section class="flex flex-col flex-1 p-1">
+    <section class="flex flex-col gap-3 flex-1 p-3">
       <header class="flex-1">
-        <h2>{project.name}</h2>
-        {project.shortDescription ? <p>{project.shortDescription}</p> : null}
+        <h2 class="font-bold text-xl">{project.name}</h2>
+        {
+          project.shortDescription ? (
+            <p class="mt-2">{project.shortDescription}</p>
+          ) : null
+        }
       </header>
       <ChipList labels={parsePreviewTechs(project.techStack)} />
     </section>

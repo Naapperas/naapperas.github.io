@@ -17,7 +17,7 @@ const { pages, customClasses } = Astro.props;
 ---
 
 <header
-    class="flex flex-row p-5 justify-between text-2xl"
+    class="flex flex-row p-5 justify-between text-2xl relative"
     class:list={customClasses}
 >
     <a href="/">
@@ -46,24 +46,24 @@ const { pages, customClasses } = Astro.props;
             <Github />
         </a>
     </nav>
-</header>
-<nav
-    id="menu-items"
-    class="transition-[height] hidden h-0 md:hidden px-20 pb-2"
->
-    <ul
-        class="flex flex-col gap-2 items-center text-2xl border-y py-1 border-opacity-95"
+    <nav
+        id="menu-items"
+        class="transition-[height] hidden h-0 md:hidden px-20 pb-2 bg-color-background-dark absolute w-full top-16 left-0 z-10"
     >
-        {
-            pages.map((page) => (
-                <NavLink
-                    page={page}
-                    linkClasses="hover:bg-opacity-35 hover:bg-color-primary w-full h-full text-center py-2 px-4 rounded-md"
-                />
-            ))
-        }
-    </ul>
-</nav>
+        <ul
+            class="flex flex-col gap-2 items-center text-2xl border-y py-1 border-opacity-95"
+        >
+            {
+                pages.map((page) => (
+                    <NavLink
+                        page={page}
+                        linkClasses="hover:bg-opacity-35 hover:bg-color-primary w-full h-full text-center py-2 px-4 rounded-md"
+                    />
+                ))
+            }
+        </ul>
+    </nav>
+</header>
 
 <script lang="ts">
     const elem = document.querySelector("#menu-input");
