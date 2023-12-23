@@ -2,6 +2,8 @@ import { defineCollection, z, type ImageFunction } from 'astro:content';
 
 const techSchema = z.string();
 
+export type Tech = z.infer<typeof techSchema>;
+
 const projectSchema = (image: ImageFunction) => (z.object({
     name: z.string(),
     description: z.string().min(1, "Cannot have an empty project description"),

@@ -6,4 +6,10 @@ type Props = Pick<IconProps, "iconClasses">;
 const { iconClasses } = Astro.props;
 ---
 
-<Icon pack="logos" name="astro" iconClasses={iconClasses} title="Astro JS" />
+<!-- astro-icon from the 'logos' pack is not available for some reason so yeah...-->
+<Icon
+    pack="vscode-icons"
+    name="file-type-astro"
+    iconClasses={iconClasses}
+    title="Astro JS"
+/>

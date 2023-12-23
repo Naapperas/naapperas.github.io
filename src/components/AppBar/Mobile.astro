@@ -17,14 +17,17 @@ const { pages, customClasses } = Astro.props;
 ---
 
 <header
-    class="flex flex-row p-5 justify-between text-2xl relative"
+    class="flex flex-row p-5 justify-between text-2xl relative bg-color-background-dark items-center"
     class:list={customClasses}
 >
     <a href="/">
         <Home />
     </a>
-    <nav class="flex gap-3">
-        <label id="nav-menu-mobile" class="block md:hidden relative">
+    <nav class="flex gap-3 items-center">
+        <label
+            id="nav-menu-mobile"
+            class="flex items-center md:hidden relative"
+        >
             <input
                 id="menu-input"
                 type="checkbox"

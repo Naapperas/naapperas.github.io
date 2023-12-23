@@ -13,7 +13,7 @@ const { labels, caption } = Astro.props;
 
 <div class="w-full">
   {caption ? <h3>{caption}</h3> : null}
-  <ul class="flex gap-2 flex-wrap justify-around">
+  <ul class="flex gap-2 flex-wrap justify-between">
     {
       labels.map((label) => (
         <li class="p-1 inline-flex items-center">

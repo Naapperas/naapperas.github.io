@@ -2,6 +2,8 @@
 import type { CollectionEntry } from "astro:content";
 import { Image } from "astro:assets";
 
+import { type Tech } from "../../content/config";
+
 import ChipList from "../Chip/List.astro";
 
 interface Props {
@@ -16,13 +18,12 @@ interface Props {
  */
 const parsePreviewTechs = (
   techs: CollectionEntry<"project">["data"]["techStack"],
-): string[] => {
+): Tech[] => {
   if (!techs) {
     return [];
   }
 
-  // TODO: maybe have a separate type for techs ???
-  let previewTechs: string[] = [];
+  let previewTechs: Tech[] = [];
 
   if (Array.isArray(techs)) {
     previewTechs = previewTechs.concat(techs);
@@ -47,7 +48,11 @@ const project = projectMetadata.data;
       project.previewImage === undefined ? (
         <p>There is no image to show for this project</p>
       ) : (
-        <Image src={project.previewImage} alt={project.name} />
+        <Image
+          src={project.previewImage}
+          alt={project.name}
+          class="rounded-t"
+        />
       )
     }
     <section class="flex flex-col gap-3 flex-1 p-3">

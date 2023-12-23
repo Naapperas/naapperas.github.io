@@ -7,7 +7,7 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
-<header class="text-xl self-start ml-10">
+<header class="text-xl self-start flex flex-col gap-1 text-justify px-6">
   <h2 class="font-bold text-2xl">{title}</h2>
   <p class="">{description}</p>
 </header>
