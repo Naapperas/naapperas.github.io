@@ -1,18 +1,19 @@
 ---
-import BaseLayout, { type Props as BaseProps } from "./Content.astro";
+import BaseLayout, { type Props as BaseProps } from "./Base.astro";
 import Header from "../components/Page/Header.astro";
 
 export interface Props extends BaseProps {
   contentTitle: string;
   description: string;
+  bgColor?: string;
 }
 
-const { title: pageTitle, contentTitle, description } = Astro.props;
+const { title: pageTitle, contentTitle, description, bgColor } = Astro.props;
 ---
 
-<BaseLayout title={pageTitle}>
-  <Header title={contentTitle} description={description} />
-  <main class="px-10 py-8 items-center flex-col flex-1 flex">
+<BaseLayout title={pageTitle} bgColor={bgColor}>
+  <main class="px-10 py-8 items-center flex-col gap-16 flex-1 flex">
+    <Header title={contentTitle} description={description} />
     <slot />
   </main>
 </BaseLayout>

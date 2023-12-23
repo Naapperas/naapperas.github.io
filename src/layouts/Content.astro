@@ -3,10 +3,10 @@ import Base, { type Props as BaseProps } from "./Base.astro";
 
 export interface Props extends BaseProps {}
 
-const { title } = Astro.props;
+const { title, bgColor } = Astro.props;
 ---
 
-<Base title={title}>
+<Base title={title} bgColor={bgColor}>
   <main class="px-10 py-8 items-center flex-col flex-1 flex">
     <slot />
   </main>

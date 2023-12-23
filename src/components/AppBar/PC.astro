@@ -22,7 +22,7 @@ const { pages, customClasses } = Astro.props;
         <Home />
     </a>
     <nav class="w-max">
-        <ul class="flex divide-x divide-color-4 h-full">
+        <ul class="flex divide-x divide-color-primary h-full">
             {pages.map((page) => <NavLink page={page} />)}
         </ul>
     </nav>

@@ -47,15 +47,18 @@ const { pages, customClasses } = Astro.props;
         </a>
     </nav>
 </header>
-<nav id="menu-items" class="transition-[height] hidden h-0 md:hidden px-20">
+<nav
+    id="menu-items"
+    class="transition-[height] hidden h-0 md:hidden px-20 pb-2"
+>
     <ul
-        class="flex flex-col gap-2 items-center text-2xl border-y py-1 border-opacity-95 border-color-4"
+        class="flex flex-col gap-2 items-center text-2xl border-y py-1 border-opacity-95"
     >
         {
             pages.map((page) => (
                 <NavLink
                     page={page}
-                    linkClasses="hover:bg-opacity-35 hover:bg-color-4 w-full h-full text-center py-2 px-4 rounded-md"
+                    linkClasses="hover:bg-opacity-35 hover:bg-color-primary w-full h-full text-center py-2 px-4 rounded-md"
                 />
             ))
         }

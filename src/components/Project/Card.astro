@@ -39,7 +39,10 @@ const project = projectMetadata.data;
 ---
 
 <article class="rounded bg-white md:max-w-96">
-  <a href=`/projects/${projectMetadata.slug}`>
+  <a
+    href=`/projects/${projectMetadata.slug}`
+    class="h-full inline-flex flex-col"
+  >
     {
       project.previewImage === undefined ? (
         <p>There is no image to show for this project</p>
@@ -47,8 +50,8 @@ const project = projectMetadata.data;
         <Image src={project.previewImage} alt={project.name} />
       )
     }
-    <section class="">
-      <header>
+    <section class="flex flex-col flex-1 p-1">
+      <header class="flex-1">
         <h2>{project.name}</h2>
         {project.shortDescription ? <p>{project.shortDescription}</p> : null}
       </header>

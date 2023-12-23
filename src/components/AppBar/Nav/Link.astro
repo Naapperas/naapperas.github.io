@@ -15,8 +15,8 @@ export const backgroundColorForPageLink = (
     url: URL,
     page: Page,
 ): Record<string, boolean> => ({
-    "bg-color-4": url.pathname.includes(page.url),
-    "text-color-1": url.pathname.includes(page.url),
+    "text-color-highlight": url.pathname.includes(page.url),
+    underline: url.pathname.includes(page.url),
 });
 
 export const hasIcon = (
