@@ -1,0 +1,41 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+type AcademicData = CollectionEntry<"project">["data"]["academicData"];
+
+export interface Props {
+    academicData: NonNullable<AcademicData>;
+}
+
+const { academicData } = Astro.props;
+
+const mapSemesterOrdinal = (
+    semester: NonNullable<AcademicData>["course"]["semester"],
+): string => {
+    switch (semester) {
+        case 1:
+            return "1st";
+        case 2:
+            return "2nd";
+    }
+};
+---
+
+<section class="">
+    <h2 class="">Academic info</h2>
+    <div class="pl-3">
+        <p class="">
+            Course: {academicData.course.fullName}{" "}
+            <span class="">({academicData.course.code})</span>
+        </p>
+        <p class="">
+            {academicData.course.year} -{" "}
+            {`${mapSemesterOrdinal(academicData.course.semester)} semester`}
+        </p>
+        {
+            academicData.marks !== undefined ? (
+                <p class="">Grade: {academicData.marks}/20</p>
+            ) : null
+        }
+    </div>
+</section>

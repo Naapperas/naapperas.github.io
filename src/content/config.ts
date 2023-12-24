@@ -30,7 +30,7 @@ const projectSchema = (image: ImageFunction) => (z.object({
     ).optional(),
     otherMembers: z.object({
         name: z.string(),
-        githubUrl: z.string().url().regex(/github.com\//, "Other members' link must be a valid GitHub profile link"),
+        githubUrl: z.string().url().regex(/github.com\//, "Other members' link must be a valid GitHub profile link").optional(),
     }).array().optional(),
 }))
 

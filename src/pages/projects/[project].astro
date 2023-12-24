@@ -1,11 +1,13 @@
 ---
 import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
-import { type CollectionEntry, getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 
 import Layout from "../../layouts/Content.astro";
 
 import TechStack from "../../components/Project/TechStack/index.astro";
+import Members from "../../components/Project/Members.astro";
+import AcademicInfo from "../../components/Project/AcademicInfo.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("project");
@@ -20,73 +22,35 @@ export type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { entry: projectMetada } = Astro.props;
 
-const mapSemesterOrdinal = (
-  semester: Required<
-    CollectionEntry<"project">["data"]
-  >["academicData"]["course"]["semester"],
-): string => {
-  switch (semester) {
-    case 1:
-      return "1st";
-    case 2:
-      return "2nd";
-  }
-};
-
 const project = projectMetada.data;
 ---
 
 <Layout title={`Project - ${project.name}`} bgColor="bg-color-background-light">
-  <main class="">
+  {
+    project.previewImage ? (
+      <Image class="" src={project.previewImage} alt={project.name} />
+    ) : (
+      <p>Boas</p>
+    )
+  }
+  <section class="px-10n">
+    <header class="">
+      <h1 class="">{project.name}</h1>
+      <p class="">{project.description}</p>
+    </header>
     {
-      project.previewImage ? (
-        <Image class="" src={project.previewImage} alt={project.name} />
-      ) : (
-        <p>Boas</p>
-      )
+      project.academicData || project.otherMembers ? (
+        <section class="flex justify-around">
+          {project.academicData ? (
+            <AcademicInfo academicData={project.academicData} />
+          ) : null}
+          {project.otherMembers ? (
+            <Members members={project.otherMembers} />
+          ) : null}
+        </section>
+      ) : null
     }
-    <section class="">
-      <header class="">
-        <h1>{project.name}</h1>
-        <p>{project.description}</p>
-      </header>
-      {
-        project.academicData ? (
-          <section class="">
-            <h2>Academic info</h2>
-            <div>
-              <p class="">
-                Course: {project.academicData.course.fullName}{" "}
-                <span class="">({project.academicData.course.code})</span>
-              </p>
-              <p class="">
-                {project.academicData.course.year} -{" "}
-                {`${mapSemesterOrdinal(
-                  project.academicData.course.semester,
-                )} semester`}
-              </p>
-              {project.academicData.marks !== undefined ? (
-                <p class="">Grade: {project.academicData.marks}/20</p>
-              ) : null}
-            </div>
-          </section>
-        ) : null
-      }
-      {
-        project.otherMembers ? (
-          <section class="">
-            <h2>Other people that developed this project:</h2>
-            <ul>
-              {project.otherMembers.map(({ githubUrl, name }) => (
-                <li>
-                  <a href={githubUrl}>{name}</a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ) : null
-      }
-      {project.techStack ? <TechStack techStack={project.techStack} /> : null}
-    </section>
-  </main>
+
+    {project.techStack ? <TechStack techStack={project.techStack} /> : null}
+  </section>
 </Layout>

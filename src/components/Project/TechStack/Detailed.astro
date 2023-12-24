@@ -1,4 +1,6 @@
 ---
+import Icon, { icons, type IconTags } from "../../Icons/index.astro";
+
 export interface Props {
     techStack: {
         backend: string[];
@@ -10,10 +12,34 @@ const { techStack } = Astro.props;
 ---
 
 <section class="technology-list">
-    <h2>Frontend technologies used:</h2>
-    <ul>{techStack.frontend.map((label) => <li>{label}</li>)}</ul>
+    <h2 class="text-lg">Frontend technologies used:</h2>
+    <ul class="flex gap-3">
+        {
+            techStack.frontend.map((tech) => (
+                <li class="p-1 inline-flex items-center">
+                    {tech in icons ? (
+                        <Icon name={tech as IconTags} />
+                    ) : (
+                        <span>{tech}</span>
+                    )}
+                </li>
+            ))
+        }
+    </ul>
 </section>
 <section class="technology-list">
-    <h2>Backend technologies used:</h2>
-    <ul>{techStack.backend.map((label) => <li>{label}</li>)}</ul>
+    <h2 class="text-lg">Backend technologies used:</h2>
+    <ul class="flex gap-3">
+        {
+            techStack.backend.map((tech) => (
+                <li class="p-1 inline-flex items-center">
+                    {tech in icons ? (
+                        <Icon name={tech as IconTags} />
+                    ) : (
+                        <span>{tech}</span>
+                    )}
+                </li>
+            ))
+        }
+    </ul>
 </section>

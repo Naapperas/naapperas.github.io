@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Github from "../Icons/Github.astro";
+
+export interface Props {
+  members: NonNullable<CollectionEntry<"project">["data"]["otherMembers"]>;
+}
+
+const { members } = Astro.props;
+---
+
+<section class="">
+  <h2 class="">Other people that developed this project:</h2>
+  <ul class="flex flex-col gap-2 pl-3">
+    {
+      members.map(({ githubUrl, name }) => (
+        <li class="inline-flex items-center gap-1">
+          {githubUrl ? (
+            <>
+              <Github iconClasses={["w-6 h-6"]} />
+              <a
+                href={githubUrl}
+                class="hover:underline hover:underline-offset-2"
+              >
+                {name}
+              </a>
+            </>
+          ) : (
+            <p class="">{name}</p>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</section>
