@@ -1,6 +1,9 @@
 import { defineCollection, z, type ImageFunction } from 'astro:content';
 
-const techSchema = z.string();
+import { type IconTags, icons } from '../components/Icons/index.astro';
+
+const [firstTag, ...tags] = Object.keys(icons) as (keyof typeof icons)[]
+const techSchema = z.enum([firstTag, ...tags]);
 
 export type Tech = z.infer<typeof techSchema>;
 

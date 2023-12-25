@@ -1,13 +1,12 @@
 ---
 import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 import { getCollection } from "astro:content";
-import { Image } from "astro:assets";
-
 import Layout from "../../layouts/Content.astro";
 
 import TechStack from "../../components/Project/TechStack/index.astro";
 import Members from "../../components/Project/Members.astro";
 import AcademicInfo from "../../components/Project/AcademicInfo.astro";
+import Banner from "../../components/Project/Banner.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("project");
@@ -20,37 +19,37 @@ export const getStaticPaths = (async () => {
 
 export type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const { entry: projectMetada } = Astro.props;
-
-const project = projectMetada.data;
+const {
+  entry: { data: project },
+} = Astro.props;
 ---
 
 <Layout title={`Project - ${project.name}`} bgColor="bg-color-background-light">
-  {
-    project.previewImage ? (
-      <Image class="" src={project.previewImage} alt={project.name} />
-    ) : (
-      <p>Boas</p>
-    )
-  }
-  <section class="px-10n">
-    <header class="">
-      <h1 class="">{project.name}</h1>
-      <p class="">{project.description}</p>
-    </header>
-    {
-      project.academicData || project.otherMembers ? (
-        <section class="flex justify-around">
-          {project.academicData ? (
-            <AcademicInfo academicData={project.academicData} />
-          ) : null}
-          {project.otherMembers ? (
-            <Members members={project.otherMembers} />
-          ) : null}
-        </section>
-      ) : null
-    }
+  <div class="flex flex-col flex-1 md:flex-row">
+    <Banner
+      bannerImage={project.previewImage}
+      alt={project.name}
+      deployment={project.deployment}
+    />
+    <section class="px-10 py-2 md:w-1/3 md:flex md:flex-col md:justify-between">
+      <header class="flex flex-col gap-3">
+        <h1 class="font-bold text-3xl">{project.name}</h1>
+        <p class="">{project.description}</p>
+      </header>
+      {
+        project.academicData || project.otherMembers ? (
+          <>
+            {project.academicData ? (
+              <AcademicInfo academicData={project.academicData} />
+            ) : null}
+            {project.otherMembers ? (
+              <Members members={project.otherMembers} />
+            ) : null}
+          </>
+        ) : null
+      }
 
-    {project.techStack ? <TechStack techStack={project.techStack} /> : null}
-  </section>
+      {project.techStack ? <TechStack techStack={project.techStack} /> : null}
+    </section>
+  </div>
 </Layout>

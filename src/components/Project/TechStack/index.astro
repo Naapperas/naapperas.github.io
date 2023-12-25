@@ -11,7 +11,7 @@ export interface Props {
 const { techStack } = Astro.props;
 ---
 
-<section class="project-technologies">
+<section class="self-center flex flex-col gap-2">
     {
         Array.isArray(techStack) ? (
             <Simple techStack={techStack} />

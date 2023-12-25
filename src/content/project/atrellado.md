@@ -17,7 +17,6 @@ techStack:
   - "laravel"
   - "vite"
   - "typescript"
-  - "Blade"
   - "postgresql"
   - "php"
 otherMembers:

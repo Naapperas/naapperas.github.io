@@ -9,24 +9,24 @@ export interface Props {
 const { members } = Astro.props;
 ---
 
-<section class="">
-  <h2 class="">Other people that developed this project:</h2>
-  <ul class="flex flex-col gap-2 pl-3">
+<section class="flex flex-col gap-1">
+  <h2 class="font-bold text-xl">Other people that developed this project:</h2>
+  <ul class="flex flex-col gap-2">
     {
       members.map(({ githubUrl, name }) => (
         <li class="inline-flex items-center gap-1">
           {githubUrl ? (
             <>
-              <Github iconClasses={["w-6 h-6"]} />
+              <Github iconClasses={["w-8 h-8"]} />
               <a
                 href={githubUrl}
-                class="hover:underline hover:underline-offset-2"
+                class="hover:underline hover:underline-offset-2 text-lg"
               >
                 {name}
               </a>
             </>
           ) : (
-            <p class="">{name}</p>
+            <p class="text-lg">{name}</p>
           )}
         </li>
       ))

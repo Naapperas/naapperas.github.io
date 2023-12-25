@@ -8,8 +8,8 @@ export interface Props {
 const { techStack } = Astro.props;
 ---
 
-<h2 class="text-lg">Technologies used:</h2>
-<ul class="technology-list flex gap-3">
+<h2 class="text-xl font-bold text-center">Technologies used:</h2>
+<ul class="flex gap-5 justify-between">
     {
         techStack.map((tech) => (
             <li class="p-1 inline-flex items-center">

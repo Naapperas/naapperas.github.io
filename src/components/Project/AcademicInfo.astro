@@ -21,20 +21,29 @@ const mapSemesterOrdinal = (
 };
 ---
 
-<section class="">
-    <h2 class="">Academic info</h2>
-    <div class="pl-3">
+<section class="flex flex-col gap-1">
+    <h2 class="font-bold text-xl">Academic info:</h2>
+    <div class="">
         <p class="">
-            Course: {academicData.course.fullName}{" "}
+            <span class="font-bold">Course</span>: {
+                academicData.course.fullName
+            }{" "}
             <span class="">({academicData.course.code})</span>
         </p>
         <p class="">
-            {academicData.course.year} -{" "}
+            <span class="font-bold">Year</span>:
+            {academicData.course.year}
+        </p>
+        <p>
+            <span class="font-bold">Semester</span>:
             {`${mapSemesterOrdinal(academicData.course.semester)} semester`}
         </p>
         {
             academicData.marks !== undefined ? (
-                <p class="">Grade: {academicData.marks}/20</p>
+                <p class="">
+                    <span class="font-bold">Grade</span>: {academicData.marks}
+                    /20
+                </p>
             ) : null
         }
     </div>
