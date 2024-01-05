@@ -12,7 +12,7 @@ academicData:
     fullName: "Large Scale Distributed Systems"
     year: "2023/2024"
     semester: 1
-  # marks: 17.2
+#  marks: 16.7
 techStack:
   - "svelte"
   - "typescript"

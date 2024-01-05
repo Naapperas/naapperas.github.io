@@ -19,6 +19,8 @@ import Solr from "./Solr.astro";
 import Svelte from "./Svelte.astro";
 import KTor from "./KTor.astro";
 import Kotlin from "./Kotlin.astro";
+import ThreeJS from "./ThreeJS.astro";
+import Blender from "./Blender.astro";
 
 import type { Props as IconProps } from "./Icon.astro";
 
@@ -43,6 +45,8 @@ export const icons = {
   svelte: Svelte,
   ktor: KTor,
   kotlin: Kotlin,
+  threejs: ThreeJS,
+  blender: Blender,
 };
 
 export type IconTags = keyof typeof icons;
