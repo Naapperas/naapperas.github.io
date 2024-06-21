@@ -13,7 +13,15 @@ const { labels, caption } = Astro.props;
 
 <div class="w-full">
   {caption ? <h3>{caption}</h3> : null}
-  <ul class="flex gap-2 flex-wrap justify-between px-3">
+  <ul
+    class="flex gap-2 flex-wrap px-3"
+    class:list={[
+      {
+        "justify-between": labels.length > 1,
+        "justify-center": labels.length === 1,
+      },
+    ]}
+  >
     {
       labels.map((label) => (
         <li class="p-1 inline-flex items-center">

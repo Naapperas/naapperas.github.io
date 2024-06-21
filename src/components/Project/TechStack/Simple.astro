@@ -9,7 +9,15 @@ const { techStack } = Astro.props;
 ---
 
 <h2 class="text-xl font-bold text-center">Technologies used:</h2>
-<ul class="flex gap-5 justify-between">
+<ul
+    class="flex gap-5"
+    class:list={[
+        {
+            "justify-between": techStack.length > 1,
+            "justify-center": techStack.length === 1,
+        },
+    ]}
+>
     {
         techStack.map((tech) => (
             <li class="p-1 inline-flex items-center">
