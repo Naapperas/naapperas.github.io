@@ -7,7 +7,7 @@ const techSchema = z.enum([firstTag, ...tags]);
 
 export type Tech = z.infer<typeof techSchema>;
 
-const projectSchema = (image: ImageFunction) => (z.object({
+const projectSchema = (image: ImageFunction) => z.object({
     name: z.string(),
     description: z.string().min(1, "Cannot have an empty project description"),
     shortDescription: z.string().min(1, "Cannot have an empty project short description").optional(),
@@ -35,15 +35,30 @@ const projectSchema = (image: ImageFunction) => (z.object({
         name: z.string(),
         githubUrl: z.string().url().regex(/github.com\//, "Other members' link must be a valid GitHub profile link").optional(),
     }).array().optional(),
-}))
+})
+
+const mapLocationSchema = (image: ImageFunction) => z.object({
+    name: z.string(),
+    tooltip: z.object({
+        
+    })
+});
 
 const projectCollection = defineCollection({
     type: "content",
     schema: ({ image }) => projectSchema(image),
 });
 
+const mapLocationCollection = defineCollection({
+    type: "content",
+    schema: ({ image }) => mapLocationSchema(image),
+});
+
+
 export type Project = z.infer<ReturnType<typeof projectSchema>>;
+export type MapLocation = z.infer<ReturnType<typeof mapLocationSchema>>;
 
 export const collections = {
     'project': projectCollection,
+    'mapLocation': mapLocationCollection
 };

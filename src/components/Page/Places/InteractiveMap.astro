@@ -1,5 +1,19 @@
 ---
+import { Image } from "astro:assets";
 
+import worldMap from "./world-map.jpg";
+
+const mapName = "locationMap";
 ---
 
-WIP
+<div class="flex flex-col">
+    <Image
+        src={worldMap}
+        alt="Blank map of the world"
+        usemap=`#${mapName}`
+        width={950}
+    />
+    <a href="https://www.vecteezy.com/free-vector/world-map"
+        >World Map Vectors by Vecteezy</a
+    >
+</div>

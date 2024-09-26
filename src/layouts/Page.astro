@@ -12,7 +12,7 @@ const { title: pageTitle, contentTitle, description, bgColor } = Astro.props;
 ---
 
 <BaseLayout title={pageTitle} bgColor={bgColor}>
-  <main class="px-10 py-8 items-center flex-col gap-16 flex-1 flex">
+  <main class="px-10 py-8 items-center flex-col gap-8 flex-1 flex">
     <Header title={contentTitle} description={description} />
     <slot />
   </main>
