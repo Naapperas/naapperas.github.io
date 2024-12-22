@@ -7,7 +7,7 @@ previewImage: "./images/atrellado.png"
 deployment:
   url: "https://atrellado.toino.pt"
 academicData:
-  course: 
+  course:
     code: LBAW
     fullName: "Web Applications and Databases Laboratory"
     year: "2022/2023"

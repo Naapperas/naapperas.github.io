@@ -38,30 +38,14 @@ const projectSchema = (image: ImageFunction) => z.object({
     }).array().optional(),
 })
 
-const mapLocationSchema = (image: ImageFunction) => z.object({
-    name: z.string(),
-    description: z.string(),
-    gallery: z.object({
-        image: image().optional(),
-        caption: z.string(),
-    }).array(),
-});
-
 const projectCollection = defineCollection({
     loader: glob({ pattern: ['*.md'], base: './src/content/project' }),
     schema: ({ image }) => projectSchema(image),
 });
 
-const mapLocationCollection = defineCollection({
-    loader: glob({ pattern: ['*.md'], base: './src/content/mapLocation' }),
-    schema: ({ image }) => mapLocationSchema(image),
-});
-
 
 export type Project = z.infer<ReturnType<typeof projectSchema>>;
-export type MapLocation = z.infer<ReturnType<typeof mapLocationSchema>>;
 
 export const collections = {
     'project': projectCollection,
-    'mapLocation': mapLocationCollection
 };
