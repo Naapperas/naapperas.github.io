@@ -13,16 +13,15 @@ export const getStaticPaths = (async () => {
   const projects = await getCollection("project");
 
   return projects.map((entry) => ({
-    params: { project: entry.slug },
-    props: { entry },
+    params: { project: entry.id },
+    props: entry.data,
   }));
 }) satisfies GetStaticPaths;
 
 export type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const {
-  entry: { data: project },
-} = Astro.props;
+const project = Astro.props;
+
 ---
 
 <Layout title={`Project - ${project.name}`} bgColor="bg-color-background-light">

@@ -1,6 +1,7 @@
 import { defineCollection, z, type ImageFunction } from 'astro:content';
+import { glob } from 'astro/loaders';
 
-import { icons } from '../components/Icons/index.astro';
+import { icons } from './components/Icons/index.astro';
 
 const [firstTag, ...tags] = Object.keys(icons) as (keyof typeof icons)[]
 const techSchema = z.enum([firstTag, ...tags]);
@@ -39,18 +40,20 @@ const projectSchema = (image: ImageFunction) => z.object({
 
 const mapLocationSchema = (image: ImageFunction) => z.object({
     name: z.string(),
-    tooltip: z.object({
-        
-    })
+    description: z.string(),
+    gallery: z.object({
+        image: image().optional(),
+        caption: z.string(),
+    }).array(),
 });
 
 const projectCollection = defineCollection({
-    type: "content",
+    loader: glob({ pattern: ['*.md'], base: './src/content/project' }),
     schema: ({ image }) => projectSchema(image),
 });
 
 const mapLocationCollection = defineCollection({
-    type: "content",
+    loader: glob({ pattern: ['*.md'], base: './src/content/mapLocation' }),
     schema: ({ image }) => mapLocationSchema(image),
 });
 
