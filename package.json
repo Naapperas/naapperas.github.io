@@ -6,11 +6,14 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "preview": "npm run build && wrangler dev",
+    "astro": "astro",
+    "deploy": "npm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
+    "@astrojs/cloudflare": "12",
     "@astrojs/tailwind": "^5.1.4",
     "@iconify-json/ic": "^1.2.4",
     "@iconify-json/logos": "^1.2.11",
@@ -23,6 +26,7 @@
     "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "@astrojs/ts-plugin": "^1.10.4"
+    "@astrojs/ts-plugin": "^1.10.4",
+    "wrangler": "^4.84.1"
   }
 }
