@@ -7,5 +7,6 @@ import icon from 'astro-icon';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://naapperas.github.io',
-  integrations: [tailwind(), icon()]
+  integrations: [tailwind(), icon()],
+  trailingSlash: 'ignore'
 });
