@@ -1,5 +1,5 @@
 ---
-import { Icon as AstroIcon } from "astro-icon";
+import { Icon as AstroIcon } from "astro-icon/components";
 
 export type Props = {
   pack: string;
@@ -15,4 +15,4 @@ const classes = ["w-10"];
 if (iconClasses !== undefined) classes.push(...iconClasses);
 ---
 
-<AstroIcon title={title} class={classes.join(" ")} pack={pack} name={name} />
+<AstroIcon title={title} class={classes.join(" ")} name={`${pack}:${name}`} />
