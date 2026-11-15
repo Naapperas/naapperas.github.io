@@ -1,8 +1,0 @@
-# Copy to .dev.vars for local development.
-# Local dev uses passkeys instead of Access, so any value works here.
-CF_ACCESS_AUDIENCE=local
-# Turnstile's test keys: the widget always passes.
-TURNSTILE_SITE_KEY=1x00000000000000000000AA
-TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
-# Optional: a GitHub token with public read access, for the contributions heatmap.
-# GITHUB_TOKEN=

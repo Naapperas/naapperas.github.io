@@ -1,0 +1,15 @@
+---
+import Icon, { type Props as IconProps } from "./Icon.astro";
+
+type Props = Pick<IconProps, "iconClasses">;
+
+const { iconClasses } = Astro.props;
+---
+
+<!-- astro-icon from the 'logos' pack is not available for some reason so yeah...-->
+<Icon
+    pack="vscode-icons"
+    name="file-type-astro"
+    iconClasses={iconClasses}
+    title="Astro JS"
+/>

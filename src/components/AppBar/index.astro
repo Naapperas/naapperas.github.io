@@ -1,0 +1,30 @@
+---
+import Mobile from "./Mobile.astro";
+import { type Page } from "./Nav/Link.astro";
+
+import PC from "./PC.astro";
+
+const pages: Page[] = [
+  {
+    name: "Projects",
+    url: "/projects",
+    icon: {
+      pack: "ant-design",
+      name: "project-outlined",
+      enabled: false,
+    },
+  },
+  {
+    name: "Resume",
+    url: "/cv",
+    icon: {
+      pack: "pepicons-pop",
+      name: "cv",
+      enabled: false,
+    },
+  },
+];
+---
+
+<PC pages={pages} customClasses="hidden md:flex" />
+<Mobile pages={pages} customClasses="flex md:hidden" />

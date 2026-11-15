@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import Github from "../Icons/Github.astro";
+import Gitlab from "../Icons/Gitlab.astro";
+
+export interface Props {
+    upstreamLink: CollectionEntry<"project">["data"]["upstreamLink"];
+}
+
+const { upstreamLink } = Astro.props;
+---
+
+{
+    upstreamLink.indexOf("github") != -1 ? (
+        <Github />
+    ) : upstreamLink.indexOf("gitlab") != -1 ? (
+        <Gitlab />
+    ) : null
+}

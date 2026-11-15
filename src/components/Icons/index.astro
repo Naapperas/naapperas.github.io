@@ -1,0 +1,66 @@
+---
+import Github from "./Github.astro";
+import Gitlab from "./Gitlab.astro";
+import Laravel from "./Laravel.astro";
+import Close from "./Close.astro";
+import Hamburger from "./Hamburger.astro";
+import Vite from "./Vite.astro";
+import Typescript from "./Typescript.astro";
+import PostgreSQL from "./PostgreSQL.astro";
+import PHP from "./PHP.astro";
+import AstroIcon from "./AstroIcon.astro";
+import Tailwind from "./Tailwind.astro";
+import CSS from "./CSS.astro";
+import HTML from "./HTML.astro";
+import Javascript from "./Javascript.astro";
+import SQLite from "./SQLite.astro";
+import Python from "./Python.astro";
+import Solr from "./Solr.astro";
+import Svelte from "./Svelte.astro";
+import KTor from "./KTor.astro";
+import Kotlin from "./Kotlin.astro";
+import ThreeJS from "./ThreeJS.astro";
+import Blender from "./Blender.astro";
+import Rust from "./Rust.astro";
+
+import type { Props as IconProps } from "./Icon.astro";
+
+export const icons = {
+  github: Github,
+  gitlab: Gitlab,
+  laravel: Laravel,
+  close: Close,
+  menu: Hamburger,
+  vite: Vite,
+  typescript: Typescript,
+  postgresql: PostgreSQL,
+  php: PHP,
+  astro: AstroIcon,
+  tailwind: Tailwind,
+  css: CSS,
+  html: HTML,
+  javascript: Javascript,
+  sqlite: SQLite,
+  python: Python,
+  solr: Solr,
+  svelte: Svelte,
+  ktor: KTor,
+  kotlin: Kotlin,
+  threejs: ThreeJS,
+  blender: Blender,
+  rust: Rust,
+};
+
+export type IconTags = keyof typeof icons;
+
+type Props = {
+  name: IconTags;
+  iconClasses?: IconProps["iconClasses"];
+};
+
+const { name, iconClasses } = Astro.props;
+
+const Tag = icons[name];
+---
+
+<Tag iconClasses={iconClasses} />

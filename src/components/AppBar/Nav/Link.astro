@@ -1,0 +1,52 @@
+---
+import Icon from "../../Icons/Icon.astro";
+
+export type Page = {
+    name: string;
+    url: string;
+    icon?: {
+        pack: string;
+        name: string;
+        enabled: boolean;
+    };
+};
+
+export const backgroundColorForPageLink = (
+    url: URL,
+    page: Page,
+): Record<string, boolean> => ({
+    "text-color-highlight": url.pathname.includes(page.url),
+    underline: url.pathname.includes(page.url),
+});
+
+export const hasIcon = (
+    page: Page,
+): page is Page & { icon: NonNullable<Page["icon"]> } => {
+    return page.icon !== undefined && page.icon.enabled;
+};
+
+interface Props {
+    page: Page;
+    linkClasses?: string;
+}
+
+const { page, linkClasses } = Astro.props;
+---
+
+<li
+    class:list={[
+        "h-full flex flex-col justify-center py-1 px-3",
+        linkClasses,
+        { ...backgroundColorForPageLink(Astro.url, page) },
+    ]}
+>
+    <a title={page.name} href={page.url}>
+        {
+            hasIcon(page) ? (
+                <Icon pack={page.icon.pack} name={page.icon.name} />
+            ) : (
+                page.name
+            )
+        }
+    </a>
+</li>

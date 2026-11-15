@@ -6,36 +6,28 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro build && astro preview",
-    "check": "astro check",
+    "preview": "npm run build && wrangler dev",
     "astro": "astro",
-    "deploy": "astro build && wrangler deploy",
-    "cf-typegen": "wrangler types",
-    "test": "vitest run"
+    "deploy": "npm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.4.8",
-    "@astrojs/react": "^7.1.9",
-    "@cloudflare/puppeteer": "^2.0.0",
-    "@emdash-cms/cloudflare": "^1.5.0",
-    "@tailwindcss/vite": "^4.3.5",
-    "astro": "^7.4.12",
-    "emdash": "^1.5.0",
-    "kysely": "^0.29.9",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1",
-    "tailwindcss": "^4.3.5"
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/cloudflare": "12",
+    "@astrojs/sitemap": "^3.7.2",
+    "@astrojs/tailwind": "^5.1.4",
+    "@iconify-json/ic": "^1.2.4",
+    "@iconify-json/logos": "^1.2.11",
+    "@iconify-json/mdi": "^1.2.3",
+    "@iconify-json/tabler": "^1.2.33",
+    "@iconify-json/vscode-icons": "^1.2.46",
+    "astro": "^5.1.1",
+    "astro-icon": "^1.1.5",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.12",
-    "@astrojs/ts-plugin": "^1.11.0",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "typescript": "^6.0.3",
-    "vitest": "^5.1.0",
-    "wrangler": "^4.162.0"
-  },
-  "emdash": {
-    "seed": "seed/seed.json"
+    "@astrojs/ts-plugin": "^1.10.4",
+    "wrangler": "^4.84.1"
   }
 }

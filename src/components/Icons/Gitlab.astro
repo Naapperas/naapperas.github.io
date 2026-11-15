@@ -1,0 +1,10 @@
+---
+import Icon, { type Props as IconProps } from "./Icon.astro";
+
+type Props = Pick<IconProps, "iconClasses">;
+
+const { iconClasses } = Astro.props;
+---
+
+<!-- We cannot use the 'logos' pack because of the icon colors -->
+<Icon pack="mdi" name="gitlab" iconClasses={iconClasses} title="Github" />

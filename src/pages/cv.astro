@@ -1,5 +1,9 @@
 ---
-import Cv from '../views/Cv.astro';
+import Layout from "../layouts/Content.astro";
 ---
 
-<Cv />
+<Layout title="Nuno Pereira - Resume" bgColor="bg-color-background-light">
+  <object type="application/pdf" data="/cv.pdf" class="w-full h-full">
+    <!-- add filler height -->
+  </object>
+</Layout>

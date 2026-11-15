@@ -1,0 +1,70 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+
+import { type Tech } from "../../content.config";
+
+import ChipList from "../Chip/List.astro";
+
+interface Props {
+  project: CollectionEntry<"project">;
+}
+
+/**
+ * Parses a project's tech stack into a list of techs to be displayed in the preview card.
+ *
+ * @param techs the tech stack of the project
+ * @returns a list of techs to be displayed in the preview card
+ */
+const parsePreviewTechs = (
+  techs: CollectionEntry<"project">["data"]["techStack"],
+): Tech[] => {
+  if (!techs) {
+    return [];
+  }
+
+  let previewTechs: Tech[] = [];
+
+  if (Array.isArray(techs)) {
+    previewTechs = previewTechs.concat(techs);
+  } else {
+    previewTechs = previewTechs.concat(techs.backend, techs.frontend);
+  }
+
+  return previewTechs;
+};
+
+const { project: projectMetadata } = Astro.props;
+
+const project = projectMetadata.data;
+---
+
+<article class="rounded bg-color-background md:max-w-96">
+  <a
+    href=`/projects/${projectMetadata.id}`
+    class="h-full inline-flex flex-col w-full"
+  >
+    {
+      project.previewImage === undefined ? (
+        <p>There is no image to show for this project</p>
+      ) : (
+        <Image
+          src={project.previewImage}
+          alt={project.name}
+          class="rounded-t"
+        />
+      )
+    }
+    <section class="flex flex-col gap-3 flex-1 p-3">
+      <header class="flex-1">
+        <h2 class="font-bold text-xl">{project.name}</h2>
+        {
+          project.shortDescription ? (
+            <p class="mt-2">{project.shortDescription}</p>
+          ) : null
+        }
+      </header>
+      <ChipList labels={parsePreviewTechs(project.techStack)} />
+    </section>
+  </a>
+</article>

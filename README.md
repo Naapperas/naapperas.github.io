@@ -1,68 +1,55 @@
-# naapperas.pt
+# Astro Starter Kit: Basics
 
-My personal site: who I am, my projects, my CV, a contact form and a (currently hidden) blog, in English and
-European Portuguese.
-
-It runs on [Astro](https://astro.build) on a single Cloudflare Worker, with [EmDash](https://github.com/emdash-cms/emdash) as the CMS.
-Everything you see is edited in the admin at `/_emdash/admin`, which only I can reach through Cloudflare Access.
-
-## How it fits together
-
-- **Content** lives in D1 (text) and R2 (images, the CV PDF), edited through EmDash. `seed/seed.json` defines the
-  collections and the starting content.
-- **Pages** render on demand and sit behind Workers Cache. Publishing in the admin purges the affected pages by cache tag.
-- **The gateway** (`src/worker.ts`) picks the language on `/` from `Accept-Language` or the `lang` cookie before the
-  cache, adds security headers, and hands everything else to the cached `Site` entrypoint.
-- **Site options** in the admin switch the colour palette, the blog and the home page panels on or off, and set the
-  project order.
-
-Cloudflare features in use:
-
-| Feature | What for |
-| :-- | :-- |
-| D1, R2, KV | Content, media, EmDash's object cache and sessions |
-| Workers Cache | Edge caching for pages, OG images and resized media |
-| Access | The only way into `/_emdash` |
-| Images binding | Resizing media served from R2 |
-| Workers AI | "Fill from PDF" on the CV entry: reads the uploaded PDF and fills the structured fields for review |
-| Browser Rendering | Open Graph images: screenshots of `/og-card/*`, stored in R2 |
-| Turnstile, Email Routing, Rate Limiting | The contact form |
-| Web Analytics | Page views (injected at the edge) |
-
-## Local development
-
-Requires Node 24.
-
-```sh
-npm install
-cp .dev.vars.example .dev.vars
-npm run dev
+```
+npm create astro@latest -- --template basics
 ```
 
-Open http://127.0.0.1:4321/_emdash/api/setup/dev-bypass?redirect=/_emdash/admin to sign in as a local admin.
-The first visit applies the seed's schema, and the setup wizard can add its sample content.
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
+[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
 
-Workers AI only runs remotely, and the remote proxy sits behind Access. To try "Fill from PDF" locally, run
-`REMOTE_BINDINGS=true npm run dev` in a real terminal, so wrangler can open the Access login.
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-| Command | Action |
-| :-- | :-- |
-| `npm run dev` | Dev server on `localhost:4321` |
-| `npm test` | Unit tests (Vitest) |
-| `npm run check` | Type check (`astro check`) |
-| `npm run build` | Production build into `dist/` |
-| `npm run preview` | Build, then serve it with workerd. Stop the dev server first; they share `.wrangler/state` |
-| `npm run cf-typegen` | Regenerate `worker-configuration.d.ts` after changing bindings |
+![basics](https://user-images.githubusercontent.com/4677417/186188965-73453154-fdec-4d6b-9c34-cb35c248ae5b.png)
 
-## Deployment
 
-Workers Builds deploys `main` to the `website` Worker on naapperas.pt and uploads a preview version for every other
-branch. Secrets are set once with `wrangler versions secret put`:
+## 🚀 Project Structure
 
-- `CF_ACCESS_AUDIENCE`: the audience tag of the Access application on `naapperas.pt/_emdash`.
-- `TURNSTILE_SECRET_KEY`: the contact form's Turnstile widget.
-- `GITHUB_TOKEN` (optional): a fine-grained token with public read access. It adds the contributions heatmap and
-  avoids GitHub's anonymous rate limit.
+Inside of your Astro project, you'll see the following folders and files:
 
-Changing the content model of the deployed site goes through the admin, or through `seed/seed.json` on a fresh
-database. See EmDash's guide on evolving a deployed site.
+```
+/
+├── public/
+│   └── favicon.svg
+├── src/
+│   ├── components/
+│   │   └── Card.astro
+│   ├── layouts/
+│   │   └── Layout.astro
+│   └── pages/
+│       └── index.astro
+└── package.json
+```
+
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+
+Any static assets, like images, can be placed in the `public/` directory.
+
+## 🧞 Commands
+
+All commands are run from the root of the project, from a terminal:
+
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:3000`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+## 👀 Want to learn more?
+
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

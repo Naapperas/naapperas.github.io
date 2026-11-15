@@ -1,5 +1,0 @@
-# Static assets are served without running the Worker, so they need the gateway's security headers here too.
-/*
-  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
