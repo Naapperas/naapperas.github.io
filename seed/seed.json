@@ -67,7 +67,6 @@
           "label": "Kind",
           "type": "select",
           "required": true,
-          "translatable": false,
           "defaultValue": "personal",
           "validation": {
             "options": [
@@ -82,7 +81,6 @@
           "label": "Year",
           "type": "integer",
           "required": true,
-          "translatable": false,
           "indexed": true,
           "validation": {
             "min": 2000,
@@ -93,7 +91,6 @@
           "slug": "stack",
           "label": "Stack",
           "type": "multiSelect",
-          "translatable": false,
           "validation": {
             "options": [
               "astro",
@@ -137,20 +134,17 @@
         {
           "slug": "repo_url",
           "label": "Source code URL",
-          "type": "url",
-          "translatable": false
+          "type": "url"
         },
         {
           "slug": "live_url",
           "label": "Live URL",
-          "type": "url",
-          "translatable": false
+          "type": "url"
         },
         {
           "slug": "course_code",
           "label": "Course code (academic)",
-          "type": "string",
-          "translatable": false
+          "type": "string"
         },
         {
           "slug": "course_name",
@@ -160,14 +154,12 @@
         {
           "slug": "academic_year",
           "label": "Academic year, e.g. 2023/2024",
-          "type": "string",
-          "translatable": false
+          "type": "string"
         },
         {
           "slug": "semester",
           "label": "Semester",
           "type": "select",
-          "translatable": false,
           "validation": {
             "options": [
               "1",
@@ -179,7 +171,6 @@
           "slug": "grade",
           "label": "Grade (0-20)",
           "type": "number",
-          "translatable": false,
           "validation": {
             "min": 0,
             "max": 20
@@ -189,7 +180,6 @@
           "slug": "team",
           "label": "Other team members",
           "type": "repeater",
-          "translatable": false,
           "validation": {
             "subFields": [
               {
@@ -293,8 +283,7 @@
         {
           "slug": "org_url",
           "label": "Organisation URL",
-          "type": "url",
-          "translatable": false
+          "type": "url"
         },
         {
           "slug": "location",
@@ -309,8 +298,7 @@
         {
           "slug": "photo",
           "label": "Photo",
-          "type": "image",
-          "translatable": false
+          "type": "image"
         },
         {
           "slug": "facts",
@@ -337,20 +325,17 @@
         {
           "slug": "email",
           "label": "Public email",
-          "type": "string",
-          "translatable": false
+          "type": "string"
         },
         {
           "slug": "github_url",
           "label": "GitHub",
-          "type": "url",
-          "translatable": false
+          "type": "url"
         },
         {
           "slug": "linkedin_url",
           "label": "LinkedIn",
-          "type": "url",
-          "translatable": false
+          "type": "url"
         }
       ]
     },
@@ -388,8 +373,8 @@
           "label": "Colour palette",
           "type": "select",
           "required": true,
-          "translatable": false,
           "defaultValue": "ember-coral",
+          "widget": "palette:palette",
           "validation": {
             "options": [
               "ember-coral",
@@ -408,49 +393,42 @@
           "slug": "blog_enabled",
           "label": "Blog is public",
           "type": "boolean",
-          "translatable": false,
           "defaultValue": false
         },
         {
           "slug": "contact_enabled",
           "label": "Contact page and form",
           "type": "boolean",
-          "translatable": false,
           "defaultValue": true
         },
         {
           "slug": "home_facts",
           "label": "Home: facts panel",
           "type": "boolean",
-          "translatable": false,
           "defaultValue": true
         },
         {
           "slug": "home_edge",
           "label": "Home: 'served from' edge panel",
           "type": "boolean",
-          "translatable": false,
           "defaultValue": false
         },
         {
           "slug": "home_github",
           "label": "Home: GitHub activity",
           "type": "boolean",
-          "translatable": false,
           "defaultValue": false
         },
         {
           "slug": "home_projects",
           "label": "Home: first three projects",
           "type": "boolean",
-          "translatable": false,
           "defaultValue": false
         },
         {
           "slug": "home_contact",
           "label": "Home: contact form",
           "type": "boolean",
-          "translatable": false,
           "defaultValue": false
         },
         {
@@ -498,7 +476,6 @@
           "slug": "pdf",
           "label": "PDF (from Overleaf)",
           "type": "file",
-          "translatable": false,
           "validation": {
             "allowedMimeTypes": [
               "application/pdf"
@@ -508,8 +485,7 @@
         {
           "slug": "phone",
           "label": "Phone (shown on the CV page)",
-          "type": "string",
-          "translatable": false
+          "type": "string"
         },
         {
           "slug": "summary",
@@ -780,7 +756,6 @@
       {
         "id": "website",
         "slug": "website",
-        "locale": "en",
         "status": "published",
         "data": {
           "kind": "personal",
@@ -830,62 +805,8 @@
         }
       },
       {
-        "id": "website-pt",
-        "slug": "website",
-        "locale": "pt",
-        "status": "published",
-        "data": {
-          "kind": "personal",
-          "year": 2026,
-          "stack": [
-            "astro",
-            "typescript",
-            "cloudflare-workers",
-            "emdash",
-            "d1",
-            "r2",
-            "tailwind"
-          ],
-          "repo_url": "https://github.com/Naapperas/naapperas.github.io",
-          "live_url": "https://naapperas.pt",
-          "featured_image": {
-            "$media": {
-              "url": "https://raw.githubusercontent.com/Naapperas/naapperas.github.io/e11d4ff75a9c74556cab550b4f1d8dbee3bfb53f/src/content/project/images/website.png",
-              "alt": "Screenshot of naapperas.pt",
-              "filename": "website.png"
-            }
-          },
-          "title": "naapperas.pt",
-          "summary": "Este site: Astro 7 em Cloudflare Workers, com EmDash sobre D1 e R2 e a administração protegida por Cloudflare Access.",
-          "content": [
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "O meu site pessoal, refeito em 2026. As páginas são geradas pelo Astro 7 em Cloudflare Workers e guardadas em cache na edge, por isso a maioria das visitas nunca chega ao Worker."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "O conteúdo vive no EmDash, um CMS nativo de Astro que usa D1 e R2. Publicar uma alteração limpa da cache apenas as páginas afetadas. A administração está protegida por Cloudflare Access."
-                }
-              ]
-            }
-          ]
-        },
-        "translationOf": "website"
-      },
-      {
         "id": "crusterfuck",
         "slug": "crusterfuck",
-        "locale": "en",
         "status": "published",
         "data": {
           "kind": "personal",
@@ -911,38 +832,8 @@
         }
       },
       {
-        "id": "crusterfuck-pt",
-        "slug": "crusterfuck",
-        "locale": "pt",
-        "status": "published",
-        "data": {
-          "kind": "personal",
-          "year": 2024,
-          "stack": [
-            "rust"
-          ],
-          "repo_url": "https://github.com/Naapperas/crusterfuck",
-          "title": "Crusterfuck",
-          "summary": "Um parser e interpretador para a linguagem esotérica Brainfuck, escrito em Rust.",
-          "content": [
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "O Crusterfuck é um parser e interpretador para o Brainfuck, a linguagem de programação esotérica, escrito em Rust."
-                }
-              ]
-            }
-          ]
-        },
-        "translationOf": "crusterfuck"
-      },
-      {
         "id": "zon",
         "slug": "zon",
-        "locale": "en",
         "status": "published",
         "data": {
           "kind": "personal",
@@ -979,49 +870,8 @@
         }
       },
       {
-        "id": "zon-pt",
-        "slug": "zon",
-        "locale": "pt",
-        "status": "published",
-        "data": {
-          "kind": "personal",
-          "year": 2023,
-          "stack": [
-            "python"
-          ],
-          "repo_url": "https://github.com/Naapperas/zon",
-          "live_url": "https://naapperas.github.io/zon/",
-          "title": "zon",
-          "summary": "A validação expressiva do zod, trazida para Python com uma API próxima da original.",
-          "content": [
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "O zon traz para Python a lógica de validação expressiva e poderosa do zod, aliada à flexibilidade de Python. Comecei-o para resolver uma necessidade rápida num projeto da faculdade."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "As APIs públicas das duas bibliotecas diferem nalguns pontos, mas o zon procura manter-se o mais fiel possível às decisões de design do zod."
-                }
-              ]
-            }
-          ]
-        },
-        "translationOf": "zon"
-      },
-      {
         "id": "feuper-wave",
         "slug": "feuper-wave",
-        "locale": "en",
         "status": "published",
         "data": {
           "kind": "academic",
@@ -1077,68 +927,8 @@
         }
       },
       {
-        "id": "feuper-wave-pt",
-        "slug": "feuper-wave",
-        "locale": "pt",
-        "status": "published",
-        "data": {
-          "kind": "academic",
-          "year": 2023,
-          "stack": [
-            "javascript",
-            "three.js",
-            "blender"
-          ],
-          "repo_url": "https://github.com/ttoino/feup-sgi",
-          "live_url": "https://sgi.toino.pt/tp3",
-          "featured_image": {
-            "$media": {
-              "url": "https://raw.githubusercontent.com/Naapperas/naapperas.github.io/e11d4ff75a9c74556cab550b4f1d8dbee3bfb53f/src/content/project/images/sgi.png",
-              "alt": "Screenshot of the FEUPer Wave racing game",
-              "filename": "sgi.png"
-            }
-          },
-          "course_code": "SGI",
-          "academic_year": "2023/2024",
-          "semester": "1",
-          "team": [
-            {
-              "name": "João Pereira",
-              "github_url": "https://github.com/ttoino"
-            }
-          ],
-          "title": "FEUPer Wave",
-          "summary": "Um jogo de corridas ao estilo vapor-wave, inspirado em Tron e feito com Three.js. Todos os modelos foram feitos em Blender.",
-          "content": [
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "O FEUPer Wave é um jogo de corridas feito para o terceiro trabalho de SGI, cujo objetivo era desenvolver um jogo de corridas com Three.js."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "O tema é inspirado em Tron e o resto da cena tem um ambiente vapor-wave, daí o nome. Todos os modelos foram feitos em Blender."
-                }
-              ]
-            }
-          ],
-          "course_name": "Sistemas Gráficos e Interativos"
-        },
-        "translationOf": "feuper-wave"
-      },
-      {
         "id": "sdle",
         "slug": "sdle",
-        "locale": "en",
         "status": "published",
         "data": {
           "kind": "academic",
@@ -1210,84 +1000,8 @@
         }
       },
       {
-        "id": "sdle-pt",
-        "slug": "sdle",
-        "locale": "pt",
-        "status": "published",
-        "data": {
-          "kind": "academic",
-          "year": 2023,
-          "stack": [
-            "sveltekit",
-            "typescript",
-            "kotlin",
-            "crdt",
-            "docker"
-          ],
-          "repo_url": "https://github.com/Naapperas/feup-sdle-proj",
-          "live_url": "https://sdle.toino.pt",
-          "featured_image": {
-            "$media": {
-              "url": "https://raw.githubusercontent.com/Naapperas/naapperas.github.io/e11d4ff75a9c74556cab550b4f1d8dbee3bfb53f/src/content/project/images/sdle.png",
-              "alt": "Screenshot of the SDLE shopping list app",
-              "filename": "sdle.png"
-            }
-          },
-          "course_code": "SDLE",
-          "academic_year": "2023/2024",
-          "semester": "1",
-          "team": [
-            {
-              "name": "João Pereira",
-              "github_url": "https://github.com/ttoino"
-            },
-            {
-              "name": "Mariana Rocha",
-              "github_url": "https://github.com/golangis"
-            }
-          ],
-          "title": "SDLE",
-          "summary": "Listas de compras local-first e partilháveis. Sincronizam quando há rede e continuam a funcionar quando não há.",
-          "content": [
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "O SDLE (Smart Distributed List Engine) é um editor de listas de compras para criar e partilhar listas com amigos e família."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "A aplicação web, feita em SvelteKit, sincroniza periodicamente com um servidor sempre que há ligação. Sem ligação, continua a funcionar offline: todas as alterações ficam guardadas localmente e são sincronizadas assim que voltar a estar online."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "O backend usa estruturas de dados do tipo CRDT e protocolos gossip para ser altamente distribuído e eventualmente consistente."
-                }
-              ]
-            }
-          ],
-          "course_name": "Sistemas Distribuídos de Larga Escala"
-        },
-        "translationOf": "sdle"
-      },
-      {
         "id": "luis",
         "slug": "luis",
-        "locale": "en",
         "status": "published",
         "data": {
           "kind": "academic",
@@ -1351,76 +1065,8 @@
         }
       },
       {
-        "id": "luis-pt",
-        "slug": "luis",
-        "locale": "pt",
-        "status": "published",
-        "data": {
-          "kind": "academic",
-          "year": 2023,
-          "stack": [
-            "python",
-            "solr",
-            "sveltekit"
-          ],
-          "repo_url": "https://github.com/Naapperas/feup-pri-proj",
-          "live_url": "https://luis.toino.pt",
-          "featured_image": {
-            "$media": {
-              "url": "https://raw.githubusercontent.com/Naapperas/naapperas.github.io/e11d4ff75a9c74556cab550b4f1d8dbee3bfb53f/src/content/project/images/luis.png",
-              "alt": "Screenshot of the LUIS search engine",
-              "filename": "luis.png"
-            }
-          },
-          "course_code": "PRI",
-          "academic_year": "2023/2024",
-          "semester": "1",
-          "team": [
-            {
-              "name": "Francisco Prada",
-              "github_url": "https://github.com/CiscoPRz"
-            },
-            {
-              "name": "João Pereira",
-              "github_url": "https://github.com/ttoino"
-            },
-            {
-              "name": "Mariana Rocha",
-              "github_url": "https://github.com/golangis"
-            }
-          ],
-          "title": "LUIS",
-          "summary": "League of Legends Universe Indexing and Search: um motor de pesquisa para tudo o que existe no universo de League of Legends.",
-          "content": [
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "O LUIS (League of Legends Universe Indexing and Search) é um motor de pesquisa para tudo o que diz respeito ao universo de League of Legends: destaques dos campeões, as suas histórias e muito mais."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Um pipeline de scraping recolhe páginas do site League of Legends Universe e indexa-as em Apache Solr, com um front-end em SvelteKit."
-                }
-              ]
-            }
-          ],
-          "course_name": "Processamento e Recuperação de Informação"
-        },
-        "translationOf": "luis"
-      },
-      {
         "id": "atrellado",
         "slug": "atrellado",
-        "locale": "en",
         "status": "published",
         "data": {
           "kind": "academic",
@@ -1487,79 +1133,8 @@
         }
       },
       {
-        "id": "atrellado-pt",
-        "slug": "atrellado",
-        "locale": "pt",
-        "status": "published",
-        "data": {
-          "kind": "academic",
-          "year": 2023,
-          "stack": [
-            "laravel",
-            "php",
-            "postgresql",
-            "vite",
-            "typescript"
-          ],
-          "repo_url": "https://github.com/Naapperas/feup-lbaw",
-          "live_url": "https://atrellado.toino.pt",
-          "featured_image": {
-            "$media": {
-              "url": "https://raw.githubusercontent.com/Naapperas/naapperas.github.io/e11d4ff75a9c74556cab550b4f1d8dbee3bfb53f/src/content/project/images/atrellado.png",
-              "alt": "Screenshot of the Atrellado project management app",
-              "filename": "atrellado.png"
-            }
-          },
-          "course_code": "LBAW",
-          "academic_year": "2022/2023",
-          "semester": "2",
-          "grade": 17.2,
-          "team": [
-            {
-              "name": "João Pereira",
-              "github_url": "https://github.com/ttoino"
-            },
-            {
-              "name": "Pedro Nunes",
-              "github_url": "https://github.com/pedronunes19"
-            },
-            {
-              "name": "Beatriz Cruz",
-              "github_url": "https://github.com/beatriz001"
-            }
-          ],
-          "title": "Atrellado",
-          "summary": "Gestão de projetos colaborativos para equipas, com autenticação de terceiros e uma API REST.",
-          "content": [
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "O Atrellado destina-se a equipas que querem gerir projetos colaborativos de forma eficaz. Os utilizadores criam e gerem projetos, tarefas, equipas e muito mais."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Suporta autenticação de terceiros e disponibiliza uma API REST para aplicações externas."
-                }
-              ]
-            }
-          ],
-          "course_name": "Laboratório de Bases de Dados e Aplicações Web"
-        },
-        "translationOf": "atrellado"
-      },
-      {
         "id": "xaufome",
         "slug": "xaufome",
-        "locale": "en",
         "status": "published",
         "data": {
           "kind": "academic",
@@ -1620,79 +1195,12 @@
           ],
           "course_name": "Web Languages and Technologies"
         }
-      },
-      {
-        "id": "xaufome-pt",
-        "slug": "xaufome",
-        "locale": "pt",
-        "status": "published",
-        "data": {
-          "kind": "academic",
-          "year": 2022,
-          "stack": [
-            "php",
-            "javascript",
-            "html",
-            "css",
-            "sqlite"
-          ],
-          "repo_url": "https://github.com/Naapperas/feup-ltw-proj",
-          "live_url": "https://xaufome.toino.pt",
-          "featured_image": {
-            "$media": {
-              "url": "https://raw.githubusercontent.com/Naapperas/naapperas.github.io/e11d4ff75a9c74556cab550b4f1d8dbee3bfb53f/src/content/project/images/xaufome.png",
-              "alt": "Screenshot of the XauFome food delivery app",
-              "filename": "xaufome.png"
-            }
-          },
-          "course_code": "LTW",
-          "academic_year": "2021/2022",
-          "semester": "2",
-          "grade": 19.15,
-          "team": [
-            {
-              "name": "João Pereira",
-              "github_url": "https://github.com/ttoino"
-            },
-            {
-              "name": "Jorge Sousa",
-              "github_url": "https://github.com/jsousa02"
-            }
-          ],
-          "title": "XauFome",
-          "summary": "Uma aplicação de entrega de comida ao estilo UberEats, feita apenas com PHP, HTML, CSS e JavaScript.",
-          "content": [
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "O XauFome é uma aplicação de entrega de comida que procura simplificar o processo de encomenda e entrega. O design foi muito inspirado no UberEats."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Foi feita sem frameworks, com PHP, HTML, CSS e JavaScript simples."
-                }
-              ]
-            }
-          ],
-          "course_name": "Linguagens e Tecnologias Web"
-        },
-        "translationOf": "xaufome"
       }
     ],
     "profile": [
       {
         "id": "me",
         "slug": "me",
-        "locale": "en",
         "status": "published",
         "data": {
           "org_url": "https://www.cloudflare.com",
@@ -1754,80 +1262,12 @@
             }
           ]
         }
-      },
-      {
-        "id": "me-pt",
-        "slug": "me",
-        "locale": "pt",
-        "translationOf": "me",
-        "status": "published",
-        "data": {
-          "org_url": "https://www.cloudflare.com",
-          "email": "career@naapperas.pt",
-          "github_url": "https://github.com/Naapperas",
-          "linkedin_url": "https://www.linkedin.com/in/nuno-a-a-pereira",
-          "title": "Nuno Pereira",
-          "role": "Systems Engineer",
-          "org": "Cloudflare",
-          "location": "Lisboa, Portugal",
-          "bio": [
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Sou Systems Engineer na Cloudflare, onde trabalho no AI Search e no serviço de conversão para Markdown."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Tenho licenciatura e mestrado em Engenharia Informática e Computação pela FEUP, no Porto. A minha dissertação foi uma framework de ataque para arquiteturas orientadas a eventos baseadas em Kafka."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Sou curioso e adoro aprender. Gosto de me debruçar sobre problemas complexos até se tornarem simples, sobretudo em arquitetura de software, sistemas distribuídos e redes."
-                }
-              ]
-            }
-          ],
-          "facts": [
-            {
-              "label": "função",
-              "value": "Systems Engineer @ Cloudflare"
-            },
-            {
-              "label": "localização",
-              "value": "Lisboa, Portugal"
-            },
-            {
-              "label": "formação",
-              "value": "Licenciatura e mestrado, FEUP"
-            },
-            {
-              "label": "interesses",
-              "value": "sistemas distribuídos, redes, observabilidade"
-            }
-          ]
-        }
       }
     ],
     "site_options": [
       {
         "id": "default",
         "slug": "default",
-        "locale": "en",
         "status": "published",
         "data": {
           "title": "Site options",
@@ -1856,7 +1296,6 @@
       {
         "id": "cv",
         "slug": "cv",
-        "locale": "en",
         "status": "published",
         "data": {
           "title": "Curriculum Vitae",
@@ -2017,178 +1456,6 @@
             },
             {
               "name": "English",
-              "level": "C1"
-            }
-          ],
-          "awards": [],
-          "phone": "(+351) 963571226"
-        }
-      },
-      {
-        "id": "cv-pt",
-        "slug": "cv",
-        "locale": "pt",
-        "translationOf": "cv",
-        "status": "published",
-        "data": {
-          "title": "Curriculum Vitae",
-          "headline": "Engenheiro de Software e Sistemas",
-          "summary": "Engenheiro de software e sistemas na Cloudflare, a trabalhar no AI Search e no serviço de conversão para Markdown. Licenciado e mestre em Engenharia Informática e Computação pela FEUP.",
-          "experience": [
-            {
-              "role": "Systems Engineer",
-              "org": "Cloudflare",
-              "location": "Lisboa, Portugal",
-              "start": "2025-10",
-              "end": "present",
-              "stack": "TypeScript, Terraform, Cloudflare Workers Runtime, Cloudflare Developer Platform, Prometheus, GraphQL",
-              "details": "Implementei o passo de re-ranking no fluxo de pesquisa do AI Search, um produto da Cloudflare.\nMigrei recursos internos implementados manualmente para recursos geridos com Terraform, garantindo visibilidade e auditabilidade claras sobre as alterações à infraestrutura.\nMelhorei a observabilidade das dependências de sistema usadas pelo AI Search, garantindo que perturbações em produtos a montante são detetadas cedo e não causam indisponibilidade do serviço.\nIntegrei vários serviços num sistema de lançamento gradual, garantindo que as novas versões só avançavam na presença de sinais positivos de saúde do serviço.\nImplementei vários novos formatos de conversão de ficheiros e melhorei a fiabilidade e a observabilidade do serviço de conversão para Markdown da Cloudflare.\nDesenvolvi um sistema para correr \"evals\" de sistemas de IA de forma simples, usado no ciclo de desenvolvimento do AI Search para garantir que as atualizações regulares do produto não pioram a experiência dos clientes.\nCriei vários dashboards internos para melhorar a observabilidade dos serviços da Cloudflare."
-            },
-            {
-              "role": "Estagiário de Engenharia de Software",
-              "org": "Cloudflare",
-              "location": "Lisboa, Portugal",
-              "start": "2025-07",
-              "end": "2025-10",
-              "stack": "TypeScript, SvelteKit, Cloudflare Workers Runtime, Cloudflare Developer Platform, GraphQL",
-              "details": "Concebi e desenvolvi um backoffice interno usado para depurar problemas e dar suporte à utilização do AI Search (anteriormente AutoRAG) pelos clientes.\nImplementei o código GraphQL necessário para disponibilizar as analíticas de clientes do AI Search.\nImplementei vários novos formatos de conversão de ficheiros e melhorei a fiabilidade e a observabilidade do serviço de conversão para Markdown da Cloudflare."
-            },
-            {
-              "role": "Estagiário de Engenharia de Software",
-              "org": "Kuehne + Nagel International AG",
-              "location": "Porto, Portugal",
-              "start": "2024-10",
-              "end": "2025-07",
-              "stack": "Java, OWASP, Apache Kafka, Confluent Kafka, Open Policy Agent",
-              "details": "Investiguei vetores e padrões de ataque comuns em sistemas com arquiteturas orientadas a eventos, o que resultou numa classificação de categorias de vulnerabilidades destes sistemas ao estilo do OWASP Top 10.\nDesenvolvi uma biblioteca que interpreta ficheiros de políticas Open Policy Agent e infere padrões de fluxo de dados de entrada e de saída, para permitir fazer fuzzing dessas políticas à procura de casos-limite.\nDesenvolvi a minha dissertação de mestrado, intitulada \"Attack Framework for Kafka-based Event-Driven Architectures\"."
-            },
-            {
-              "role": "Estagiário de Engenharia de Software",
-              "org": "Altice Labs, S.A.",
-              "location": "Porto, Portugal",
-              "start": "2023-02",
-              "end": "2023-06",
-              "stack": "SIP, SDP, VoIP, Asterisk, ARI, Go",
-              "details": "Estudei o funcionamento dos protocolos SIP e SDP em redes VoIP.\nEstudei o protocolo usado por uma aplicação interna que suporta as linhas de apoio ao cliente de um grande operador de telecomunicações português.\nConcebi e implementei uma camada de compatibilidade com a Asterisk REST Interface para substituir gradualmente o sistema legado, on-premises, por uma solução mais cloud-native."
-            },
-            {
-              "role": "Estagiário de Engenharia de Software",
-              "org": "Altice Labs, S.A.",
-              "location": "Aveiro, Portugal",
-              "start": "2022-07",
-              "end": "2022-08",
-              "stack": "Flutter, Dart, iOS, Android, BLoC",
-              "details": "Estudei a forma como os sistemas Android e iOS implementam geofencing.\nImplementei geofencing numa aplicação de domótica, para complementar as funcionalidades de deteção de conectividade da aplicação com deteção espacial."
-            },
-            {
-              "role": "Monitor",
-              "org": "FEUP – Faculdade de Engenharia da Universidade do Porto",
-              "location": "Porto, Portugal",
-              "start": "2021-10",
-              "end": "2022-03",
-              "stack": "Python",
-              "details": "Apoiei os estudantes durante a edição de 2021/2022 da unidade curricular de Fundamentos da Programação."
-            }
-          ],
-          "activities": [
-            {
-              "role": "Co-responsável de Projetos e Recursos",
-              "org": "NIAEFEUP",
-              "location": "Porto, Portugal",
-              "start": "2023-06",
-              "end": "2024-05",
-              "details": "Responsável pela direção técnica dos vários projetos do Núcleo de Informática, face às necessidades dos utilizadores e à evolução tecnológica.\nResponsável por promover workshops técnicos para membros do núcleo e pessoas externas."
-            },
-            {
-              "role": "Responsável do Departamento de IT @ SINF 2023",
-              "org": "NIAEFEUP",
-              "location": "Porto, Portugal",
-              "start": "2023-05",
-              "end": "2023-11",
-              "details": "Responsável por liderar a equipa de desenvolvimento do site da edição de 2023 da SINF (Semana da INFormática), realizada na FEUP.\nFiz a ponte entre os vários departamentos e a equipa de desenvolvimento, para perceber como os seus requisitos se traduziam no site."
-            },
-            {
-              "role": "Gestor de Projeto do NIJobs",
-              "org": "NIAEFEUP",
-              "location": "Porto, Portugal",
-              "start": "2022-08",
-              "end": "2023-06",
-              "details": "Responsável por gerir a equipa de desenvolvimento do NIJobs, um portal de emprego pensado para oferecer uma melhor experiência do que o fórum de emprego da própria universidade."
-            },
-            {
-              "role": "Membro",
-              "org": "NIAEFEUP",
-              "location": "Porto, Portugal",
-              "start": "2020-10",
-              "end": "2025-07",
-              "details": "Membro do Núcleo de Informática da Associação de Estudantes, cuja missão é melhorar a vida dos estudantes da U.Porto."
-            }
-          ],
-          "projects": [
-            {
-              "name": "Zon",
-              "tagline": "Validação ao estilo zod em Python",
-              "start": "2023-02",
-              "end": "present",
-              "url": "https://github.com/Naapperas/zon/",
-              "stack": "Python",
-              "details": "Desenvolvi uma versão em Python da conhecida biblioteca zod, para resolver uma necessidade rápida num projeto da faculdade."
-            },
-            {
-              "name": "Crusterfuck",
-              "tagline": "Interpretador de Brainfuck em Rust",
-              "start": "2024-02",
-              "end": "2025-03",
-              "url": "https://github.com/Naapperas/crusterfuck",
-              "stack": "Rust",
-              "details": "Desenvolvi um parser e um interpretador para a linguagem esotérica Brainfuck em Rust."
-            },
-            {
-              "name": "SDLE (Smart Distributed List Engine)",
-              "tagline": "Aplicação de listas distribuída e local-first",
-              "start": "2023-10",
-              "end": "2023-12",
-              "url": "https://github.com/Naapperas/feup-sdle-proj",
-              "stack": "Kotlin, CRDTs, Docker, SvelteKit",
-              "details": "Desenvolvi o front-end de uma aplicação web local-first para gerir listas de itens, com SvelteKit.\nUsei estruturas de dados do tipo CRDT e protocolos gossip para construir um backend altamente distribuído e eventualmente consistente.\nFeito para a unidade curricular de Sistemas Distribuídos de Larga Escala."
-            },
-            {
-              "name": "LUIS (LoL Universe Indexing and Searching)",
-              "tagline": "Motor de pesquisa de League of Legends",
-              "start": "2023-10",
-              "end": "2023-12",
-              "url": "https://github.com/Naapperas/feup-pri-proj",
-              "stack": "Apache Solr, Python, SvelteKit",
-              "details": "Desenvolvi um pipeline de scraping que recolhe páginas do site League of Legends Universe e as indexa em Apache Solr.\nFeito para a unidade curricular de Processamento e Recuperação de Informação."
-            }
-          ],
-          "education": [
-            {
-              "degree": "Licenciatura e Mestrado em Engenharia Informática e Computação (L.EIC e M.EIC)",
-              "school": "FEUP – Faculdade de Engenharia da Universidade do Porto",
-              "location": "Porto, Portugal",
-              "start": "2020-09",
-              "end": "2025-07",
-              "details": "Média do mestrado: 16/20\nDissertação: \"Attack Framework for Kafka-based Event-Driven Architectures\" (16/20)"
-            }
-          ],
-          "skills": [
-            {
-              "group": "Tecnologias e ferramentas",
-              "items": "Python, Go, Java, JavaScript, C, Bash, SQL, Terraform, Docker, Linux, Git, REST APIs, GraphQL, Cloudflare Developer Platform"
-            },
-            {
-              "group": "Domínios e conceitos",
-              "items": "Arquitetura de software, sistemas distribuídos, redes, automação, scripting, observabilidade, CI/CD"
-            }
-          ],
-          "languages": [
-            {
-              "name": "Português",
-              "level": "Nativo"
-            },
-            {
-              "name": "Inglês",
               "level": "C1"
             }
           ],

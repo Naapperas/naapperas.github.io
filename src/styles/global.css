@@ -12,18 +12,10 @@
 	--color-border: var(--border);
 	--color-accent: var(--accent);
 	--color-accent-ink: var(--accent-ink);
-	--color-accent-2: var(--accent-2);
 	--color-accent-soft: var(--accent-soft);
 	--color-success: light-dark(#15803d, #4ade80);
 	--font-sans: var(--font-plex-sans);
 	--font-mono: var(--font-jetbrains-mono);
-	--animate-blink: blink 1.1s steps(1) infinite;
-
-	@keyframes blink {
-		50% {
-			opacity: 0;
-		}
-	}
 }
 
 @utility wrap {
@@ -49,7 +41,6 @@
 		--border: light-dark(#e4e4e7, #2a2a31);
 		--accent: light-dark(#b22f2f, #ff6b6b);
 		--accent-ink: light-dark(#ffffff, #2a0b0b);
-		--accent-2: light-dark(#ad3a0b, #ff8a3d);
 		--accent-soft: light-dark(#fadcdc, #2e1517);
 	}
 	[data-palette="ember"] {
@@ -61,7 +52,6 @@
 		--border: light-dark(#e4e4e7, #2a2a31);
 		--accent: light-dark(#ad3a0b, #ff8a3d);
 		--accent-ink: light-dark(#ffffff, #1a0b02);
-		--accent-2: light-dark(#6d28d9, #a78bfa);
 		--accent-soft: light-dark(#fde7d8, #2b1a10);
 	}
 	[data-palette="ember-warm"] {
@@ -73,7 +63,6 @@
 		--border: light-dark(#e7e1d9, #332d2a);
 		--accent: light-dark(#ad3a0b, #f38020);
 		--accent-ink: light-dark(#ffffff, #1a0b02);
-		--accent-2: light-dark(#8a5a14, #e8c28e);
 		--accent-soft: light-dark(#fbe3d2, #2e1d10);
 	}
 	[data-palette="ember-mono"] {
@@ -85,7 +74,6 @@
 		--border: light-dark(#e4e4e7, #27272a);
 		--accent: light-dark(#ad3a0b, #fb923c);
 		--accent-ink: light-dark(#ffffff, #1a0b02);
-		--accent-2: light-dark(#3f3f46, #d4d4d8);
 		--accent-soft: light-dark(#fdeee4, #2a170b);
 	}
 	[data-palette="ember-night"] {
@@ -97,7 +85,6 @@
 		--border: light-dark(#dde1e8, #262b37);
 		--accent: light-dark(#ad3a0b, #ff8a3d);
 		--accent-ink: light-dark(#ffffff, #1a0b02);
-		--accent-2: light-dark(#0e7490, #67e8f9);
 		--accent-soft: light-dark(#fde7d8, #2a1a10);
 	}
 	[data-palette="classic"] {
@@ -109,7 +96,6 @@
 		--border: light-dark(#e0dad4, #3f3833);
 		--accent: light-dark(#b22f2f, #ff6b6b);
 		--accent-ink: light-dark(#ffffff, #2a0b0b);
-		--accent-2: light-dark(#2f63cc, #6fa0ff);
 		--accent-soft: light-dark(#fadcdc, #3a2424);
 	}
 	[data-palette="classic-teal"] {
@@ -121,7 +107,6 @@
 		--border: light-dark(#dedad3, #3b3631);
 		--accent: light-dark(#b22f2f, #ff6b6b);
 		--accent-ink: light-dark(#ffffff, #2a0b0b);
-		--accent-2: light-dark(#0f766e, #2dd4bf);
 		--accent-soft: light-dark(#fadcdc, #3a2424);
 	}
 	[data-palette="classic-cool"] {
@@ -133,7 +118,6 @@
 		--border: light-dark(#dadde3, #33373f);
 		--accent: light-dark(#b22f2f, #ff6b6b);
 		--accent-ink: light-dark(#ffffff, #2a0b0b);
-		--accent-2: light-dark(#4f46e5, #a5b4fc);
 		--accent-soft: light-dark(#fadcdc, #3a2326);
 	}
 	[data-palette="classic-soft"] {
@@ -145,7 +129,6 @@
 		--border: light-dark(#e8e0d8, #433c37);
 		--accent: light-dark(#a33f42, #f48a8a);
 		--accent-ink: light-dark(#ffffff, #2a0b0b);
-		--accent-2: light-dark(#3f63b0, #9db8f2);
 		--accent-soft: light-dark(#f7e1e1, #3d2828);
 	}
 
@@ -185,16 +168,6 @@
 
 /* The few pieces repeated on nearly every page. Everything else is utilities in the markup. */
 @layer components {
-	.prompt {
-		@apply font-mono text-[0.9rem] font-medium text-muted;
-	}
-	.prompt b {
-		@apply font-semibold text-accent;
-	}
-	.prompt i {
-		@apply text-accent-2 not-italic;
-	}
-
 	.tag {
 		@apply inline-flex items-center rounded-[0.3rem] border border-border bg-surface-2 px-[0.45rem] py-px font-mono text-[0.7rem]/[1.6] font-medium whitespace-nowrap text-muted;
 	}

@@ -61,15 +61,6 @@ export const cvImportPrompt = [
   'Text set in small caps comes through as capitals, sometimes with a stray lowercase i (e.g. "SOFTWARE ENGiNEER"). Write it in normal case: "Software Engineer".',
 ].join('\n');
 
-/** Second step for Portuguese entries: translating the English extraction works far better than doing both at once. */
-export const cvTranslatePrompt = [
-  'Translate this CV data from English into European Portuguese (pt-PT), as a native speaker would write their own CV.',
-  'Return the same JSON: the same fields, entries and order, nothing added or left out.',
-  'Translate every value written in ordinary words: the headline, roles, taglines, bullet points, degrees, skill groups, concepts, locations, languages and levels.',
-  'Keep as written: the names of people, organisations, schools, products, projects and technologies, plus links and dates.',
-  'Write bullet points in the first person ("Implementei…", "a minha tese").',
-].join('\n');
-
 type Record_ = Record<string, unknown>;
 const isRecord = (v: unknown): v is Record_ => typeof v === 'object' && v !== null && !Array.isArray(v);
 const text = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim() : undefined);
@@ -78,9 +69,8 @@ const items = (v: unknown) =>
     .map((item) => text(item)?.replace(/^[•●▪\-*–]\s*/, ''))
     .filter((item): item is string => !!item);
 
-// English and Portuguese abbreviations; the ones both languages share appear once.
 const months: Record<string, number> = Object.fromEntries(
-  ['jan', 'feb fev', 'mar', 'apr abr', 'may mai', 'jun', 'jul', 'aug ago', 'sep set', 'oct out', 'nov', 'dec dez'].flatMap((names, i) => names.split(' ').map((name) => [name, i + 1])),
+  ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'].map((name, i) => [name, i + 1]),
 );
 
 const convert: Record<Kind, (v: unknown) => string | undefined> = {
@@ -93,7 +83,7 @@ const convert: Record<Kind, (v: unknown) => string | undefined> = {
   date: (v) => {
     const s = text(v);
     if (!s) return undefined;
-    if (/^(present|current|now|presente|atual)$/i.test(s)) return 'present';
+    if (/^(present|current|now)$/i.test(s)) return 'present';
     const m = /^(\d{4})(?:-(\d{1,2}))?$/.exec(s);
     if (m) return m[2] ? `${m[1]}-${m[2].padStart(2, '0')}` : m[1];
     const named = /^([a-z]{3})[a-z]*\.?\s+(\d{4})$/i.exec(s);
@@ -107,7 +97,7 @@ const convert: Record<Kind, (v: unknown) => string | undefined> = {
 export type CvPatchOperation = { op: 'set'; field: string; value: unknown };
 
 const linkLine = /^(?:[\p{L} ]{1,20}:\s*)?(https?:\/\/\S+)$/u;
-const stackLine = /^(?:technolog(?:y|ies)|tecnologias?)\s*:\s*(.+)$/i;
+const stackLine = /^technolog(?:y|ies)\s*:\s*(.+)$/i;
 
 /**
  * Editor patch operations for what the model read from the PDF. Model output is untrusted: anything malformed is

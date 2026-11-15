@@ -1,23 +1,14 @@
 ---
-import { useI18n } from '../i18n';
-import type { Locale } from '../lib/locale';
-
-interface Props {
-  // Islands are fetched from /_server-islands/*, so Astro.currentLocale is always the default there.
-  locale: Locale;
-}
-
 // Per-visitor data: keep it out of every cache.
 Astro.response.headers.set('Cache-Control', 'private, no-store');
 
-const { t } = useI18n(Astro.props.locale);
 const cf = Astro.request.cf as IncomingRequestCfProperties | undefined;
 const rtt = cf?.clientTcpRtt;
 ---
 
 <div>
-  <dt class="font-mono text-[0.68rem] tracking-[0.08em] text-muted uppercase">{t('home.edge')}</dt>
-  <dd class="mt-0.5 font-semibold" title={t('home.edge.title')}>
+  <dt class="font-mono text-[0.68rem] tracking-[0.08em] text-muted uppercase">you're hitting</dt>
+  <dd class="mt-0.5 font-semibold" title="The Cloudflare data center that answered this request, and your round-trip time to it">
     <span class="mr-2 inline-block size-[0.45rem] rounded-full bg-[#22c55e] align-[0.1em] shadow-[0_0_0_3px_rgb(34_197_94/0.25)]"></span>{cf?.colo ?? '???'}{' '}
     <span class="font-normal text-muted">· {rtt ? `${rtt}ms` : (cf?.httpProtocol ?? 'edge')}</span>
   </dd>

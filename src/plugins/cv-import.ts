@@ -1,12 +1,12 @@
 import { env } from 'cloudflare:workers';
 import { definePlugin, definePluginRoute } from 'emdash';
-import { cvImportFields, cvImportPrompt, cvJsonSchema, cvTranslatePrompt, toCvPatch } from '../lib/cv-import';
+import { cvImportFields, cvImportPrompt, cvJsonSchema, toCvPatch } from '../lib/cv-import';
 
 const MODEL = '@cf/moonshotai/kimi-k2.6';
 
 interface Invocation {
   type: 'editor_action';
-  draft?: { locale: string | null; fields: Record<string, unknown> };
+  draft?: { fields: Record<string, unknown> };
 }
 
 const fail = (message: string) => ({ toast: { type: 'error' as const, message } });
@@ -51,7 +51,6 @@ export function createPlugin() {
             const markdown = await env.AI.toMarkdown({ name: 'cv.pdf', blob: new Blob([await object.arrayBuffer()], { type: 'application/pdf' }) });
             if (markdown.format === 'error') return fail(`Workers AI couldn't read the PDF: ${markdown.error}`);
             parsed = await ask(cvImportPrompt, markdown.data);
-            if (draft?.locale === 'pt') parsed = await ask(cvTranslatePrompt, JSON.stringify(parsed));
           } catch (error) {
             ctx.log.error('cv-import: Workers AI step failed', error);
             if (error instanceof SyntaxError) return fail('Workers AI returned something unreadable. Try again.');
@@ -77,7 +76,7 @@ export function createPlugin() {
           collections: ['cv'],
           confirm: {
             title: 'Fill the CV from its PDF?',
-            text: 'Workers AI reads the uploaded PDF and replaces the headline, summary and each section it finds, in this entry’s language. It takes about a minute, two for Portuguese. Nothing is saved until you save.',
+            text: 'Workers AI reads the uploaded PDF and replaces the headline, summary and each section it finds. It takes about a minute. Nothing is saved until you save.',
             confirm: 'Fill from PDF',
             deny: 'Cancel',
           },

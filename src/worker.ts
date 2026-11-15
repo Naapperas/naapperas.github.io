@@ -1,6 +1,5 @@
 import handler, { createScheduledHandler } from '@emdash-cms/cloudflare/worker';
 import { WorkerEntrypoint } from 'cloudflare:workers';
-import { localeRedirect } from './lib/locale';
 
 /** Runs Astro + EmDash. Workers Cache sits in front of this entrypoint (see `exports` in wrangler.jsonc). */
 export class Site extends WorkerEntrypoint<Env> {
@@ -22,15 +21,6 @@ const securityHeaders: Record<string, string> = {
 
 export default {
   async fetch(request, _env, ctx) {
-    // The cache key ignores cookies and Accept-Language, so the choice has to happen before the cache.
-    const redirect = localeRedirect(request);
-    if (redirect) {
-      return new Response(null, {
-        status: 302,
-        headers: { Location: redirect, 'Cache-Control': 'private, no-store', Vary: 'Accept-Language, Cookie' },
-      });
-    }
-
     const upstream = await ctx.exports.Site.fetch(request);
     if (upstream.webSocket) return upstream;
 

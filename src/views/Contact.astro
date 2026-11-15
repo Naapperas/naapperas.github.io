@@ -1,17 +1,12 @@
 ---
 import ContactForm from '../components/ContactForm.astro';
 import PageHead from '../components/PageHead.astro';
-import { useI18n } from '../i18n';
 import Base from '../layouts/Base.astro';
-
-const { t } = useI18n(Astro.currentLocale);
 ---
 
-<Base title={t('contact.title')} description={t('contact.intro')}>
+<Base title="contact" description="Questions about something I built, a role, or anything else? Drop me a line. It lands straight in my inbox.">
   <div class="wrap">
-    <PageHead title={t('contact.title')}>
-      <Fragment slot="prompt">mail <i>-s</i> "hello" nuno@naapperas.pt</Fragment>
-    </PageHead>
+    <PageHead title="contact" />
     <ContactForm />
   </div>
 </Base>

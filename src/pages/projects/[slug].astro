@@ -2,7 +2,7 @@
 import { getEmDashEntry } from 'emdash';
 import Project from '../../views/Project.astro';
 
-const { entry, cacheHint } = await getEmDashEntry('projects', Astro.params.slug!, { locale: Astro.currentLocale });
+const { entry, cacheHint } = await getEmDashEntry('projects', Astro.params.slug!);
 if (!entry) return Astro.rewrite('/404');
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 ---

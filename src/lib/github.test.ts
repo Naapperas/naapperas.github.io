@@ -49,14 +49,10 @@ describe('timeAgo', () => {
   const now = new Date('2026-11-15T12:00:00Z');
 
   it('picks a sensible unit', () => {
-    expect(timeAgo(new Date('2026-11-15T11:20:00Z'), now, 'en')).toBe('40 minutes ago');
-    expect(timeAgo(new Date('2026-11-15T07:00:00Z'), now, 'en')).toBe('5 hours ago');
-    expect(timeAgo(new Date('2026-11-14T10:00:00Z'), now, 'en')).toBe('yesterday');
-    expect(timeAgo(new Date('2026-09-10T12:00:00Z'), now, 'en')).toBe('2 months ago');
-    expect(timeAgo(new Date('2024-11-01T12:00:00Z'), now, 'en')).toBe('2 years ago');
-  });
-
-  it('speaks Portuguese', () => {
-    expect(timeAgo(new Date('2026-11-12T12:00:00Z'), now, 'pt')).toBe('há 3 dias');
+    expect(timeAgo(new Date('2026-11-15T11:20:00Z'), now)).toBe('40 minutes ago');
+    expect(timeAgo(new Date('2026-11-15T07:00:00Z'), now)).toBe('5 hours ago');
+    expect(timeAgo(new Date('2026-11-14T10:00:00Z'), now)).toBe('yesterday');
+    expect(timeAgo(new Date('2026-09-10T12:00:00Z'), now)).toBe('2 months ago');
+    expect(timeAgo(new Date('2024-11-01T12:00:00Z'), now)).toBe('2 years ago');
   });
 });

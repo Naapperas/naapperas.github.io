@@ -33,13 +33,11 @@ describe('toCvPatch', () => {
       experience: [
         { role: 'A', org: 'B', start: 'Oct. 2025', end: 'Present' },
         { role: 'C', org: 'D', start: 'mar. 2022', end: 'Sept 2023' },
-        { role: 'E', org: 'F', start: 'fev. 2021', end: 'Dez 2021' },
       ],
     });
     expect(op.value).toEqual([
       { role: 'A', org: 'B', start: '2025-10', end: 'present' },
       { role: 'C', org: 'D', start: '2022-03', end: '2023-09' },
-      { role: 'E', org: 'F', start: '2021-02', end: '2021-12' },
     ]);
   });
 
@@ -58,7 +56,7 @@ describe('toCvPatch', () => {
     const [projects] = toCvPatch({
       projects: [
         { name: 'Zon', details: ['Ported zod', 'Github: https://github.com/Naapperas/zon/', 'Technology: Python, Pydantic'] },
-        { name: 'Site', url: 'https://naapperas.pt', stack: ['Astro'], details: ['Built it', 'GitHub: https://github.com/x/y', 'Tecnologias: Go'] },
+        { name: 'Site', url: 'https://naapperas.pt', stack: ['Astro'], details: ['Built it', 'GitHub: https://github.com/x/y', 'Technologies: Go'] },
       ],
     });
     expect(projects.value).toEqual([

@@ -1,7 +1,6 @@
 ---
 import { Image } from 'emdash/ui';
 import type { Project } from '../../emdash-env';
-import { useI18n } from '../i18n';
 
 interface Props {
   project: Project;
@@ -9,18 +8,17 @@ interface Props {
 }
 
 const { project, priority } = Astro.props;
-const { t, path } = useI18n(Astro.currentLocale);
 const stack = project.stack ?? [];
-const repoHost = project.repo_url?.replace(/^https?:\/\//, '');
+const host = (project.live_url ?? project.repo_url)?.replace(/^https?:\/\//, '').replace(/\/$/, '') ?? project.slug;
 ---
 
 <a
   class="win group flex flex-col transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-[3px] hover:border-accent/65 hover:shadow-[0_18px_36px_-22px_color-mix(in_oklab,var(--accent)_55%,transparent)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
-  href={path(`/projects/${project.slug}`)}
+  href={`/projects/${project.slug}`}
   data-kind={project.kind}
   data-stack={stack.join(' ')}
 >
-  <div class="bar"><span class="flex-1 truncate">~/projects/<b>{project.slug}</b></span><span>{project.year}</span></div>
+  <div class="bar"><span class="flex-1 truncate">{host}</span><span>{project.year}</span></div>
   <div class="aspect-[16/10] overflow-hidden border-b border-border">
     {
       project.featured_image?.id ? (
@@ -33,7 +31,10 @@ const repoHost = project.repo_url?.replace(/^https?:\/\//, '');
         />
       ) : (
         <div class="art relative grid h-full place-items-center" aria-hidden="true">
-          <pre class="relative z-10 px-5 font-mono text-[0.78rem]/[1.7] whitespace-pre-wrap text-muted"><b class="text-accent">$</b> git clone {repoHost ?? project.slug}{'\n'}<b class="text-accent">→</b> {project.title.toLowerCase()} · {stack.slice(0, 3).join(', ')}</pre>
+          <div class="relative z-10 px-5 text-center font-mono">
+            <p class="text-2xl leading-tight font-bold tracking-[-0.04em] text-accent">{project.title}</p>
+            {stack.length > 0 && <p class="mt-2 text-[0.72rem] text-muted">{stack.slice(0, 3).join(' · ')}</p>}
+          </div>
         </div>
       )
     }
@@ -44,9 +45,9 @@ const repoHost = project.repo_url?.replace(/^https?:\/\//, '');
     <div class="mt-auto flex flex-wrap gap-1 pt-1">{stack.map((s) => <span class="tag">{s}</span>)}</div>
   </div>
   <div class="flex items-center justify-between border-t border-border px-[1.1rem] py-2.5 font-mono text-[0.72rem] text-muted">
-    <span>{t(`project.kind.${project.kind}`)}{project.course_code && ` · ${project.course_code}`}</span>
+    <span>{project.kind}{project.course_code && ` · ${project.course_code}`}</span>
     <span class="flex gap-3">
-      {project.repo_url && <span>{t('project.source')} ↗</span>}
+      {project.repo_url && <span>source ↗</span>}
       {project.live_url && <span>live ↗</span>}
     </span>
   </div>
@@ -57,7 +58,7 @@ const repoHost = project.repo_url?.replace(/^https?:\/\//, '');
   .art {
     background:
       radial-gradient(circle at 25% 25%, color-mix(in oklab, var(--accent) 28%, transparent), transparent 55%),
-      radial-gradient(circle at 80% 75%, color-mix(in oklab, var(--accent-2) 24%, transparent), transparent 55%),
+      radial-gradient(circle at 80% 75%, color-mix(in oklab, var(--accent) 14%, transparent), transparent 55%),
       var(--surface-2);
   }
   .art::after {

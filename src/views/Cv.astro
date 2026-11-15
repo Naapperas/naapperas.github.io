@@ -6,92 +6,71 @@ import CvEntry from '../components/CvEntry.astro';
 import CvSection from '../components/CvSection.astro';
 import Download from '../icons/download.svg';
 import Print from '../icons/print.svg';
-import { useI18n } from '../i18n';
 import Base from '../layouts/Base.astro';
 import { formatPeriod, groupConsecutive, splitList } from '../lib/cv';
 import { getSite } from '../lib/site';
 
-const { locale, t } = useI18n(Astro.currentLocale);
-const [{ profile }, { entry, cacheHint }] = await Promise.all([getSite(Astro), getEmDashEntry('cv', 'cv', { locale })]);
+const [{ profile }, { entry, cacheHint }] = await Promise.all([getSite(Astro), getEmDashEntry('cv', 'cv')]);
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
 const cv = entry?.data;
 const me = profile?.data;
 const name = me?.title ?? 'Nuno Pereira';
 const when = (e: { start?: string | null; end?: string | null; location?: string | null }) =>
-  [formatPeriod(e.start, e.end, locale), e.location].filter(Boolean).join(' · ');
+  [formatPeriod(e.start, e.end), e.location].filter(Boolean).join(' · ');
 const host = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 
 const experience = groupConsecutive(cv?.experience);
 const activities = groupConsecutive(cv?.activities);
-const synopsis = splitList(cv?.skills?.at(-1)?.items).slice(0, 3);
 const contact = [
   me?.email && { label: 'email', text: me.email, href: `mailto:${me.email}` },
-  cv?.phone && { label: t('cv.phone'), text: cv.phone, href: `tel:${cv.phone.replace(/[^+\d]/g, '')}` },
+  cv?.phone && { label: 'phone', text: cv.phone, href: `tel:${cv.phone.replace(/[^+\d]/g, '')}` },
   { label: 'web', text: 'naapperas.pt', href: '/' },
   me?.github_url && { label: 'github', text: host(me.github_url), href: me.github_url },
   me?.linkedin_url && { label: 'linkedin', text: host(me.linkedin_url), href: me.linkedin_url },
 ].filter((c): c is { label: string; text: string; href: string } => !!c);
 
 const sections = [
-  ['name', t('cv.name')],
-  ['synopsis', synopsis.length > 0 && t('cv.synopsis')],
-  ['description', cv?.summary && t('cv.description')],
-  ['experience', experience.length > 0 && t('cv.experience')],
-  ['projects', cv?.projects?.length && t('cv.projects')],
-  ['education', cv?.education?.length && t('cv.education')],
-  ['activities', activities.length > 0 && t('cv.activities')],
-  ['skills', cv?.skills?.length && t('cv.skills')],
-  ['languages', cv?.languages?.length && t('cv.languages')],
-  ['awards', cv?.awards?.length && t('cv.awards')],
-  ['contact', t('cv.contact')],
-  ['files', cv?.pdf && t('cv.files')],
+  ['profile', cv?.summary && 'PROFILE'],
+  ['experience', experience.length > 0 && 'EXPERIENCE'],
+  ['projects', cv?.projects?.length && 'PROJECTS'],
+  ['education', cv?.education?.length && 'EDUCATION'],
+  ['activities', activities.length > 0 && 'ACTIVITIES'],
+  ['skills', cv?.skills?.length && 'SKILLS'],
+  ['languages', cv?.languages?.length && 'LANGUAGES'],
+  ['awards', cv?.awards?.length && 'AWARDS'],
+  ['contact', 'CONTACT'],
+  ['pdf', cv?.pdf && 'PDF'],
 ].filter((s): s is [string, string] => typeof s[1] === 'string');
 const title = Object.fromEntries(sections);
 
-const manhead = 'flex justify-between gap-4 font-mono text-[0.82rem] text-muted';
-const orgHeading = 'mb-2 font-mono text-[0.95rem] font-semibold text-accent-2';
-const opts = 'grid gap-x-6 gap-y-2 text-[0.92rem] sm:grid-cols-[max-content_1fr] [&>dt]:font-mono [&>dt]:font-semibold [&>dd]:text-muted max-sm:[&>dd]:mb-2';
+const orgHeading = 'mb-2 font-mono text-[0.95rem] font-semibold text-accent';
+const opts = 'grid grid-cols-[max-content_1fr] gap-x-6 gap-y-2 text-[0.92rem] [&>dt]:font-mono [&>dt]:font-semibold [&>dd]:min-w-0 [&>dd]:text-muted [&>dd]:wrap-anywhere';
 ---
 
-<Base title={t('cv.title')} description={cv?.summary}>
+<Base title="Curriculum Vitae" description={cv?.summary}>
   <div class="wrap grid gap-6 pt-10 lg:grid-cols-[11rem_1fr] lg:gap-12 print:block print:pt-0">
-    <nav class="flex flex-wrap gap-x-3.5 gap-y-1.5 self-start font-mono text-[0.8rem] lg:sticky lg:top-18 lg:flex-col lg:gap-1 print:hidden" aria-label={t('cv.contents')}>
+    <nav class="flex flex-wrap gap-x-3.5 gap-y-1.5 self-start font-mono text-[0.8rem] lg:sticky lg:top-18 lg:flex-col lg:gap-1 print:hidden" aria-label="Contents">
       {sections.map(([id, label]) => <a href={`#${id}`} class="py-0.5 text-muted hover:text-accent">{label.toLowerCase()}</a>)}
       <div class="mt-4 flex w-full gap-2 lg:flex-col *:justify-center">
-        {cv?.pdf && <a class="btn primary" href="/cv.pdf" download="nuno-pereira-cv.pdf" data-astro-prefetch="false"><Download class="icon" />{t('cv.download')}</a>}
-        <button class="btn" type="button" data-print><Print class="icon" />{t('cv.print')}</button>
+        {cv?.pdf && <a class="btn primary" href="/cv.pdf" download="nuno-pereira-cv.pdf" data-astro-prefetch="false"><Download class="icon" />cv.pdf</a>}
+        <button class="btn" type="button" data-print><Print class="icon" />print</button>
       </div>
     </nav>
     <article>
-      <div class:list={[manhead, 'mb-5 border-b border-border pb-3']}><span>NUNO(1)</span><span>{t('cv.header')}</span><span>NUNO(1)</span></div>
-
-      <CvSection id="name" title={title.name}>
-        <div class="flex items-center gap-5">
-          <div class="duo size-20 flex-none overflow-hidden rounded-lg border border-border *:size-full *:object-cover *:object-[78%_55%]">
-            {me?.photo?.id ? <Image image={me.photo} width={160} height={160} /> : <img src={pfp.src} alt="" width={160} height={160} />}
-          </div>
-          <div>
-            <h1 class="font-mono text-[1.7rem]/[1.1] font-bold tracking-[-0.04em]">{name.toLowerCase()}</h1>
-            <div class="text-muted">{[cv?.headline, me?.location].filter(Boolean).join(' · ').toLowerCase()}</div>
-          </div>
+      <header class="flex items-center gap-5 border-b border-dashed border-border pb-6">
+        <div class="duo size-20 flex-none overflow-hidden rounded-lg border border-border *:size-full *:object-cover *:object-[78%_55%]">
+          {me?.photo?.id ? <Image image={me.photo} width={160} height={160} /> : <img src={pfp.src} alt="" width={160} height={160} />}
         </div>
-      </CvSection>
+        <div>
+          <h1 class="font-mono text-[1.7rem]/[1.1] font-bold tracking-[-0.04em]">{name.toLowerCase()}</h1>
+          <div class="text-muted">{[cv?.headline, me?.location].filter(Boolean).join(' · ').toLowerCase()}</div>
+        </div>
+      </header>
 
       {
-        title.synopsis && (
-          <CvSection id="synopsis" title={title.synopsis}>
-            <p class="font-mono text-[0.9rem]">
-              <b>nuno</b> {synopsis.map((s) => `[--${s.toLowerCase().replace(/[^\p{L}\d]+/gu, '-')}]`).join(' ')}{' '}
-              <i class="text-muted">problem</i>
-            </p>
-          </CvSection>
-        )
-      }
-
-      {
-        title.description && (
-          <CvSection id="description" title={title.description}>
+        title.profile && (
+          <CvSection id="profile" title={title.profile}>
             <p class="text-[0.93rem] text-muted" {...entry?.edit.summary}>{cv?.summary}</p>
           </CvSection>
         )
@@ -137,7 +116,7 @@ const opts = 'grid gap-x-6 gap-y-2 text-[0.92rem] sm:grid-cols-[max-content_1fr]
             <div class="space-y-4" {...entry?.edit.education}>
               {cv?.education?.map((e) => (
                 <CvEntry when={when(e)} details={e.details}>
-                  {e.degree}{' '}<span class="font-medium text-accent-2">@ {e.school}</span>
+                  {e.degree}{' '}<span class="font-medium text-accent">@ {e.school}</span>
                 </CvEntry>
               ))}
             </div>
@@ -154,7 +133,7 @@ const opts = 'grid gap-x-6 gap-y-2 text-[0.92rem] sm:grid-cols-[max-content_1fr]
                   <h3 class={orgHeading}>{group.org}</h3>
                   <div class="space-y-4">
                     {group.items.map((e) => (
-                      <CvEntry when={formatPeriod(e.start, e.end, locale)} details={e.details} nested>{e.role}</CvEntry>
+                      <CvEntry when={formatPeriod(e.start, e.end)} details={e.details} nested>{e.role}</CvEntry>
                     ))}
                   </div>
                 </div>
@@ -167,14 +146,11 @@ const opts = 'grid gap-x-6 gap-y-2 text-[0.92rem] sm:grid-cols-[max-content_1fr]
       {
         title.skills && (
           <CvSection id="skills" title={title.skills}>
-            <dl class={opts} {...entry?.edit.skills}>
+            <ul class="list-disc space-y-1 pl-[1.1rem] text-[0.93rem] text-muted" {...entry?.edit.skills}>
               {cv?.skills?.map((s) => (
-                <>
-                  <dt>{s.group}</dt>
-                  <dd class="flex flex-wrap gap-1">{splitList(s.items).map((i) => <span class="tag">{i}</span>)}</dd>
-                </>
+                <li><span class="font-semibold text-text">{s.group}:</span>{' '}{splitList(s.items).join(', ')}</li>
               ))}
-            </dl>
+            </ul>
           </CvSection>
         )
       }
@@ -201,7 +177,7 @@ const opts = 'grid gap-x-6 gap-y-2 text-[0.92rem] sm:grid-cols-[max-content_1fr]
               {cv?.awards?.map((a) => (
                 <CvEntry when={a.year ?? undefined}>
                   {a.title}
-                  {a.org && <span class="font-medium text-accent-2"> @ {a.org}</span>}
+                  {a.org && <span class="font-medium text-accent"> @ {a.org}</span>}
                 </CvEntry>
               ))}
             </div>
@@ -225,19 +201,18 @@ const opts = 'grid gap-x-6 gap-y-2 text-[0.92rem] sm:grid-cols-[max-content_1fr]
       </CvSection>
 
       {
-        title.files && (
-          <CvSection id="files" title={title.files}>
+        title.pdf && (
+          <CvSection id="pdf" title={title.pdf}>
             <p class="font-mono text-[0.9rem]">
-              <a class="link" href="/cv.pdf" data-astro-prefetch="false">~/cv.pdf</a> <span class="text-muted">· {t('cv.pdf.note')}</span>
+              <a class="link" href="/cv.pdf" data-astro-prefetch="false">cv.pdf</a> <span class="text-muted">· the original PDF, typeset in LaTeX</span>
             </p>
           </CvSection>
         )
       }
 
-      <div class:list={[manhead, 'mt-4 border-t border-border pt-3']}>
+      <div class="mt-4 flex justify-between gap-4 border-t border-border pt-3 font-mono text-[0.82rem] text-muted">
         <span>naapperas.pt</span>
-        <span>{new Intl.DateTimeFormat(locale === 'pt' ? 'pt-PT' : 'en-US', { month: 'long', year: 'numeric' }).format(cv?.updatedAt ?? new Date())}</span>
-        <span>NUNO(1)</span>
+        <span>updated {new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(cv?.updatedAt ?? new Date())}</span>
       </div>
     </article>
   </div>

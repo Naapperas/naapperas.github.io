@@ -1,9 +1,0 @@
----
-import { getSite } from '../../../lib/site';
-import Blog from '../../../views/Blog.astro';
-
-const { options } = await getSite(Astro);
-if (!options?.blog_enabled) return Astro.rewrite('/pt/404');
----
-
-<Blog />

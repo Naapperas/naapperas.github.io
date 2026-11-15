@@ -3,8 +3,6 @@ import { Font } from 'astro:assets';
 import { createPublicPageContext } from 'emdash/page';
 import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from 'emdash/ui';
 import Header from '../components/Header.astro';
-import { useI18n } from '../i18n';
-import { locales, localizePath, type Locale } from '../lib/locale';
 import { ogImagePath } from '../lib/og';
 import { getSite } from '../lib/site';
 import '../styles/global.css';
@@ -16,20 +14,14 @@ interface Props {
   type?: 'website' | 'article';
   content?: { collection: string; id: string; slug?: string | null };
   noindex?: boolean;
-  /** Paths for the language menu when a translation's slug differs from this page's. */
-  alternates?: Partial<Record<Locale, string>>;
 }
 
-const { title, description, type = 'website', content, noindex, alternates } = Astro.props;
+const { title, description, type = 'website', content, noindex } = Astro.props;
 const image = Astro.props.image ?? (noindex ? undefined : new URL(ogImagePath(Astro.url.pathname), Astro.site ?? Astro.url).href);
-const { locale, t, path } = useI18n(Astro.currentLocale);
 const { profile, options } = await getSite(Astro);
 
 const name = profile?.data.title ?? 'Nuno Pereira';
 const fullTitle = title ? `${title} · ${name}` : name;
-const links = Object.fromEntries(
-  locales.map((l) => [l, alternates?.[l] ?? localizePath(Astro.url.pathname, l)]),
-) as Record<Locale, string>;
 
 const pageCtx = createPublicPageContext({
   Astro,
@@ -37,7 +29,7 @@ const pageCtx = createPublicPageContext({
   pageType: type,
   title: fullTitle,
   pageTitle: title ?? name,
-  description: description || t('meta.description'),
+  description: description || 'Nuno Pereira, Systems Engineer at Cloudflare. Projects, CV and contact.',
   canonical: new URL(Astro.url.pathname, Astro.site ?? Astro.url).href,
   image,
   content,
@@ -48,20 +40,14 @@ const pageCtx = createPublicPageContext({
 ---
 
 <!doctype html>
-<html lang={locale === 'pt' ? 'pt-PT' : 'en'} data-palette={options?.palette ?? 'ember-coral'}>
+<html lang="en" data-palette={options?.palette ?? 'ember-coral'}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <EmDashHead page={pageCtx} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    {
-      !content &&
-        [...locales, 'x-default' as const].map((l) => (
-          <link rel="alternate" hreflang={l} href={new URL(links[l === 'x-default' ? 'en' : l], Astro.site ?? Astro.url).href} />
-        ))
-    }
-    {options?.blog_enabled && <link rel="alternate" type="application/rss+xml" title={`${name} · blog`} href={path('/blog/rss.xml')} />}
+    {options?.blog_enabled && <link rel="alternate" type="application/rss+xml" title={`${name} · blog`} href="/blog/rss.xml" />}
     <Font cssVariable="--font-jetbrains-mono" preload={[{ weight: '400', style: 'normal' }]} />
     <Font cssVariable="--font-plex-sans" preload={[{ weight: '400', style: 'normal' }]} />
     <script is:inline>
@@ -79,20 +65,20 @@ const pageCtx = createPublicPageContext({
       href="#main"
       class="absolute -top-12 left-4 z-50 rounded-md bg-accent px-3 py-2 font-mono text-sm font-semibold text-accent-ink focus:top-2.5 print:hidden"
     >
-      {t('nav.skip')}
+      Skip to content
     </a>
-    <Header links={links} blog={!!options?.blog_enabled} contact={options?.contact_enabled !== false} />
+    <Header blog={!!options?.blog_enabled} contact={options?.contact_enabled !== false} />
     <main id="main" tabindex="-1" class="flex-1 focus:outline-none">
       <slot />
     </main>
     <footer class="mt-16 border-t border-border pt-5 pb-10 font-mono text-[0.78rem] text-muted print:hidden">
       <div class="wrap flex flex-wrap items-center justify-between gap-4">
-        <span>© {new Date().getFullYear()} {name.toLowerCase()} · {t('footer.stack')}</span>
+        <span>© {new Date().getFullYear()} {name.toLowerCase()} · astro 7</span>
         <span class="flex gap-4 *:hover:text-accent">
           {profile?.data.github_url && <a href={profile.data.github_url} rel="me">github</a>}
           {profile?.data.linkedin_url && <a href={profile.data.linkedin_url} rel="me">linkedin</a>}
           {profile?.data.email && <a href={`mailto:${profile.data.email}`}>email</a>}
-          {options?.blog_enabled && <a href={path('/blog/rss.xml')}>rss</a>}
+          {options?.blog_enabled && <a href="/blog/rss.xml">rss</a>}
         </span>
       </div>
     </footer>

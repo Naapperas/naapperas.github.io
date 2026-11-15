@@ -5,7 +5,7 @@ import Post from '../../views/Post.astro';
 
 const [{ options }, { entry, cacheHint, isPreview }] = await Promise.all([
   getSite(Astro),
-  getEmDashEntry('posts', Astro.params.slug!, { locale: Astro.currentLocale }),
+  getEmDashEntry('posts', Astro.params.slug!),
 ]);
 // Previews still render while the blog is hidden, so posts can be checked before it goes public.
 if (!entry || (!options?.blog_enabled && !isPreview)) return Astro.rewrite('/404');

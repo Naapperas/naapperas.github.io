@@ -1,23 +1,18 @@
-import type { Locale } from './locale';
-
-const PRESENT: Record<Locale, string> = { en: 'Present', pt: 'presente' };
-const INTL_LOCALE: Record<Locale, string> = { en: 'en-US', pt: 'pt-PT' };
-
-function formatPoint(value: string, locale: Locale): string {
-  if (value === 'present') return PRESENT[locale];
+function formatPoint(value: string): string {
+  if (value === 'present') return 'Present';
   const match = /^(\d{4})(?:-(\d{2}))?$/.exec(value);
   if (!match) return value;
   const [, year, month] = match;
   if (!month) return year;
-  const name = new Intl.DateTimeFormat(INTL_LOCALE[locale], { month: 'short', timeZone: 'UTC' }).format(
+  const name = new Intl.DateTimeFormat('en-US', { month: 'short', timeZone: 'UTC' }).format(
     new Date(Date.UTC(Number(year), Number(month) - 1)),
   );
   return `${name} ${year}`;
 }
 
 /** Formats CV dates stored as `YYYY`, `YYYY-MM` or `present`. */
-export function formatPeriod(start: string | null | undefined, end: string | null | undefined, locale: Locale): string {
-  const points = [start, end].filter((v): v is string => !!v?.trim()).map((v) => formatPoint(v.trim(), locale));
+export function formatPeriod(start: string | null | undefined, end: string | null | undefined): string {
+  const points = [start, end].filter((v): v is string => !!v?.trim()).map((v) => formatPoint(v.trim()));
   return points.length === 2 && points[0] === points[1] ? points[0] : points.join(' – ');
 }
 
