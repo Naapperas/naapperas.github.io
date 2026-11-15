@@ -1,69 +1,101 @@
 ---
-import Footer from "../components/Footer.astro";
-import AppBar from "../components/AppBar/index.astro";
+import { Font } from 'astro:assets';
+import { createPublicPageContext } from 'emdash/page';
+import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from 'emdash/ui';
+import Header from '../components/Header.astro';
+import { useI18n } from '../i18n';
+import { locales, localizePath, type Locale } from '../lib/locale';
+import { ogImagePath } from '../lib/og';
+import { getSite } from '../lib/site';
+import '../styles/global.css';
 
-export interface Props {
-	title: string;
-	bgColor?: string;
-	textColor?: string;
-	children: unknown;
+interface Props {
+  title?: string;
+  description?: string | null;
+  image?: string | null;
+  type?: 'website' | 'article';
+  content?: { collection: string; id: string; slug?: string | null };
+  noindex?: boolean;
+  /** Paths for the language menu when a translation's slug differs from this page's. */
+  alternates?: Partial<Record<Locale, string>>;
 }
 
-const { title, bgColor, textColor } = Astro.props;
+const { title, description, type = 'website', content, noindex, alternates } = Astro.props;
+const image = Astro.props.image ?? (noindex ? undefined : new URL(ogImagePath(Astro.url.pathname), Astro.site ?? Astro.url).href);
+const { locale, t, path } = useI18n(Astro.currentLocale);
+const { profile, options } = await getSite(Astro);
+
+const name = profile?.data.title ?? 'Nuno Pereira';
+const fullTitle = title ? `${title} · ${name}` : name;
+const links = Object.fromEntries(
+  locales.map((l) => [l, alternates?.[l] ?? localizePath(Astro.url.pathname, l)]),
+) as Record<Locale, string>;
+
+const pageCtx = createPublicPageContext({
+  Astro,
+  kind: content ? 'content' : 'custom',
+  pageType: type,
+  title: fullTitle,
+  pageTitle: title ?? name,
+  description: description || t('meta.description'),
+  canonical: new URL(Astro.url.pathname, Astro.site ?? Astro.url).href,
+  image,
+  content,
+  seo: { ogImage: image, robots: noindex ? 'noindex' : null },
+  siteName: name,
+  siteUrl: Astro.site?.origin,
+});
 ---
 
 <!doctype html>
-<html lang="en" class="h-full">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Personal Website for Nuno Pereira" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<link rel="sitemap" href="/sitemap-index.xml" />
-		<link rel="icon" type="image/x-icon" href="/favicon.svg" />
-		<title>{title}</title>
-	</head>
-	<body
-		class="min-h-full flex flex-col"
-		class:list={[
-			bgColor ?? "bg-color-background-dark",
-			textColor ?? "text-color-primary",
-		]}
-	>
-		<AppBar />
-		<slot />
-		<Footer />
-	</body>
+<html lang={locale === 'pt' ? 'pt-PT' : 'en'} data-palette={options?.palette ?? 'ember-coral'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <EmDashHead page={pageCtx} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {
+      !content &&
+        [...locales, 'x-default' as const].map((l) => (
+          <link rel="alternate" hreflang={l} href={new URL(links[l === 'x-default' ? 'en' : l], Astro.site ?? Astro.url).href} />
+        ))
+    }
+    {options?.blog_enabled && <link rel="alternate" type="application/rss+xml" title={`${name} · blog`} href={path('/blog/rss.xml')} />}
+    <Font cssVariable="--font-jetbrains-mono" preload={[{ weight: '400', style: 'normal' }]} />
+    <Font cssVariable="--font-plex-sans" preload={[{ weight: '400', style: 'normal' }]} />
+    <script is:inline>
+      // Runs before first paint so a stored theme never flashes. Without a stored choice, follow the OS.
+      (() => {
+        const stored = localStorage.getItem('mode');
+        document.documentElement.dataset.mode =
+          stored === 'light' || stored === 'dark' ? stored : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      })();
+    </script>
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <EmDashBodyStart page={pageCtx} />
+    <a
+      href="#main"
+      class="absolute -top-12 left-4 z-50 rounded-md bg-accent px-3 py-2 font-mono text-sm font-semibold text-accent-ink focus:top-2.5 print:hidden"
+    >
+      {t('nav.skip')}
+    </a>
+    <Header links={links} blog={!!options?.blog_enabled} contact={options?.contact_enabled !== false} />
+    <main id="main" tabindex="-1" class="flex-1 focus:outline-none">
+      <slot />
+    </main>
+    <footer class="mt-16 border-t border-border pt-5 pb-10 font-mono text-[0.78rem] text-muted print:hidden">
+      <div class="wrap flex flex-wrap items-center justify-between gap-4">
+        <span>© {new Date().getFullYear()} {name.toLowerCase()} · {t('footer.stack')}</span>
+        <span class="flex gap-4 *:hover:text-accent">
+          {profile?.data.github_url && <a href={profile.data.github_url} rel="me">github</a>}
+          {profile?.data.linkedin_url && <a href={profile.data.linkedin_url} rel="me">linkedin</a>}
+          {profile?.data.email && <a href={`mailto:${profile.data.email}`}>email</a>}
+          {options?.blog_enabled && <a href={path('/blog/rss.xml')}>rss</a>}
+        </span>
+      </div>
+    </footer>
+    <EmDashBodyEnd page={pageCtx} />
+  </body>
 </html>
-<style is:global>
-	:root {
-		--color-bg: white;
-		--color-shadow: rgba(0, 0, 0, 0.1);
-	}
-
-	* {
-		padding: 0;
-		margin: 0;
-		box-sizing: border-box;
-	}
-	html {
-		font-family: system-ui, sans-serif;
-	}
-
-	a {
-		color: inherit;
-		text-decoration: none;
-	}
-
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
-</style>

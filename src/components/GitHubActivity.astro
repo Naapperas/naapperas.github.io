@@ -1,0 +1,71 @@
+---
+import { env } from 'cloudflare:workers';
+import { useI18n } from '../i18n';
+import { contributionLevel, getActivity, timeAgo } from '../lib/github';
+import type { Locale } from '../lib/locale';
+
+interface Props {
+  // Islands are fetched from /_server-islands/*, so Astro.currentLocale is always the default there.
+  locale: Locale;
+}
+
+// The same for every visitor, so the edge can keep it for a while.
+Astro.response.headers.set('Cache-Control', 'public, max-age=600');
+
+const { locale, t } = useI18n(Astro.props.locale);
+const user = env.GITHUB_USERNAME;
+const activity = await getActivity(user, env.CACHE, (env as { GITHUB_TOKEN?: string }).GITHUB_TOKEN);
+const calendar = activity?.contributions;
+const busiest = Math.max(0, ...(calendar?.weeks.flat() ?? []));
+// GitHub's first week starts mid-week; pad it so every row is one weekday.
+const days = calendar ? [...Array<number | undefined>(7 - (calendar.weeks[0]?.length ?? 7)), ...calendar.weeks.flat()] : [];
+const levels = ['bg-surface-2', 'bg-accent/25', 'bg-accent/50', 'bg-accent/75', 'bg-accent'];
+const now = new Date();
+---
+
+{
+  activity && activity.repos.length > 0 && (
+    <section class="win mt-4">
+      <div class="bar">
+        <span class="flex-1 truncate"><b>git log</b> --author={user} <i class="max-sm:hidden">--since=1.year</i></span>
+        <a class="link" href={`https://github.com/${user}`} rel="me">github.com/{user} ↗</a>
+      </div>
+      {
+        calendar && (
+          <div class="border-b border-border px-4 pt-4 pb-3">
+            {/* Reversed so narrow screens start scrolled to the most recent weeks. */}
+            <div class="flex flex-row-reverse overflow-x-auto [scrollbar-width:none]">
+              <div class="grid min-w-[40rem] flex-1 auto-cols-fr grid-flow-col grid-rows-7 gap-[3px]" role="img" aria-label={`${calendar.total} ${t('home.github.contributions')}`}>
+                {days.map((count) => (count === undefined ? <span /> : <span class:list={['aspect-square rounded-[2px]', levels[contributionLevel(count, busiest)]]} />))}
+              </div>
+            </div>
+            <p class="mt-2 font-mono text-[0.72rem] text-muted" aria-hidden="true">
+              <b class="font-semibold text-text">{calendar.total.toLocaleString(locale)}</b> {t('home.github.contributions')}
+            </p>
+          </div>
+        )
+      }
+      <div class="px-4 pt-3 font-mono text-[0.68rem] tracking-[0.08em] text-muted uppercase">{t('home.github')}</div>
+      <ul class="grid gap-px p-2 sm:grid-cols-2">
+        {activity.repos.map((repo) => (
+          <li>
+            <a href={repo.url} class="group flex h-full flex-col gap-1 rounded-md px-2.5 py-2.5 hover:bg-surface-2">
+              <span class="font-mono text-[0.9rem] font-semibold group-hover:text-accent">{repo.name}</span>
+              {repo.description && <span class="line-clamp-2 text-[0.88rem] text-muted">{repo.description}</span>}
+              <span class="mt-auto flex flex-wrap gap-x-3 pt-1 font-mono text-[0.72rem] text-muted">
+                {repo.language && (
+                  <span class="flex items-center gap-1.5">
+                    <span class="size-2 rounded-full bg-accent" />
+                    {repo.language}
+                  </span>
+                )}
+                {repo.stars > 0 && <span>★ {repo.stars}</span>}
+                <time datetime={repo.pushedAt}>{timeAgo(new Date(repo.pushedAt), now, locale)}</time>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

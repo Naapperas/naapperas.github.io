@@ -1,0 +1,72 @@
+---
+import { Image } from 'emdash/ui';
+import type { Project } from '../../emdash-env';
+import { useI18n } from '../i18n';
+
+interface Props {
+  project: Project;
+  priority?: boolean;
+}
+
+const { project, priority } = Astro.props;
+const { t, path } = useI18n(Astro.currentLocale);
+const stack = project.stack ?? [];
+const repoHost = project.repo_url?.replace(/^https?:\/\//, '');
+---
+
+<a
+  class="win group flex flex-col transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-[3px] hover:border-accent/65 hover:shadow-[0_18px_36px_-22px_color-mix(in_oklab,var(--accent)_55%,transparent)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+  href={path(`/projects/${project.slug}`)}
+  data-kind={project.kind}
+  data-stack={stack.join(' ')}
+>
+  <div class="bar"><span class="flex-1 truncate">~/projects/<b>{project.slug}</b></span><span>{project.year}</span></div>
+  <div class="aspect-[16/10] overflow-hidden border-b border-border">
+    {
+      project.featured_image?.id ? (
+        <Image
+          image={project.featured_image}
+          width={720}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
+          priority={priority}
+          class="size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.035] motion-reduce:transition-none"
+        />
+      ) : (
+        <div class="art relative grid h-full place-items-center" aria-hidden="true">
+          <pre class="relative z-10 px-5 font-mono text-[0.78rem]/[1.7] whitespace-pre-wrap text-muted"><b class="text-accent">$</b> git clone {repoHost ?? project.slug}{'\n'}<b class="text-accent">→</b> {project.title.toLowerCase()} · {stack.slice(0, 3).join(', ')}</pre>
+        </div>
+      )
+    }
+  </div>
+  <div class="flex flex-1 flex-col gap-2 px-[1.1rem] pt-4 pb-[1.1rem]">
+    <h3 class="font-mono text-lg font-bold tracking-[-0.02em] text-accent after:text-muted after:content-['/']">{project.title}</h3>
+    <p class="text-[0.9rem] text-muted">{project.summary}</p>
+    <div class="mt-auto flex flex-wrap gap-1 pt-1">{stack.map((s) => <span class="tag">{s}</span>)}</div>
+  </div>
+  <div class="flex items-center justify-between border-t border-border px-[1.1rem] py-2.5 font-mono text-[0.72rem] text-muted">
+    <span>{t(`project.kind.${project.kind}`)}{project.course_code && ` · ${project.course_code}`}</span>
+    <span class="flex gap-3">
+      {project.repo_url && <span>{t('project.source')} ↗</span>}
+      {project.live_url && <span>live ↗</span>}
+    </span>
+  </div>
+</a>
+
+<style>
+  /* Placeholder art for projects without a screenshot: accent glows over a faint grid. */
+  .art {
+    background:
+      radial-gradient(circle at 25% 25%, color-mix(in oklab, var(--accent) 28%, transparent), transparent 55%),
+      radial-gradient(circle at 80% 75%, color-mix(in oklab, var(--accent-2) 24%, transparent), transparent 55%),
+      var(--surface-2);
+  }
+  .art::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.35;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+</style>

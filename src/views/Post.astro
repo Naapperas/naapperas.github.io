@@ -1,0 +1,62 @@
+---
+import { extractPlainText, type ContentEntry } from 'emdash';
+import { Image, PortableText } from 'emdash/ui';
+import type { Post } from '../../emdash-env';
+import Rss from '../icons/rss.svg';
+import { useI18n } from '../i18n';
+import Base from '../layouts/Base.astro';
+import { readingMinutes, type LocalizedPost } from '../lib/blog';
+import { getTranslatedPaths } from '../lib/site';
+
+interface Props {
+  entry: ContentEntry<Post>;
+}
+
+const { entry } = Astro.props;
+const { edit, data: post } = entry;
+const { locale, t, path } = useI18n(Astro.currentLocale);
+const alternates = await getTranslatedPaths('posts', post.id, '/blog');
+const date = post.publishedAt ?? post.updatedAt;
+const formatDate = (d: Date) => new Intl.DateTimeFormat(locale === 'pt' ? 'pt-PT' : 'en-GB', { dateStyle: 'long' }).format(d);
+const updated = post.publishedAt && post.updatedAt.getTime() - post.publishedAt.getTime() > 86_400_000 ? post.updatedAt : undefined;
+const tags = post.terms?.tag ?? [];
+// An untranslated post is served in the default language under the other locale's chrome.
+const postLocale = (post as LocalizedPost).locale;
+const lang = postLocale && postLocale !== locale ? postLocale : undefined;
+---
+
+<Base
+  title={post.title}
+  description={post.excerpt}
+  type="article"
+  content={{ collection: 'posts', id: post.id, slug: post.slug }}
+  alternates={alternates}
+>
+  <article class="wrap" lang={lang}>
+    <div class="pt-10 font-mono text-[0.85rem] text-muted">
+      <a href={path('/blog')} class="hover:text-accent">~/blog</a>/<span class="text-accent">{post.slug}</span>
+    </div>
+    <header class="max-w-[46rem] pt-6">
+      <h1 class="mt-2 font-mono text-[clamp(2rem,4.5vw,3rem)] leading-[1.05] font-bold tracking-[-0.05em]" {...edit.title}>{post.title}</h1>
+      {post.excerpt && <p class="mt-3 text-lg text-muted" {...edit.excerpt}>{post.excerpt}</p>}
+      <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[0.78rem] text-muted">
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
+        <span>· {readingMinutes(extractPlainText(post.content))} {t('blog.minutes')}</span>
+        {updated && <span>· {t('blog.updated')} <time datetime={updated.toISOString()}>{formatDate(updated)}</time></span>}
+        {tags.length > 0 && <span class="flex flex-wrap gap-1">{tags.map((tag) => <span class="tag">{tag.label}</span>)}</span>}
+      </div>
+    </header>
+    {
+      post.featured_image?.id && (
+        <div class="win mt-8 max-w-[46rem]" {...edit.featured_image}>
+          <Image image={post.featured_image} width={1200} sizes="(max-width: 768px) 100vw, 736px" priority class="w-full" />
+        </div>
+      )
+    }
+    <div class="prose mt-8 text-[1.02rem]/[1.75]" {...edit.content}><PortableText value={post.content ?? []} /></div>
+    <footer class="mt-12 flex max-w-[46rem] flex-wrap items-center justify-between gap-4 border-t border-border pt-5 font-mono text-[0.85rem]">
+      <a class="link" href={path('/blog')}>← {t('blog.back')}</a>
+      <a class="flex items-center gap-2 text-muted hover:text-accent" href={path('/blog/rss.xml')} data-astro-prefetch="false"><Rss class="icon" />{t('blog.rss')}</a>
+    </footer>
+  </article>
+</Base>

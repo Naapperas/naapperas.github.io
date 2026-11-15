@@ -1,0 +1,42 @@
+---
+// The 1200×630 page that /og/*.png screenshots. Built from the site's own palette and fonts.
+import { Font } from 'astro:assets';
+import { getCard, pagePathFromSlug } from '../../lib/og';
+import '../../styles/global.css';
+
+const card = await getCard(Astro, pagePathFromSlug(Astro.params.path ?? 'index'));
+if (!card) return new Response('Not found', { status: 404 });
+Astro.response.headers.set('X-Robots-Tag', 'noindex');
+// The cursor sticks to the last word so it never wraps onto a line of its own.
+const words = card.title.split(' ');
+const last = words.pop();
+---
+
+<!doctype html>
+<html lang={card.locale === 'pt' ? 'pt-PT' : 'en'} data-palette={card.palette} data-mode="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>{card.title}</title>
+    <Font cssVariable="--font-jetbrains-mono" preload={[{ weight: '700', style: 'normal' }]} />
+    <Font cssVariable="--font-plex-sans" preload={[{ weight: '400', style: 'normal' }]} />
+  </head>
+  <body class="h-[630px] w-[1200px] overflow-hidden bg-bg p-10">
+    <div class="win flex h-full flex-col shadow-[0_30px_80px_-40px_rgb(0_0_0/0.8)]">
+      <div class="bar min-h-0 px-7 py-4 text-[22px]">
+        <span class="flex-1 truncate">nuno@naapperas.pt:<b class="text-accent">~{card.path}</b>$</span>
+      </div>
+      <div class="flex flex-1 flex-col px-14 pt-12 pb-11">
+        <div class="prompt text-[26px]"><b>$</b> {card.prompt}</div>
+        <h1 class:list={['mt-6 line-clamp-2 font-mono leading-[1.04] font-bold tracking-[-0.05em] text-text', card.title.length > 22 ? 'text-[62px]' : 'text-[76px]']}>
+          {words.length > 0 && `${words.join(' ')} `}<span class="whitespace-nowrap">{last}<span class="ml-[0.12em] inline-block h-[0.8em] w-[0.48em] bg-accent align-[-0.04em]" /></span>
+        </h1>
+        {card.description && <p class="mt-6 line-clamp-2 max-w-[60rem] text-[30px]/[1.4] text-muted">{card.description}</p>}
+        <div class="mt-auto flex items-end justify-between gap-8 pt-6 font-mono text-[24px] text-muted">
+          <span class="flex flex-wrap gap-2.5">{card.meta.map((m) => <span class="rounded-md border border-border bg-surface-2 px-3 py-0.5">{m}</span>)}</span>
+          <span class="shrink-0 font-semibold text-accent">naapperas.pt</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
