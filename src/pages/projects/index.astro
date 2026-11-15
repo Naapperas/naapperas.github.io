@@ -1,21 +1,5 @@
 ---
-import { getCollection } from "astro:content";
-
-import ProjectCard from "../../components/Project/Card.astro";
-import PageLayout from "../../layouts/Page.astro";
-
-const projects = await getCollection("project");
+import Projects from '../../views/Projects.astro';
 ---
 
-<PageLayout
-  title="Projects"
-  bgColor="bg-color-background-light"
-  contentTitle="Projects"
-  description="These are some of the projects I have developed so far:"
->
-  <section
-    class="relative grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-  >
-    {projects.map((entry) => <ProjectCard project={entry} />)}
-  </section>
-</PageLayout>
+<Projects />

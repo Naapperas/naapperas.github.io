@@ -1,17 +1,78 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "website",
-  "compatibility_date": "2026-04-23",
+  "account_id": "06f0471850d036cf650a2cc31f5565b8",
+  "main": "./src/worker.ts",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["global_fetch_strictly_public", "nodejs_compat"],
   "observability": {
     "enabled": true
   },
-  "main": "dist/_worker.js/index.js",
-  "compatibility_flags": [
-    "global_fetch_strictly_public",
-    "nodejs_compat"
-  ],
   "assets": {
-    "binding": "ASSETS",
-    "directory": "dist"
+    "binding": "ASSETS"
+  },
+  "vars": {
+    "EMDASH_SITE_URL": "https://naapperas.pt",
+    "GITHUB_USERNAME": "Naapperas",
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAGCTUuo_aaRetfrf"
+  },
+  "secrets": {
+    "required": ["CF_ACCESS_AUDIENCE", "TURNSTILE_SECRET_KEY"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "website",
+      "database_id": "19367291-0b6a-4703-adc2-01c90a66ad4b"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "website-media"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "CACHE",
+      "id": "7b4d9543849d429b97b04a11e40a40ad"
+    },
+    {
+      "binding": "SESSION",
+      "id": "5f426af299f04ad18b35716f2462914d"
+    }
+  ],
+  "images": {
+    "binding": "IMAGES"
+  },
+  "browser": {
+    "binding": "BROWSER"
+  },
+  "ai": {
+    "binding": "AI",
+    "remote": true
+  },
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "destination_address": "nunoafonso2002@gmail.com"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "CONTACT_LIMITER",
+      "namespace_id": "1001",
+      "simple": { "limit": 3, "period": 60 }
+    }
+  ],
+  // Scheduled publishing and EmDash maintenance.
+  "triggers": {
+    "crons": ["* * * * *"]
+  },
+  // The default export is an uncached gateway (language negotiation, security headers);
+  // it forwards to the Workers-Cache-backed `Site` entrypoint that runs Astro.
+  "exports": {
+    "default": { "type": "worker", "cache": { "enabled": false } },
+    "Site": { "type": "worker", "cache": { "enabled": true } }
   }
 }

@@ -1,0 +1,10 @@
+---
+import { getEmDashEntry } from 'emdash';
+import Project from '../../../views/Project.astro';
+
+const { entry, cacheHint } = await getEmDashEntry('projects', Astro.params.slug!, { locale: Astro.currentLocale });
+if (!entry) return Astro.rewrite('/pt/404');
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<Project entry={entry} />

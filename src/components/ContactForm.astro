@@ -1,0 +1,127 @@
+---
+import { env } from 'cloudflare:workers';
+import GitHub from '../icons/github.svg';
+import LinkedIn from '../icons/linkedin.svg';
+import Mail from '../icons/mail.svg';
+import Send from '../icons/send.svg';
+import { useI18n } from '../i18n';
+import { getSite } from '../lib/site';
+
+const { locale, t } = useI18n(Astro.currentLocale);
+const { profile, options } = await getSite(Astro);
+const me = profile?.data;
+const enabled = options?.contact_enabled !== false;
+const label = 'flex flex-col gap-1 font-mono text-[0.72rem] text-muted';
+const field =
+  'rounded-md border border-border bg-bg px-3 py-2 font-sans text-[0.92rem] text-text focus:border-accent focus:outline-2 focus:outline-offset-1 focus:outline-accent/55';
+const host = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+---
+
+<section class="win grid lg:grid-cols-[1fr_1.3fr]">
+  <div class="flex flex-col gap-4 border-border p-[1.4rem] max-lg:border-b lg:border-r">
+    <h2 class="font-mono text-[1.4rem]/[1.2] font-bold tracking-[-0.03em]">{t('contact.heading')}</h2>
+    <p class="text-muted">{enabled ? t('contact.intro') : t('contact.disabled')}</p>
+    <ul class="flex flex-col gap-2 text-[0.9rem] [&_a]:flex [&_a]:items-center [&_a]:gap-2.5 [&_a]:text-muted [&_a:hover]:text-accent">
+      {me?.email && <li><a href={`mailto:${me.email}`}><Mail class="icon" />{me.email}</a></li>}
+      {me?.github_url && <li><a href={me.github_url} rel="me"><GitHub class="icon" />{host(me.github_url)}</a></li>}
+      {me?.linkedin_url && <li><a href={me.linkedin_url} rel="me"><LinkedIn class="icon" />{host(me.linkedin_url)}</a></li>}
+    </ul>
+  </div>
+  {
+    enabled && (
+      <form
+        id="contact-form"
+        class="grid gap-3 p-[1.4rem] sm:grid-cols-2"
+        data-messages={JSON.stringify({
+          sending: t('contact.sending'),
+          sent: t('contact.sent'),
+          error: t('contact.error'),
+          limited: t('contact.limited'),
+          captcha: t('contact.captcha'),
+          disabled: t('contact.disabled'),
+        })}
+      >
+        <label class={label}>
+          {t('contact.name')}
+          <input name="name" required maxlength="100" autocomplete="name" placeholder={t('contact.name.placeholder')} class={field} />
+        </label>
+        <label class={label}>
+          {t('contact.email')}
+          <input name="email" type="email" required maxlength="200" autocomplete="email" placeholder={t('contact.email.placeholder')} class={field} />
+        </label>
+        <label class:list={[label, 'col-span-full']}>
+          {t('contact.message')}
+          <textarea name="message" rows="5" required minlength="10" maxlength="5000" placeholder={t('contact.message.placeholder')} class:list={[field, 'resize-y']} />
+        </label>
+        <div class="col-span-full flex flex-wrap items-center justify-between gap-4">
+          <div class="cf-turnstile min-h-[65px]" data-sitekey={env.TURNSTILE_SITE_KEY} data-theme="auto" data-language={locale} />
+          <button class="btn primary" type="submit">
+            <Send class="icon" />
+            <span>{t('contact.send')}</span>
+          </button>
+        </div>
+        <p class="col-span-full text-[0.88rem] empty:hidden data-[state=error]:text-accent data-[state=ok]:text-success" role="status" aria-live="polite" />
+      </form>
+    )
+  }
+</section>
+
+<script>
+  import { actions, isActionError } from 'astro:actions';
+
+  declare global {
+    interface Window {
+      turnstile?: { reset(widget?: string | HTMLElement): void };
+    }
+  }
+
+  const form = document.querySelector<HTMLFormElement>('#contact-form');
+  if (form) {
+    // Turnstile renders every .cf-turnstile once its script runs; load it only when the form is about to be seen.
+    new IntersectionObserver(
+      (entries, observer) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        observer.disconnect();
+        const script = document.createElement('script');
+        script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+        script.async = true;
+        document.head.appendChild(script);
+      },
+      { rootMargin: '300px' },
+    ).observe(form);
+
+    const messages = JSON.parse(form.dataset.messages!);
+    const status = form.querySelector<HTMLElement>('[role=status]')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const label = button.querySelector('span')!;
+    const idle = label.textContent;
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      if (!data.get('cf-turnstile-response')) {
+        status.textContent = messages.captcha;
+        status.dataset.state = 'error';
+        return;
+      }
+      button.disabled = true;
+      label.textContent = messages.sending;
+      status.textContent = '';
+
+      const { error } = await actions.contact(data);
+      button.disabled = false;
+      label.textContent = idle;
+      if (!error) {
+        form.reset();
+        status.textContent = messages.sent;
+        status.dataset.state = 'ok';
+      } else {
+        const code = isActionError(error) ? error.code : undefined;
+        status.textContent =
+          code === 'TOO_MANY_REQUESTS' ? messages.limited : code === 'SERVICE_UNAVAILABLE' ? messages.disabled : messages.error;
+        status.dataset.state = 'error';
+      }
+      window.turnstile?.reset();
+    });
+  }
+</script>

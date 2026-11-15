@@ -1,0 +1,129 @@
+---
+import { Image, PortableText } from 'emdash/ui';
+// Already at its largest display size, so it ships as a static asset rather than through /_image.
+import pfp from '../assets/pfp.webp';
+import ContactForm from '../components/ContactForm.astro';
+import EdgeStatus from '../components/EdgeStatus.astro';
+import GitHubActivity from '../components/GitHubActivity.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Mail from '../icons/mail.svg';
+import { useI18n } from '../i18n';
+import Base from '../layouts/Base.astro';
+import { getProjects } from '../lib/projects';
+import { getSite } from '../lib/site';
+
+const { locale, t, path } = useI18n(Astro.currentLocale);
+const { profile, options } = await getSite(Astro);
+const me = profile?.data;
+
+const projects = options?.home_projects ? (await getProjects(Astro)).slice(0, 3) : [];
+
+const facts = options?.home_facts !== false ? (me?.facts ?? []) : [];
+const contactEnabled = options?.contact_enabled !== false;
+const homeContact = contactEnabled && !!options?.home_contact;
+const contactHref = homeContact ? '#contact' : contactEnabled ? path('/contact') : me?.email && `mailto:${me.email}`;
+---
+
+<Base>
+  <div class="wrap">
+    <section class="grid items-center gap-8 pt-12 pb-12 lg:grid-cols-[1fr_22rem] lg:gap-14 lg:pt-20">
+      <div>
+        <div class="prompt"><b>$</b> whoami</div>
+        <h1 class="mt-3.5 mb-4 font-mono text-[clamp(2.6rem,6vw,4.6rem)] leading-none font-bold tracking-[-0.055em]" {...profile?.edit.title}>
+          {(me?.title ?? 'Nuno Pereira').toLowerCase()}<span
+            class="ml-[0.12em] inline-block h-[0.85em] w-[0.5em] animate-blink bg-accent align-[-0.06em] motion-reduce:animate-none"
+            aria-hidden="true"></span>
+        </h1>
+        {
+          me?.role && (
+            <p class="mb-4 font-mono text-[0.95rem] font-medium text-muted">
+              <mark class="rounded bg-accent-soft px-1.5 py-0.5 text-text">
+                {me.role}
+                {me.org && (
+                  <>
+                    {' @ '}
+                    {me.org_url ? <a href={me.org_url} class="text-accent">{me.org}</a> : me.org}
+                  </>
+                )}
+              </mark>
+              {me.location && <span> · {me.location}</span>}
+            </p>
+          )
+        }
+        <div class="max-w-[37rem] space-y-3 text-[1.08rem] text-muted" {...profile?.edit.bio}><PortableText value={me?.bio ?? []} /></div>
+        <div class="mt-7 flex flex-wrap gap-2.5">
+          <a class="btn primary" href={path('/projects')}>{t('home.cta.projects')}</a>
+          <a class="btn" href={path('/cv')}>{t('home.cta.cv')}</a>
+          {contactHref && <a class="btn" href={contactHref} data-astro-prefetch="false"><Mail class="icon" />{t('home.cta.contact')}</a>}
+        </div>
+      </div>
+      <div class="win max-lg:row-start-1 max-lg:max-w-80">
+        <div class="bar"><span class="flex-1 truncate">pfp.webp</span></div>
+        <div class="duo *:aspect-square *:w-full *:object-cover" {...profile?.edit.photo}>
+          {
+            me?.photo?.id ? (
+              <Image image={me.photo} width={576} height={576} priority />
+            ) : (
+              <img src={pfp.src} alt={t('home.photo')} width={pfp.width} height={pfp.height} fetchpriority="high" />
+            )
+          }
+        </div>
+      </div>
+    </section>
+
+    {
+      (facts.length > 0 || options?.home_edge) && (
+        <section class="win">
+          <div class="bar"><span class="flex-1 truncate"><b>status</b> --verbose</span></div>
+          <dl class="flex flex-wrap gap-px bg-border *:flex-[1_1_12rem] *:bg-surface *:px-4 *:py-3.5">
+            {facts.map((fact) => (
+              <div>
+                <dt class="font-mono text-[0.68rem] tracking-[0.08em] text-muted uppercase">{fact.label}</dt>
+                <dd class="mt-0.5 font-semibold">{fact.value}</dd>
+              </div>
+            ))}
+            {options?.home_edge && (
+              <EdgeStatus server:defer locale={locale}>
+                <div slot="fallback">
+                  <dt class="font-mono text-[0.68rem] tracking-[0.08em] text-muted uppercase">{t('home.edge')}</dt>
+                  <dd class="mt-0.5 font-semibold">…</dd>
+                </div>
+              </EdgeStatus>
+            )}
+          </dl>
+        </section>
+      )
+    }
+
+    {
+      options?.home_github && (
+        <GitHubActivity server:defer locale={locale}>
+          <div slot="fallback" class="win mt-4 h-44 animate-pulse motion-reduce:animate-none" aria-hidden="true" />
+        </GitHubActivity>
+      )
+    }
+
+    {
+      projects.length > 0 && (
+        <>
+          <div class="mt-12 mb-4 flex flex-wrap items-center justify-between gap-4">
+            <div class="prompt"><b>$</b> ls -lt projects/ <i>| head -3</i></div>
+            <a class="link font-mono text-[0.85rem]" href={path('/projects')}>{t('home.projects.all')}</a>
+          </div>
+          <section class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.map((p) => <ProjectCard project={p} />)}
+          </section>
+        </>
+      )
+    }
+
+    {
+      homeContact && (
+        <section id="contact" class="scroll-mt-20">
+          <div class="mt-12 mb-4 prompt"><b>$</b> mail <i>-s</i> "hello" nuno@naapperas.pt</div>
+          <ContactForm />
+        </section>
+      )
+    }
+  </div>
+</Base>
