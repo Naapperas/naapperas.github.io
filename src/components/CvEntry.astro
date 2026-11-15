@@ -17,7 +17,7 @@ const tags = splitList(stack);
 <div class:list={['break-inside-avoid', nested && 'border-l-2 border-border pl-3.5']}>
   <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
     <h4 class="font-semibold"><slot /></h4>
-    {when && <span class="font-mono text-xs text-muted sm:whitespace-nowrap">{when}</span>}
+    {when && <span class="font-mono text-xs whitespace-nowrap text-muted">{when}</span>}
   </div>
   {
     bullets.length > 0 && (

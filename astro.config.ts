@@ -11,6 +11,19 @@ const site = 'https://naapperas.pt';
 
 const cached = (tags: string[]) => ({ maxAge: 86_400, swr: 604_800, tags: [...tags, 'all'] });
 
+// Every public route gets an explicit rule. Tags are EmDash collection names, which EmDash
+// invalidates on publish; `all` is a manual "purge everything" switch.
+const publicRoutes = {
+  '/': cached(['profile', 'site_options', 'projects']),
+  '/projects': cached(['projects', 'site_options']),
+  '/projects/[slug]': cached(['projects', 'site_options']),
+  '/cv': cached(['cv', 'profile', 'site_options']),
+  '/contact': cached(['profile', 'site_options']),
+  '/blog': cached(['posts', 'site_options']),
+  '/blog/[slug]': cached(['posts', 'site_options']),
+  '/blog/rss.xml': cached(['posts', 'profile', 'site_options']),
+};
+
 export default defineConfig({
   site,
   output: 'server',
@@ -20,24 +33,20 @@ export default defineConfig({
     // AI and Browser Rendering only run remotely, through a proxy on workers.dev that sits behind Access.
     remoteBindings: process.env.REMOTE_BINDINGS === 'true',
   }),
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'pt'],
+  },
   cache: {
     provider: cacheCloudflare(),
   },
-  // Every public route gets an explicit rule. Tags are EmDash collection names, which EmDash
-  // invalidates on publish; `all` is a manual "purge everything" switch.
   routeRules: {
-    '/': cached(['profile', 'site_options', 'projects']),
-    '/projects': cached(['projects', 'site_options']),
-    '/projects/[slug]': cached(['projects', 'site_options']),
-    '/cv': cached(['cv', 'profile', 'site_options']),
-    '/contact': cached(['profile', 'site_options']),
-    '/blog': cached(['posts', 'site_options']),
-    '/blog/[slug]': cached(['posts', 'site_options']),
-    '/blog/rss.xml': cached(['posts', 'profile', 'site_options']),
+    ...publicRoutes,
     '/cv.pdf': cached(['cv']),
     '/og/[...path]': cached(['profile', 'site_options', 'projects', 'posts']),
     // Resized media. EmDash purges nothing when media changes, so a replaced original shows up once this expires.
     '/_image': cached([]),
+    ...Object.fromEntries(Object.entries(publicRoutes).map(([path, rule]) => [`/pt${path === '/' ? '' : path}`, rule])),
   },
   image: {
     layout: 'constrained',
@@ -86,14 +95,6 @@ export default defineConfig({
           version: '1.0.0',
           format: 'native',
           entrypoint: fileURLToPath(new URL('./src/plugins/cv-import.ts', import.meta.url)),
-          options: {},
-        },
-        {
-          id: 'palette',
-          version: '1.0.0',
-          format: 'native',
-          entrypoint: fileURLToPath(new URL('./src/plugins/palette.ts', import.meta.url)),
-          adminEntry: fileURLToPath(new URL('./src/plugins/palette-admin.tsx', import.meta.url)),
           options: {},
         },
       ],

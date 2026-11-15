@@ -1,3 +1,5 @@
+import type { Locale } from './locale';
+
 interface GitHubRepo {
   name: string;
   html_url: string;
@@ -43,8 +45,8 @@ export function contributionLevel(count: number, max: number): number {
   return count <= 0 || max <= 0 ? 0 : Math.min(4, Math.ceil((count / max) * 4));
 }
 
-export function timeAgo(date: Date, now: Date): string {
-  const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+export function timeAgo(date: Date, now: Date, locale: Locale): string {
+  const rtf = new Intl.RelativeTimeFormat(locale === 'pt' ? 'pt-PT' : 'en', { numeric: 'auto' });
   const minutes = (date.getTime() - now.getTime()) / 60_000;
   const days = minutes / 1440;
   if (Math.abs(minutes) < 60) return rtf.format(Math.round(minutes), 'minute');

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { orderProjects } from './projects';
 
-const project = (id: string, year: number, title = id) => ({ id, year, title });
+const project = (id: string, year: number, title = id, translationGroup?: string) => ({ id, year, title, translationGroup });
 
 describe('orderProjects', () => {
   it('follows the chosen order', () => {
@@ -17,6 +17,11 @@ describe('orderProjects', () => {
   it('breaks year ties by title', () => {
     const projects = [project('b', 2023, 'Beta'), project('a', 2023, 'alpha')];
     expect(orderProjects(projects, []).map((p) => p.id)).toEqual(['a', 'b']);
+  });
+
+  it('matches translations through their translation group', () => {
+    const projects = [project('pt-1', 2020, 'Um', 'g1'), project('pt-2', 2024, 'Dois', 'g2')];
+    expect(orderProjects(projects, ['g1', 'g2']).map((p) => p.id)).toEqual(['pt-1', 'pt-2']);
   });
 
   it('ignores order entries that no longer exist', () => {

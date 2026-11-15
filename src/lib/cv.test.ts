@@ -2,30 +2,35 @@ import { describe, expect, it } from 'vitest';
 import { formatPeriod, groupConsecutive, splitLines, splitList } from './cv';
 
 describe('formatPeriod', () => {
-  it('formats month ranges', () => {
-    expect(formatPeriod('2024-10', '2025-07')).toBe('Oct 2024 – Jul 2025');
+  it('formats month ranges in English', () => {
+    expect(formatPeriod('2024-10', '2025-07', 'en')).toBe('Oct 2024 – Jul 2025');
   });
 
-  it('spells out "present"', () => {
-    expect(formatPeriod('2025-10', 'present')).toBe('Oct 2025 – Present');
+  it('formats month ranges in Portuguese', () => {
+    expect(formatPeriod('2024-10', '2025-07', 'pt')).toBe('out. 2024 – jul. 2025');
+  });
+
+  it('translates "present"', () => {
+    expect(formatPeriod('2025-10', 'present', 'en')).toBe('Oct 2025 – Present');
+    expect(formatPeriod('2025-10', 'present', 'pt')).toBe('out. 2025 – presente');
   });
 
   it('accepts bare years', () => {
-    expect(formatPeriod('2020', '2025')).toBe('2020 – 2025');
+    expect(formatPeriod('2020', '2025', 'en')).toBe('2020 – 2025');
   });
 
   it('collapses a range within one period', () => {
-    expect(formatPeriod('2023', '2023')).toBe('2023');
+    expect(formatPeriod('2023', '2023', 'en')).toBe('2023');
   });
 
   it('handles missing ends', () => {
-    expect(formatPeriod('2023-02', null)).toBe('Feb 2023');
-    expect(formatPeriod(null, '2023')).toBe('2023');
-    expect(formatPeriod(undefined, undefined)).toBe('');
+    expect(formatPeriod('2023-02', null, 'en')).toBe('Feb 2023');
+    expect(formatPeriod(null, '2023', 'en')).toBe('2023');
+    expect(formatPeriod(undefined, undefined, 'en')).toBe('');
   });
 
   it('passes through values it cannot parse', () => {
-    expect(formatPeriod('Spring 2022', '2023')).toBe('Spring 2022 – 2023');
+    expect(formatPeriod('Spring 2022', '2023', 'en')).toBe('Spring 2022 – 2023');
   });
 });
 

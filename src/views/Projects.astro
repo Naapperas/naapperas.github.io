@@ -1,10 +1,11 @@
 ---
 import PageHead from '../components/PageHead.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import { useI18n } from '../i18n';
 import Base from '../layouts/Base.astro';
 import { getProjects } from '../lib/projects';
 
-const intro = 'University work, side projects and open source. Click a card for the full write-up.';
+const { t } = useI18n(Astro.currentLocale);
 const projects = await getProjects(Astro);
 const kinds = (['professional', 'academic', 'personal'] as const).filter((k) => projects.some((p) => p.kind === k));
 const stackCounts = new Map<string, number>();
@@ -12,14 +13,15 @@ for (const s of projects.flatMap((p) => p.stack ?? [])) stackCounts.set(s, (stac
 const stacks = [...stackCounts].filter(([, n]) => n > 1).toSorted((a, b) => b[1] - a[1]).slice(0, 8).map(([s]) => s);
 ---
 
-<Base title="projects" description={intro}>
+<Base title={t('projects.title')} description={t('projects.intro')}>
   <div class="wrap">
-    <PageHead title="projects" intro={intro}>
+    <PageHead title={t('projects.title')} intro={t('projects.intro')}>
+      <Fragment slot="prompt">ls ~/projects <i>--format=cards</i></Fragment>
       {
         projects.length > 1 && (
-          <div slot="aside" class="flex max-w-xl flex-wrap items-center gap-1.5" role="toolbar" aria-label="Filter projects" data-filters hidden>
-            <button class="chip" data-filter="" aria-pressed="true">all</button>
-            {kinds.length > 1 && kinds.map((k) => <button class="chip" data-filter={`kind:${k}`} aria-pressed="false">{k}</button>)}
+          <div slot="aside" class="flex max-w-xl flex-wrap items-center gap-1.5" role="toolbar" aria-label={t('projects.filter')} data-filters hidden>
+            <button class="chip" data-filter="" aria-pressed="true">--{t('projects.all')}</button>
+            {kinds.length > 1 && kinds.map((k) => <button class="chip" data-filter={`kind:${k}`} aria-pressed="false">--{t(`project.kind.${k}`)}</button>)}
             {stacks.length > 0 && <span class="mx-1 h-5 w-px bg-border" />}
             {stacks.map((s) => <button class="chip" data-filter={`stack:${s}`} aria-pressed="false">{s}</button>)}
           </div>
@@ -32,10 +34,10 @@ const stacks = [...stackCounts].filter(([, n]) => n > 1).toSorted((a, b) => b[1]
           {projects.map((p, i) => <ProjectCard project={p} priority={i < 3} />)}
         </section>
       ) : (
-        <p class="p-12 text-center font-mono text-muted">No projects yet.</p>
+        <p class="p-12 text-center font-mono text-muted">{t('projects.none')}</p>
       )
     }
-    <p class="p-12 text-center font-mono text-muted" id="no-matches" hidden>No matches.</p>
+    <p class="p-12 text-center font-mono text-muted" id="no-matches" hidden>{t('projects.empty')}</p>
   </div>
 </Base>
 

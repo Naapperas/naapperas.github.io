@@ -4,7 +4,9 @@ import { Image, PortableText } from 'emdash/ui';
 import type { Project } from '../../emdash-env';
 import External from '../icons/external.svg';
 import GitHub from '../icons/github.svg';
+import { useI18n } from '../i18n';
 import Base from '../layouts/Base.astro';
+import { getTranslatedPaths } from '../lib/site';
 
 interface Props {
   entry: ContentEntry<Project>;
@@ -12,14 +14,22 @@ interface Props {
 
 const { entry } = Astro.props;
 const { edit, data: p } = entry;
+const { t, path } = useI18n(Astro.currentLocale);
+const alternates = await getTranslatedPaths('projects', p.id, '/projects');
 const host = (url?: string) => url?.replace(/^https?:\/\//, '').replace(/\/$/, '');
-const course = [p.course_name && `${p.course_name}${p.course_code ? ` (${p.course_code})` : ''}`, [p.academic_year, p.semester && `semester ${p.semester}`].filter(Boolean).join(' · ')];
+const course = [p.course_name && `${p.course_name}${p.course_code ? ` (${p.course_code})` : ''}`, [p.academic_year, p.semester && `${t('project.semester')} ${p.semester}`].filter(Boolean).join(' · ')];
 ---
 
-<Base title={p.title} description={p.summary} type="article" content={{ collection: 'projects', id: p.id, slug: p.slug }}>
+<Base
+  title={p.title}
+  description={p.summary}
+  type="article"
+  content={{ collection: 'projects', id: p.id, slug: p.slug }}
+  alternates={alternates}
+>
   <div class="wrap">
     <div class="pt-10 font-mono text-[0.85rem] text-muted">
-      <a href="/projects" class="hover:text-accent">← projects</a>
+      <a href={path('/projects')} class="hover:text-accent">~/projects</a>/<span class="text-accent">{p.slug}</span>
     </div>
     <div class="grid items-start gap-8 pt-6 lg:grid-cols-[1fr_20rem]">
       <div>
@@ -30,7 +40,7 @@ const course = [p.course_name && `${p.course_name}${p.course_code ? ` (${p.cours
             <div class="win">
               <div class="bar">
                 <span class="flex-1 truncate">{host(p.live_url ?? p.repo_url) ?? p.slug}</span>
-                {p.live_url && <a class="link" href={p.live_url}>open ↗</a>}
+                {p.live_url && <a class="link" href={p.live_url}>{t('project.open')}</a>}
               </div>
               <div {...edit.featured_image}>
                 <Image image={p.featured_image} width={1200} sizes="(max-width: 1024px) 100vw, 800px" priority class="w-full" />
@@ -42,16 +52,16 @@ const course = [p.course_name && `${p.course_name}${p.course_code ? ` (${p.cours
       </div>
       <aside class="flex flex-col gap-4 lg:sticky lg:top-18">
         <div class="win">
-          <div class="bar"><span class="flex-1 truncate">details</span></div>
+          <div class="bar"><span class="flex-1 truncate"><b>stat</b> {p.slug}</span></div>
           <dl class="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-2 p-4 text-[0.88rem]">
-            <dt class="pt-0.5 font-mono text-[0.72rem] text-muted">year</dt>
+            <dt class="pt-0.5 font-mono text-[0.72rem] text-muted">{t('project.year')}</dt>
             <dd>{p.year}</dd>
-            <dt class="pt-0.5 font-mono text-[0.72rem] text-muted">type</dt>
-            <dd>{p.kind}</dd>
+            <dt class="pt-0.5 font-mono text-[0.72rem] text-muted">{t('project.type')}</dt>
+            <dd>{t(`project.kind.${p.kind}`)}</dd>
             {
               course[0] && (
                 <>
-                  <dt class="pt-0.5 font-mono text-[0.72rem] text-muted">course</dt>
+                  <dt class="pt-0.5 font-mono text-[0.72rem] text-muted">{t('project.course')}</dt>
                   <dd>
                     {course[0]}
                     {course[1] && (
@@ -67,7 +77,7 @@ const course = [p.course_name && `${p.course_name}${p.course_code ? ` (${p.cours
             {
               p.grade != null && (
                 <>
-                  <dt class="pt-0.5 font-mono text-[0.72rem] text-muted">grade</dt>
+                  <dt class="pt-0.5 font-mono text-[0.72rem] text-muted">{t('project.grade')}</dt>
                   <dd>{p.grade}/20</dd>
                 </>
               )
@@ -75,7 +85,7 @@ const course = [p.course_name && `${p.course_name}${p.course_code ? ` (${p.cours
             {
               p.stack && p.stack.length > 0 && (
                 <>
-                  <dt class="pt-0.5 font-mono text-[0.72rem] text-muted">stack</dt>
+                  <dt class="pt-0.5 font-mono text-[0.72rem] text-muted">{t('project.stack')}</dt>
                   <dd class="flex flex-wrap gap-1">{p.stack.map((s) => <span class="tag">{s}</span>)}</dd>
                 </>
               )
@@ -85,7 +95,7 @@ const course = [p.course_name && `${p.course_name}${p.course_code ? ` (${p.cours
         {
           p.team && p.team.length > 0 && (
             <div class="win">
-              <div class="bar"><span class="flex-1 truncate">team</span></div>
+              <div class="bar"><span class="flex-1 truncate"><b>git shortlog</b> -sn <span class="sr-only">· {t('project.team')}</span></span></div>
               <ul class="flex flex-col gap-2 px-4 pt-3 pb-4 text-[0.9rem]">
                 {p.team.map((m) => (
                   <li>
@@ -101,8 +111,8 @@ const course = [p.course_name && `${p.course_name}${p.course_code ? ` (${p.cours
           )
         }
         <div class="flex flex-wrap gap-2">
-          {p.repo_url && <a class="btn" href={p.repo_url}><GitHub class="icon" />source</a>}
-          {p.live_url && <a class="btn primary" href={p.live_url}><External class="icon" />live site</a>}
+          {p.repo_url && <a class="btn" href={p.repo_url}><GitHub class="icon" />{t('project.source')}</a>}
+          {p.live_url && <a class="btn primary" href={p.live_url}><External class="icon" />{t('project.live')}</a>}
         </div>
       </aside>
     </div>

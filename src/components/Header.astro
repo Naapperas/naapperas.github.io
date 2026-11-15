@@ -1,35 +1,45 @@
 ---
+import Globe from '../icons/globe.svg';
 import Moon from '../icons/moon.svg';
 import Sun from '../icons/sun.svg';
+import { useI18n } from '../i18n';
+import { localizePath, type Locale } from '../lib/locale';
 
 interface Props {
+  /** This page's path in each locale. */
+  links: Record<Locale, string>;
   blog: boolean;
   contact: boolean;
 }
 
-const { blog, contact } = Astro.props;
+const { links, blog, contact } = Astro.props;
+const { locale, t, path } = useI18n(Astro.currentLocale);
 
-const here = Astro.url.pathname.replace(/\/$/, '') || '/';
+const here = localizePath(Astro.url.pathname, 'en').replace(/\/$/, '') || '/';
+const iconButton =
+  'inline-flex h-8 min-w-8 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-border bg-surface px-2 text-xs text-muted hover:border-accent/50 hover:text-text';
+const menuItem =
+  "flex w-full cursor-pointer items-center gap-2 rounded-[0.35rem] px-2.5 py-2 text-left font-mono text-[0.82rem] text-muted before:size-2 before:shrink-0 before:rounded-full before:border before:border-border before:content-[''] hover:bg-surface-2 hover:text-text aria-checked:text-accent aria-checked:before:border-accent aria-checked:before:bg-accent";
 const nav = [
-  { href: '/projects', label: 'projects' },
-  { href: '/cv', label: 'cv' },
+  { href: '/projects', label: t('nav.projects') },
+  { href: '/cv', label: t('nav.cv') },
   // Kept out of prerendering so Turnstile only runs on a page someone opened.
-  ...(contact ? [{ href: '/contact', label: 'contact', prefetch: false }] : []),
-  ...(blog ? [{ href: '/blog', label: 'blog' }] : []),
+  ...(contact ? [{ href: '/contact', label: t('nav.contact'), prefetch: false }] : []),
+  ...(blog ? [{ href: '/blog', label: t('nav.blog') }] : []),
 ];
 ---
 
 <header class="sticky top-0 z-20 border-b border-border bg-bg/85 backdrop-blur-md print:hidden">
   <div class="wrap flex h-14 items-center justify-between gap-2 font-mono text-[0.8rem] sm:gap-4 sm:text-[0.85rem]">
-    <a href="/" class="min-w-0 truncate font-semibold text-accent" aria-label="Nuno Pereira">
-      ~<span class="max-sm:hidden">{here === '/' ? '' : here}</span>
+    <a href={path('/')} class="min-w-0 truncate text-muted" aria-label="Nuno Pereira">
+      <span class="max-md:hidden">nuno@naapperas.pt:</span><b class="font-semibold text-accent">~<span class="max-sm:hidden">{here === '/' ? '' : here}</span></b>$
     </a>
-    <nav aria-label="Main" class="flex min-w-0 items-center gap-2 sm:gap-3 md:gap-5">
+    <nav aria-label={t('nav.label')} class="flex min-w-0 items-center gap-2 sm:gap-3 md:gap-5">
       <div class="flex min-w-0 items-center gap-2.5 overflow-x-auto py-1 [scrollbar-width:none] sm:gap-3 md:gap-5">
         {
           nav.map(({ href, label, prefetch }) => (
             <a
-              href={href}
+              href={path(href)}
               data-astro-prefetch={prefetch === false ? 'false' : undefined}
               aria-current={here === href || here.startsWith(`${href}/`) ? 'page' : undefined}
               class="shrink-0 text-muted transition-colors hover:text-text aria-[current=page]:text-accent md:before:opacity-45 md:before:content-['./']"
@@ -39,12 +49,15 @@ const nav = [
           ))
         }
       </div>
-      <button
-        data-mode-toggle
-        aria-label="Toggle light/dark theme"
-        title="Toggle light/dark theme"
-        class="inline-flex h-8 min-w-8 cursor-pointer items-center justify-center rounded-md border border-border bg-surface px-2 text-xs text-muted no-js:hidden hover:border-accent/50 hover:text-text"
-      >
+      <button popovertarget="lang-menu" aria-label={t('lang.label')} title={t('lang.label')} class={iconButton}>
+        <Globe class="size-4" /><span class="max-sm:hidden">{locale}</span>
+      </button>
+      <div id="lang-menu" popover class="win min-w-48 p-1 shadow-[0_18px_40px_-20px_rgb(0_0_0/0.45)]" role="menu" aria-label={t('lang.label')}>
+        <button role="menuitemradio" data-lang="auto" data-en={links.en} data-pt={links.pt} class={menuItem}>{t('lang.auto')}</button>
+        <a role="menuitemradio" data-lang="en" href={links.en} hreflang="en" lang="en" class={menuItem}>English</a>
+        <a role="menuitemradio" data-lang="pt" href={links.pt} hreflang="pt" lang="pt-PT" class={menuItem}>Português</a>
+      </div>
+      <button data-mode-toggle aria-label={t('theme.toggle')} title={t('theme.toggle')} class:list={[iconButton, 'no-js:hidden']}>
         <Sun class="hidden size-4 dark:block" /><Moon class="size-4 dark:hidden" />
       </button>
     </nav>
@@ -52,6 +65,22 @@ const nav = [
 </header>
 
 <script>
+  import { LOCALE_COOKIE, isLocale, negotiateLocale, readCookie } from '../lib/locale';
+
+  const chosen = readCookie(document.cookie, LOCALE_COOKIE);
+  for (const item of document.querySelectorAll<HTMLElement>('#lang-menu [data-lang]')) {
+    const lang = item.dataset.lang!;
+    item.setAttribute('aria-checked', String(lang === (isLocale(chosen) ? chosen : 'auto')));
+    item.addEventListener('click', () => {
+      if (lang === 'auto') {
+        document.cookie = `${LOCALE_COOKIE}=; path=/; max-age=0; samesite=lax`;
+        location.href = item.dataset[negotiateLocale(navigator.languages.join(','))]!;
+      } else {
+        document.cookie = `${LOCALE_COOKIE}=${lang}; path=/; max-age=31536000; samesite=lax`;
+      }
+    });
+  }
+
   const root = document.documentElement;
   const system = matchMedia('(prefers-color-scheme: dark)');
   const setMode = (mode: string) => {
@@ -70,3 +99,18 @@ const nav = [
     if (!localStorage.getItem('mode')) setMode(e.matches ? 'dark' : 'light');
   });
 </script>
+
+<style>
+  [popovertarget='lang-menu'] {
+    anchor-name: --lang;
+  }
+  @supports (anchor-name: --a) {
+    #lang-menu {
+      position-anchor: --lang;
+      inset: auto;
+      margin: 0;
+      top: calc(anchor(bottom) + 0.4rem);
+      right: anchor(right);
+    }
+  }
+</style>

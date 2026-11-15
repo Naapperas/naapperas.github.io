@@ -1,14 +1,17 @@
 ---
 import PageHead from '../components/PageHead.astro';
+import { useI18n } from '../i18n';
 import Base from '../layouts/Base.astro';
 
 Astro.response.status = 404;
+const { t, path } = useI18n(Astro.currentLocale);
 ---
 
-<Base title="not found" noindex>
+<Base title={t('notfound.title')} noindex>
   <div class="wrap">
-    <PageHead title="404: not found" intro="That page doesn't exist, or it moved." suffix="">
-      <a class="btn primary mt-6" href="/">home</a>
+    <PageHead title={`404: ${t('notfound.title')}`} intro={t('notfound.body')} suffix="">
+      <Fragment slot="prompt">cd {Astro.originPathname}</Fragment>
+      <a class="btn primary mt-6" href={path('/')}>{t('notfound.home')}</a>
     </PageHead>
   </div>
 </Base>

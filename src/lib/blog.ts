@@ -1,6 +1,8 @@
 import type { APIContext } from 'astro';
 import { getEmDashCollection } from 'emdash';
+import { useI18n } from '../i18n';
 import type { Post } from '../../emdash-env';
+import { defaultLocale } from './locale';
 import { getSite } from './site';
 
 export function readingMinutes(text: string): number {
@@ -54,25 +56,46 @@ ${entries.join('\n')}
 `;
 }
 
-export async function getPosts(context: Pick<APIContext, 'cache'>, limit = 100): Promise<Post[]> {
-  const { entries, cacheHint } = await getEmDashCollection('posts', { orderBy: { published_at: 'desc' }, limit });
-  if (context.cache?.enabled) context.cache.set(cacheHint);
-  return entries.map((e) => e.data).filter((p) => p.publishedAt);
+interface Translatable {
+  id: string;
+  translationGroup?: string;
+  publishedAt: Date | null;
+}
+
+/** Posts in the reader's language, plus those only written in the default language, newest first. */
+export function withFallback<T extends Translatable>(localized: T[], fallback: T[]): T[] {
+  const translated = new Set(localized.map((p) => p.translationGroup ?? p.id));
+  return [...localized, ...fallback.filter((p) => !translated.has(p.translationGroup ?? p.id))].toSorted(
+    (a, b) => (b.publishedAt?.getTime() ?? 0) - (a.publishedAt?.getTime() ?? 0),
+  );
+}
+
+// EmDash returns these at runtime, but the generated types leave them out.
+export type LocalizedPost = Post & { translationGroup?: string; locale?: string };
+
+export async function getPosts(context: Pick<APIContext, 'currentLocale' | 'cache'>, limit = 100): Promise<LocalizedPost[]> {
+  const { locale } = useI18n(context.currentLocale);
+  const query = (l: string) => getEmDashCollection('posts', { locale: l, orderBy: { published_at: 'desc' }, limit });
+  const [localized, fallback] = await Promise.all([query(locale), locale === defaultLocale ? undefined : query(defaultLocale)]);
+  if (context.cache?.enabled) for (const r of [localized, fallback]) if (r) context.cache.set(r.cacheHint);
+  const data = (r?: typeof localized) => (r?.entries ?? []).map((e) => e.data as LocalizedPost).filter((p) => p.publishedAt);
+  return withFallback(data(localized), data(fallback)).slice(0, limit);
 }
 
 export async function blogFeed(context: APIContext) {
   const { profile, options } = await getSite(context);
   if (!options?.blog_enabled) return new Response('Not found', { status: 404 });
 
-  const url = (p: string) => new URL(p, context.site ?? context.url).href;
+  const { locale, t, path } = useI18n(context.currentLocale);
+  const url = (p: string) => new URL(path(p), context.site ?? context.url).href;
   const posts = await getPosts(context, 50);
   const xml = buildRss(
     {
-      title: `${profile?.data.title ?? 'Nuno Pereira'} · blog`,
-      description: 'Notes on things I build and learn.',
+      title: `${profile?.data.title ?? 'Nuno Pereira'} · ${t('blog.title')}`,
+      description: t('blog.intro'),
       link: url('/blog'),
       self: url('/blog/rss.xml'),
-      language: 'en',
+      language: locale === 'pt' ? 'pt-PT' : 'en',
     },
     posts.map((post) => ({
       title: post.title,

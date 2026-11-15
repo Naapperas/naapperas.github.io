@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildRss, readingMinutes } from './blog';
+import { buildRss, readingMinutes, withFallback } from './blog';
 
 describe('readingMinutes', () => {
   it('rounds up at about 220 words a minute', () => {
@@ -45,5 +45,19 @@ describe('buildRss', () => {
     const xml = buildRss(channel, [{ title: 'A <b> & "c"', link: 'https://naapperas.pt/blog/a?x=1&y=2', date: new Date(0) }]);
     expect(xml).toContain('<title>A &lt;b&gt; &amp; &quot;c&quot;</title>');
     expect(xml).toContain('<link>https://naapperas.pt/blog/a?x=1&amp;y=2</link>');
+  });
+});
+
+describe('withFallback', () => {
+  const post = (id: string, day: number, translationGroup?: string) => ({ id, translationGroup, publishedAt: new Date(2026, 10, day) });
+
+  it('adds untranslated posts from the default language, newest first', () => {
+    const pt = [post('pt-a', 10, 'a')];
+    const en = [post('a', 10, 'a'), post('b', 14, 'b'), post('c', 2, 'c')];
+    expect(withFallback(pt, en).map((p) => p.id)).toEqual(['b', 'pt-a', 'c']);
+  });
+
+  it('keeps the translation when both exist', () => {
+    expect(withFallback([post('pt-a', 1, 'a')], [post('a', 1, 'a')]).map((p) => p.id)).toEqual(['pt-a']);
   });
 });

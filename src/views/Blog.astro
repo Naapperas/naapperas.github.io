@@ -2,25 +2,28 @@
 import { extractPlainText } from 'emdash';
 import PageHead from '../components/PageHead.astro';
 import Rss from '../icons/rss.svg';
+import { useI18n } from '../i18n';
 import Base from '../layouts/Base.astro';
 import { getPosts, readingMinutes } from '../lib/blog';
 
+const { locale, t, path } = useI18n(Astro.currentLocale);
 const posts = await getPosts(Astro);
 ---
 
-<Base title="blog" description="Notes on things I build and learn.">
+<Base title={t('blog.title')} description={t('blog.intro')}>
   <div class="wrap">
-    <PageHead title="blog" intro="Notes on things I build and learn.">
-      <a slot="aside" class="btn" href="/blog/rss.xml" data-astro-prefetch="false"><Rss class="icon" />RSS feed</a>
+    <PageHead title={t('blog.title')} intro={t('blog.intro')}>
+      <Fragment slot="prompt">ls -lt ~/blog</Fragment>
+      <a slot="aside" class="btn" href={path('/blog/rss.xml')} data-astro-prefetch="false"><Rss class="icon" />{t('blog.rss')}</a>
     </PageHead>
     {
       posts.length > 0 ? (
         <section class="win">
-          <div class="bar"><span class="flex-1 truncate">{posts.length} posts</span></div>
+          <div class="bar"><span class="flex-1 truncate"><b>total</b> {posts.length} {t('blog.posts')}</span></div>
           <ol class="divide-y divide-border">
             {posts.map((post) => (
-              <li>
-                <a href={`/blog/${post.slug}`} class="group grid gap-1 px-5 py-4 hover:bg-surface-2 sm:grid-cols-[7.5rem_1fr] sm:gap-6">
+              <li lang={post.locale && post.locale !== locale ? post.locale : undefined}>
+                <a href={path(`/blog/${post.slug}`)} class="group grid gap-1 px-5 py-4 hover:bg-surface-2 sm:grid-cols-[7.5rem_1fr] sm:gap-6">
                   <time datetime={post.publishedAt!.toISOString()} class="pt-1 font-mono text-[0.8rem] text-muted">
                     {post.publishedAt!.toISOString().slice(0, 10)}
                   </time>
@@ -28,7 +31,8 @@ const posts = await getPosts(Astro);
                     <h2 class="font-mono text-[1.05rem] font-semibold tracking-[-0.02em] group-hover:text-accent">{post.title}</h2>
                     {post.excerpt && <p class="mt-1 text-[0.95rem] text-muted">{post.excerpt}</p>}
                     <div class="mt-2 flex flex-wrap items-center gap-1 font-mono text-[0.72rem] text-muted">
-                      <span class="mr-1">{readingMinutes(extractPlainText(post.content))} min read</span>
+                      <span class="mr-1">{readingMinutes(extractPlainText(post.content))} {t('blog.minutes')}</span>
+                      {post.locale && post.locale !== locale && <span class="tag border-accent/40 text-accent">{post.locale}</span>}
                       {(post.terms?.tag ?? []).map((tag) => <span class="tag">{tag.label}</span>)}
                     </div>
                   </div>
@@ -38,7 +42,7 @@ const posts = await getPosts(Astro);
           </ol>
         </section>
       ) : (
-        <p class="p-12 text-center font-mono text-muted">No posts yet.</p>
+        <p class="p-12 text-center font-mono text-muted">{t('blog.none')}</p>
       )
     }
   </div>
