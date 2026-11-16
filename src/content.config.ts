@@ -1,5 +1,6 @@
-import { defineCollection, z, type ImageFunction } from 'astro:content';
+import { defineCollection, type ImageFunction } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 import { icons } from './components/Icons/index.astro';
 
@@ -12,10 +13,10 @@ const projectSchema = (image: ImageFunction) => z.object({
     name: z.string(),
     description: z.string().min(1, "Cannot have an empty project description"),
     shortDescription: z.string().min(1, "Cannot have an empty project short description").optional(),
-    upstreamLink: z.string().url("Project upstream link must be a valid URL"),
+    upstreamLink: z.url("Project upstream link must be a valid URL"),
     previewImage: image().optional(),
     deployment: z.object({
-        url: z.string().url("Project deployment URL must be a valid URL"),
+        url: z.url("Project deployment URL must be a valid URL"),
     }).optional(),
     academicData: z.object({
         course: z.object({
@@ -34,7 +35,7 @@ const projectSchema = (image: ImageFunction) => z.object({
     ).optional(),
     otherMembers: z.object({
         name: z.string(),
-        githubUrl: z.string().url().regex(/github.com\//, "Other members' link must be a valid GitHub profile link").optional(),
+        githubUrl: z.url().regex(/github.com\//, "Other members' link must be a valid GitHub profile link").optional(),
     }).array().optional(),
 })
 

@@ -1,6 +1,7 @@
 ---
 import Footer from "../components/Footer.astro";
 import AppBar from "../components/AppBar/index.astro";
+import "../styles/global.css";
 
 export interface Props {
 	title: string;
@@ -35,35 +36,3 @@ const { title, bgColor, textColor } = Astro.props;
 		<Footer />
 	</body>
 </html>
-<style is:global>
-	:root {
-		--color-bg: white;
-		--color-shadow: rgba(0, 0, 0, 0.1);
-	}
-
-	* {
-		padding: 0;
-		margin: 0;
-		box-sizing: border-box;
-	}
-	html {
-		font-family: system-ui, sans-serif;
-	}
-
-	a {
-		color: inherit;
-		text-decoration: none;
-	}
-
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
-</style>

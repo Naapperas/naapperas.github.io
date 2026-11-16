@@ -31,12 +31,10 @@ const mapSemesterOrdinal = (
             <span class="">({academicData.course.code})</span>
         </p>
         <p class="">
-            <span class="font-bold">Year</span>:
-            {academicData.course.year}
+            <span class="font-bold">Year</span>: {academicData.course.year}
         </p>
         <p>
-            <span class="font-bold">Semester</span>:
-            {`${mapSemesterOrdinal(academicData.course.semester)} semester`}
+            <span class="font-bold">Semester</span>: {`${mapSemesterOrdinal(academicData.course.semester)} semester`}
         </p>
         {
             academicData.marks !== undefined ? (
